@@ -1,0 +1,1 @@
+ALTER TABLE `documents` MODIFY COLUMN `documentCategory` enum('contract','id','visa','qualification','professional_registration') NOT NULL;

@@ -1,0 +1,85 @@
+# Project TODO
+
+- [x] Establish the elegant visual direction and polished dashboard layout for the HR management application
+- [x] Implement strict role-based authentication with Admin, HR, and Manager roles across frontend and backend
+- [x] Create protected route handling and frontend permission-aware navigation
+- [x] Extend the database schema for employees, departments, contracts, documents, leave, professional registration, and immutable audit logs
+- [x] Implement backend permission checks for every protected action
+- [x] Build a role-specific dashboard with headcount, pending approvals, missing documents, contracts ending soon, and team summaries
+- [x] Build the employee list screen with search, filters, pagination, and view/edit/archive actions
+- [x] Build the four-step Add Employee wizard with personal, employment, contract, and document steps
+- [x] Build the tabbed employee profile with Overview, Employment, Contracts, Documents, Leave History, and Audit tabs
+- [x] Build the department management screen with create, edit, and archive flows and validation
+- [x] Build the contract management screen with lifecycle tracking and expiry alerts
+- [x] Build secure document upload and document management with expiry tracking and categories
+- [x] Build the leave request and approval workflow with manager queue, balance updates, and calendar view
+- [x] Build comprehensive immutable audit logging with actor, timestamp, action, and changed fields
+- [x] Add professional registration records with annual expiry tracking and alerts
+- [x] Add proactive expiry alerts for contracts, documents, and professional registrations
+- [x] Write and run Vitest coverage for auth, permissions, and core backend workflows
+- [x] Validate the scaffold in the browser and summarize next implementation steps
+- [x] Add an explicit role assignment and user administration flow so Admin, HR, and Manager roles can be managed in-app instead of only through seeded or database values
+- [x] Replace placeholder document file metadata with secure S3-backed upload handling and persisted storage references
+- [x] Enforce and document append-only audit storage guarantees at the persistence layer
+- [x] Diagnose and fix the OAuth callback failure so users can log in successfully across the published HR application
+- [x] Replace in-memory HR employee, department, contract, document, leave, registration, and audit records with database-backed queries and mutations
+- [x] Add and apply database migrations for the HR domain schema and role compatibility updates
+- [x] Seed or backfill baseline HR records so the persisted application remains usable after the data-layer switch
+- [x] Update the backend procedures and tests to use real persistence for core HR workflows
+- [x] Validate the persisted HR flows in the browser and save a reviewed checkpoint
+- [x] Fix the duplicate `/audit` navigation key so the React warning no longer appears on the HR dashboard
+- [x] Add regression coverage for the navigation configuration to prevent duplicate route keys from reappearing
+- [x] Re-verify the dashboard UI after the navigation-key fix and save a reviewed checkpoint
+- [x] Build a dedicated Compliance page with compliance-specific summaries, alerts, and lifecycle visibility separate from the Audit view
+- [x] Add Professional Registration as a selectable option in the secured document upload category dropdown
+- [x] Add regression coverage for the Compliance navigation and updated secured document category options
+- [x] Re-verify the Compliance page and secured document upload workflow in the browser and save a reviewed checkpoint
+- [x] Add actionable compliance workflows so HR can renew, mark reviewed, request replacement, and resolve compliance alerts directly from the Compliance page
+- [x] Add automated notification and reminder flows for expiring contracts, documents, professional registrations, and pending leave approvals
+- [x] Extend persistence and audit logging for compliance-action state changes and reminder activity
+- [x] Add regression coverage for compliance actions and notification-trigger logic
+- [x] Re-verify the new compliance workflows and reminder experience in the browser and save a reviewed checkpoint
+- [x] Review the HR app’s queries and mutations against the new row-level security policies for employees and managers
+- [x] Update any server-side access assumptions so self-service writes and restricted reads behave correctly under RLS
+- [x] Add or update regression coverage for employee self-access, sensitive-record restrictions, and manager-wide access under RLS
+- [x] Re-verify the application against the new RLS behavior and save a reviewed checkpoint
+- [x] Add explicit Vitest coverage for employee self-access so an employee can view only their own allowed records and create permitted self-service requests under RLS
+- [x] Add explicit validation for restricted sensitive records so employee access to disciplinary or similarly sensitive data is denied under the RLS-aligned app contract
+- [x] Apply the generated employee-role schema migration safely, or document why it should not be applied yet in the current environment
+- [x] Re-verify the application with both employee and manager role scenarios in the browser, then save a reviewed checkpoint for the RLS-aligned state
+- [x] Seed safe baseline manager and employee test users linked to employee records for RLS validation
+- [x] Verify the seeded roles and employee mappings work with the current server-side access model
+- [x] Re-run regression coverage against the seeded role baseline and update any failing assumptions
+- [x] Validate manager and employee access paths in the browser with the safe seed data, then save a reviewed checkpoint
+- [x] Reconcile the live database user-role enum so the new employee role can be inserted safely without replaying unrelated table-creation SQL
+- [x] Re-run the safe baseline seed after the enum update and confirm both manager and employee test users persist successfully
+- [x] Add a safe non-production impersonation path so seeded manager and employee users can be validated in the browser without affecting production auth
+- [x] Verify the impersonation path respects the existing seeded user mappings and RLS-aligned route guards
+- [x] Add or update regression coverage for the local role-switch mechanism and any affected auth logic
+- [x] Validate manager and employee browser flows through the impersonation path, then save a reviewed checkpoint
+- [x] Implement scheduled reminder delivery with owner-facing digests for expiring contracts, documents, professional registrations, and pending leave approvals
+- [x] Add actionable compliance task states on the Compliance page, including reviewed, renewal in progress, replacement requested, and resolved flows
+- [x] Build CSV import and export tools for bulk HR administration with validation and safe error handling
+- [x] Execute a live browser end-to-end check for CSV export download and CSV import submission, and record evidence that success and failure states behave correctly
+- [x] Tighten CSV import validation for common bad inputs, including invalid dates, malformed email, duplicate employee number, and unsupported salary basis values, with clear row-level error messaging
+- [x] Remove or implement the unused CSV export option so the API contract matches actual behavior
+- [x] Improve the CSV import UI with an explicit success summary and persistent row-level error review after submission
+- [x] Fix the auth helper so it does not write to localStorage during render and does not introduce stability risks for the CSV admin workflow or other protected pages
+- [x] Fix the lingering client runtime issue that appears in the browser console so in-house testing starts from a clean baseline
+- [x] Add bulk-import audit history and downloadable CSV error reports for admin traceability during testing
+- [x] Reduce CSV import dependency on raw department and manager IDs by supporting human-friendly mapping inputs
+- [x] Verify and fix the bulk CSV audit contract so the returned audit reference reliably matches the persisted audit log entry, then restore exact regression coverage for that linkage
+- [x] Run and record live browser validation for both a successful CSV import and an invalid-row CSV import, confirming recent bulk activity, persistent summaries, and downloadable error-report behavior
+- [x] Resolve or conclusively eliminate the lingering './env' dev-server console error from current diagnostics before closing the pilot-readiness runtime baseline
+- [x] Add focused acceptance coverage for the core admin, manager, and employee journeys to protect the in-house testing baseline
+- [x] Prepare tester guidance, seed-data notes, and in-product help text so internal users can exercise the main flows consistently
+- [x] Reproduce the current browser console state on the live app and capture fresh evidence showing whether runtime errors remain on protected routes
+- [x] Reproduce the reported './env' browser runtime error from a fresh session and identify the exact module or import path causing it
+- [x] If a runtime/import mismatch still exists, implement the fix, rerun tests, and re-verify the browser console is clean before marking the baseline item complete
+- [x] Add a dedicated in-app tester help page that links role-specific flows and sample CSV files
+- [x] Introduce downloadable seeded test packs for leave, compliance, and document-expiry scenarios
+- [x] Add browser-level end-to-end automation for the highest-risk pilot paths before wider internal rollout
+- [x] Expand Playwright end-to-end coverage to execute the highest-risk operational flows end to end: CSV export and human-friendly CSV import outcomes, scoped leave approval, and a compliance workflow transition
+- [x] Add downloadable persona-specific tester checklists to the major operational screens so each role can launch the right validation steps in context
+- [x] Extend browser-level automation so high-risk flows also verify matching audit-log entries after each operational action
+- [x] Build an in-app pilot feedback form that captures tester role, current route, and issue details for operational review

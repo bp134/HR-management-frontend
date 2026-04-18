@@ -1,0 +1,1793 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: pilot-rollout.spec.ts >> pilot rollout flows >> admin can execute a compliance workflow transition from the action queue
+- Location: e2e/pilot-rollout.spec.ts:97:3
+
+# Error details
+
+```
+Error: expect(received).not.toBe(expected) // Object.is equality
+
+Expected: not "Renewals in progress0"
+
+Call Log:
+- Timeout 10000ms exceeded while waiting on the predicate
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - region "Notifications alt+T"
+  - generic [ref=e4]:
+    - complementary [ref=e5]:
+      - generic [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]:
+            - img [ref=e10]
+            - text: Northstar HR
+          - heading "Compliance oversight" [level=1] [ref=e12]
+          - paragraph [ref=e13]: Monitor expiring contracts, document coverage, and professional registration readiness through a dedicated compliance workspace.
+        - img [ref=e15]
+      - navigation [ref=e21]:
+        - link "Dashboard" [ref=e22] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e23]:
+            - generic [ref=e24]:
+              - img [ref=e26]
+              - generic [ref=e31]: Dashboard
+            - img [ref=e33]
+        - link "Employees Self-service" [ref=e35] [cursor=pointer]:
+          - /url: /employees
+          - generic [ref=e36]:
+            - generic [ref=e37]:
+              - img [ref=e39]
+              - generic [ref=e44]: Employees
+            - generic [ref=e45]:
+              - generic [ref=e46]: Self-service
+              - img [ref=e47]
+        - link "Add employee" [ref=e49] [cursor=pointer]:
+          - /url: /employees/new
+          - generic [ref=e50]:
+            - generic [ref=e51]:
+              - img [ref=e53]
+              - generic [ref=e56]: Add employee
+            - img [ref=e58]
+        - link "Departments" [ref=e60] [cursor=pointer]:
+          - /url: /departments
+          - generic [ref=e61]:
+            - generic [ref=e62]:
+              - img [ref=e64]
+              - generic [ref=e68]: Departments
+            - img [ref=e70]
+        - link "Contracts" [ref=e72] [cursor=pointer]:
+          - /url: /contracts
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - img [ref=e76]
+              - generic [ref=e79]: Contracts
+            - img [ref=e81]
+        - link "Documents" [ref=e83] [cursor=pointer]:
+          - /url: /documents
+          - generic [ref=e84]:
+            - generic [ref=e85]:
+              - img [ref=e87]
+              - generic [ref=e92]: Documents
+            - img [ref=e94]
+        - link "Leave" [ref=e96] [cursor=pointer]:
+          - /url: /leave
+          - generic [ref=e97]:
+            - generic [ref=e98]:
+              - img [ref=e100]
+              - generic [ref=e102]: Leave
+            - img [ref=e104]
+        - link "Pilot help Guide" [ref=e106] [cursor=pointer]:
+          - /url: /pilot-help
+          - generic [ref=e107]:
+            - generic [ref=e108]:
+              - img [ref=e110]
+              - generic [ref=e117]: Pilot help
+            - generic [ref=e118]:
+              - generic [ref=e119]: Guide
+              - img [ref=e120]
+        - link "Access Admin" [ref=e122] [cursor=pointer]:
+          - /url: /access
+          - generic [ref=e123]:
+            - generic [ref=e124]:
+              - img [ref=e126]
+              - generic [ref=e129]: Access
+            - generic [ref=e130]:
+              - generic [ref=e131]: Admin
+              - img [ref=e132]
+        - link "Audit" [ref=e134] [cursor=pointer]:
+          - /url: /audit
+          - generic [ref=e135]:
+            - generic [ref=e136]:
+              - img [ref=e138]
+              - generic [ref=e141]: Audit
+            - img [ref=e143]
+        - link "Compliance Tracked" [ref=e145] [cursor=pointer]:
+          - /url: /compliance
+          - generic [ref=e146]:
+            - generic [ref=e147]:
+              - img [ref=e149]
+              - generic [ref=e152]: Compliance
+            - generic [ref=e153]:
+              - generic [ref=e154]: Tracked
+              - img [ref=e155]
+      - generic [ref=e158]:
+        - generic [ref=e159]:
+          - generic [ref=e161]: SO
+          - generic [ref=e162]:
+            - paragraph [ref=e163]: System Owner
+            - paragraph [ref=e164]: owner@northstar.test
+        - generic [ref=e165]:
+          - generic [ref=e166]: admin
+          - button "Log out" [ref=e167] [cursor=pointer]:
+            - img
+            - text: Log out
+    - generic [ref=e168]:
+      - banner [ref=e169]:
+        - generic [ref=e170]:
+          - generic [ref=e171]:
+            - paragraph [ref=e172]: Secure HR operations workspace
+            - heading "Compliance oversight" [level=2] [ref=e173]
+          - generic [ref=e174]:
+            - generic [ref=e175]: All routes and actions are role-checked.
+            - button "Alerts" [ref=e176] [cursor=pointer]:
+              - img
+              - text: Alerts
+      - main [ref=e177]:
+        - generic [ref=e178]:
+          - generic [ref=e179]:
+            - generic [ref=e180]:
+              - heading "Compliance oversight" [level=3] [ref=e181]
+              - paragraph [ref=e182]: This workspace separates compliance monitoring from the raw audit trail, giving HR teams a focused queue for renewals, replacements, review decisions, and reminder activity.
+            - button "Send reminder digest" [ref=e183] [cursor=pointer]:
+              - img
+              - text: Send reminder digest
+          - generic [ref=e184]:
+            - generic [ref=e185]:
+              - generic [ref=e186]: Compliance pilot guidance
+              - generic [ref=e187]: Keep this checklist visible while running the internal pilot.
+            - generic [ref=e188]:
+              - paragraph [ref=e189]: Review the action queue from highest severity to lowest, then record one workflow step at a time so the latest state remains easy to audit.
+              - paragraph [ref=e190]: Use reminder delivery only after checking the queue and priority snapshot, because the digest is intended to summarize outstanding work rather than replace the on-screen review.
+          - generic [ref=e191]:
+            - generic [ref=e192]:
+              - generic [ref=e193]:
+                - generic [ref=e194]:
+                  - generic [ref=e195]: Open compliance items
+                  - generic [ref=e196]: "77"
+                - img [ref=e198]
+              - paragraph [ref=e201]: Items still waiting for a recorded workflow action.
+            - generic [ref=e202]:
+              - generic [ref=e203]:
+                - generic [ref=e204]:
+                  - generic [ref=e205]: Renewals in progress
+                  - generic [ref=e206]: "0"
+                - img [ref=e208]
+              - paragraph [ref=e214]: Records where renewal work has been started and logged.
+            - generic [ref=e215]:
+              - generic [ref=e216]:
+                - generic [ref=e217]:
+                  - generic [ref=e218]: Replacement requests
+                  - generic [ref=e219]: "0"
+                - img [ref=e221]
+              - paragraph [ref=e225]: Items currently waiting on refreshed evidence or replacement files.
+            - generic [ref=e226]:
+              - generic [ref=e227]:
+                - generic [ref=e228]:
+                  - generic [ref=e229]: Resolved items
+                  - generic [ref=e230]: "0"
+                - img [ref=e232]
+              - paragraph [ref=e236]: Compliance records that now have a closed status update.
+          - generic [ref=e237]:
+            - generic [ref=e238]:
+              - generic [ref=e239]:
+                - generic [ref=e240]: Action queue
+                - generic [ref=e241]: Use workflow actions to mark review progress, request replacements, or advance renewals directly from the compliance workspace.
+              - generic [ref=e242]:
+                - generic [ref=e243]:
+                  - generic [ref=e244]:
+                    - generic [ref=e245]:
+                      - paragraph [ref=e246]: Compliance Employee NMC
+                      - paragraph [ref=e247]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e248]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e249]: "Workflow state: Open"
+                    - generic [ref=e250]: high
+                  - generic [ref=e251]:
+                    - button "Mark reviewed" [ref=e252] [cursor=pointer]
+                    - button "Request replacement" [ref=e253] [cursor=pointer]
+                    - button "Start renewal" [ref=e254] [cursor=pointer]
+                    - button "Resolve" [ref=e255] [cursor=pointer]
+                - generic [ref=e256]:
+                  - generic [ref=e257]:
+                    - generic [ref=e258]:
+                      - paragraph [ref=e259]: Compliance Employee NMC
+                      - paragraph [ref=e260]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e261]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e262]: "Workflow state: Open"
+                    - generic [ref=e263]: high
+                  - generic [ref=e264]:
+                    - button "Mark reviewed" [ref=e265] [cursor=pointer]
+                    - button "Request replacement" [ref=e266] [cursor=pointer]
+                    - button "Start renewal" [ref=e267] [cursor=pointer]
+                    - button "Resolve" [ref=e268] [cursor=pointer]
+                - generic [ref=e269]:
+                  - generic [ref=e270]:
+                    - generic [ref=e271]:
+                      - paragraph [ref=e272]: Compliance Employee NMC
+                      - paragraph [ref=e273]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e274]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e275]: "Workflow state: Open"
+                    - generic [ref=e276]: high
+                  - generic [ref=e277]:
+                    - button "Mark reviewed" [ref=e278] [cursor=pointer]
+                    - button "Request replacement" [ref=e279] [cursor=pointer]
+                    - button "Start renewal" [ref=e280] [cursor=pointer]
+                    - button "Resolve" [ref=e281] [cursor=pointer]
+                - generic [ref=e282]:
+                  - generic [ref=e283]:
+                    - generic [ref=e284]:
+                      - paragraph [ref=e285]: Compliance Employee NMC
+                      - paragraph [ref=e286]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e287]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e288]: "Workflow state: Open"
+                    - generic [ref=e289]: high
+                  - generic [ref=e290]:
+                    - button "Mark reviewed" [ref=e291] [cursor=pointer]
+                    - button "Request replacement" [ref=e292] [cursor=pointer]
+                    - button "Start renewal" [ref=e293] [cursor=pointer]
+                    - button "Resolve" [ref=e294] [cursor=pointer]
+                - generic [ref=e295]:
+                  - generic [ref=e296]:
+                    - generic [ref=e297]:
+                      - paragraph [ref=e298]: Compliance Employee NMC
+                      - paragraph [ref=e299]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e300]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e301]: "Workflow state: Open"
+                    - generic [ref=e302]: high
+                  - generic [ref=e303]:
+                    - button "Mark reviewed" [ref=e304] [cursor=pointer]
+                    - button "Request replacement" [ref=e305] [cursor=pointer]
+                    - button "Start renewal" [ref=e306] [cursor=pointer]
+                    - button "Resolve" [ref=e307] [cursor=pointer]
+                - generic [ref=e308]:
+                  - generic [ref=e309]:
+                    - generic [ref=e310]:
+                      - paragraph [ref=e311]: Compliance Employee NMC
+                      - paragraph [ref=e312]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e313]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e314]: "Workflow state: Open"
+                    - generic [ref=e315]: high
+                  - generic [ref=e316]:
+                    - button "Mark reviewed" [ref=e317] [cursor=pointer]
+                    - button "Request replacement" [ref=e318] [cursor=pointer]
+                    - button "Start renewal" [ref=e319] [cursor=pointer]
+                    - button "Resolve" [ref=e320] [cursor=pointer]
+                - generic [ref=e321]:
+                  - generic [ref=e322]:
+                    - generic [ref=e323]:
+                      - paragraph [ref=e324]: Compliance Employee NMC
+                      - paragraph [ref=e325]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e326]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e327]: "Workflow state: Open"
+                    - generic [ref=e328]: high
+                  - generic [ref=e329]:
+                    - button "Mark reviewed" [ref=e330] [cursor=pointer]
+                    - button "Request replacement" [ref=e331] [cursor=pointer]
+                    - button "Start renewal" [ref=e332] [cursor=pointer]
+                    - button "Resolve" [ref=e333] [cursor=pointer]
+                - generic [ref=e334]:
+                  - generic [ref=e335]:
+                    - generic [ref=e336]:
+                      - paragraph [ref=e337]: Compliance Employee NMC
+                      - paragraph [ref=e338]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e339]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e340]: "Workflow state: Open"
+                    - generic [ref=e341]: high
+                  - generic [ref=e342]:
+                    - button "Mark reviewed" [ref=e343] [cursor=pointer]
+                    - button "Request replacement" [ref=e344] [cursor=pointer]
+                    - button "Start renewal" [ref=e345] [cursor=pointer]
+                    - button "Resolve" [ref=e346] [cursor=pointer]
+                - generic [ref=e347]:
+                  - generic [ref=e348]:
+                    - generic [ref=e349]:
+                      - paragraph [ref=e350]: Compliance Employee NMC
+                      - paragraph [ref=e351]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e352]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e353]: "Workflow state: Open"
+                    - generic [ref=e354]: high
+                  - generic [ref=e355]:
+                    - button "Mark reviewed" [ref=e356] [cursor=pointer]
+                    - button "Request replacement" [ref=e357] [cursor=pointer]
+                    - button "Start renewal" [ref=e358] [cursor=pointer]
+                    - button "Resolve" [ref=e359] [cursor=pointer]
+                - generic [ref=e360]:
+                  - generic [ref=e361]:
+                    - generic [ref=e362]:
+                      - paragraph [ref=e363]: Compliance Employee NMC
+                      - paragraph [ref=e364]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e365]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e366]: "Workflow state: Open"
+                    - generic [ref=e367]: high
+                  - generic [ref=e368]:
+                    - button "Mark reviewed" [ref=e369] [cursor=pointer]
+                    - button "Request replacement" [ref=e370] [cursor=pointer]
+                    - button "Start renewal" [ref=e371] [cursor=pointer]
+                    - button "Resolve" [ref=e372] [cursor=pointer]
+                - generic [ref=e373]:
+                  - generic [ref=e374]:
+                    - generic [ref=e375]:
+                      - paragraph [ref=e376]: Compliance Employee NMC
+                      - paragraph [ref=e377]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e378]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e379]: "Workflow state: Open"
+                    - generic [ref=e380]: high
+                  - generic [ref=e381]:
+                    - button "Mark reviewed" [ref=e382] [cursor=pointer]
+                    - button "Request replacement" [ref=e383] [cursor=pointer]
+                    - button "Start renewal" [ref=e384] [cursor=pointer]
+                    - button "Resolve" [ref=e385] [cursor=pointer]
+                - generic [ref=e386]:
+                  - generic [ref=e387]:
+                    - generic [ref=e388]:
+                      - paragraph [ref=e389]: Compliance Employee NMC
+                      - paragraph [ref=e390]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e391]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e392]: "Workflow state: Open"
+                    - generic [ref=e393]: high
+                  - generic [ref=e394]:
+                    - button "Mark reviewed" [ref=e395] [cursor=pointer]
+                    - button "Request replacement" [ref=e396] [cursor=pointer]
+                    - button "Start renewal" [ref=e397] [cursor=pointer]
+                    - button "Resolve" [ref=e398] [cursor=pointer]
+                - generic [ref=e399]:
+                  - generic [ref=e400]:
+                    - generic [ref=e401]:
+                      - paragraph [ref=e402]: Compliance Employee NMC
+                      - paragraph [ref=e403]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e404]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e405]: "Workflow state: Open"
+                    - generic [ref=e406]: high
+                  - generic [ref=e407]:
+                    - button "Mark reviewed" [ref=e408] [cursor=pointer]
+                    - button "Request replacement" [ref=e409] [cursor=pointer]
+                    - button "Start renewal" [ref=e410] [cursor=pointer]
+                    - button "Resolve" [ref=e411] [cursor=pointer]
+                - generic [ref=e412]:
+                  - generic [ref=e413]:
+                    - generic [ref=e414]:
+                      - paragraph [ref=e415]: Compliance Employee NMC
+                      - paragraph [ref=e416]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e417]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e418]: "Workflow state: Open"
+                    - generic [ref=e419]: high
+                  - generic [ref=e420]:
+                    - button "Mark reviewed" [ref=e421] [cursor=pointer]
+                    - button "Request replacement" [ref=e422] [cursor=pointer]
+                    - button "Start renewal" [ref=e423] [cursor=pointer]
+                    - button "Resolve" [ref=e424] [cursor=pointer]
+                - generic [ref=e425]:
+                  - generic [ref=e426]:
+                    - generic [ref=e427]:
+                      - paragraph [ref=e428]: Compliance Employee NMC
+                      - paragraph [ref=e429]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e430]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e431]: "Workflow state: Open"
+                    - generic [ref=e432]: high
+                  - generic [ref=e433]:
+                    - button "Mark reviewed" [ref=e434] [cursor=pointer]
+                    - button "Request replacement" [ref=e435] [cursor=pointer]
+                    - button "Start renewal" [ref=e436] [cursor=pointer]
+                    - button "Resolve" [ref=e437] [cursor=pointer]
+                - generic [ref=e438]:
+                  - generic [ref=e439]:
+                    - generic [ref=e440]:
+                      - paragraph [ref=e441]: Compliance Employee NMC
+                      - paragraph [ref=e442]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e443]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e444]: "Workflow state: Open"
+                    - generic [ref=e445]: high
+                  - generic [ref=e446]:
+                    - button "Mark reviewed" [ref=e447] [cursor=pointer]
+                    - button "Request replacement" [ref=e448] [cursor=pointer]
+                    - button "Start renewal" [ref=e449] [cursor=pointer]
+                    - button "Resolve" [ref=e450] [cursor=pointer]
+                - generic [ref=e451]:
+                  - generic [ref=e452]:
+                    - generic [ref=e453]:
+                      - paragraph [ref=e454]: Compliance Employee NMC
+                      - paragraph [ref=e455]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e456]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e457]: "Workflow state: Open"
+                    - generic [ref=e458]: high
+                  - generic [ref=e459]:
+                    - button "Mark reviewed" [ref=e460] [cursor=pointer]
+                    - button "Request replacement" [ref=e461] [cursor=pointer]
+                    - button "Start renewal" [ref=e462] [cursor=pointer]
+                    - button "Resolve" [ref=e463] [cursor=pointer]
+                - generic [ref=e464]:
+                  - generic [ref=e465]:
+                    - generic [ref=e466]:
+                      - paragraph [ref=e467]: Compliance Employee NMC
+                      - paragraph [ref=e468]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e469]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e470]: "Workflow state: Open"
+                    - generic [ref=e471]: high
+                  - generic [ref=e472]:
+                    - button "Mark reviewed" [ref=e473] [cursor=pointer]
+                    - button "Request replacement" [ref=e474] [cursor=pointer]
+                    - button "Start renewal" [ref=e475] [cursor=pointer]
+                    - button "Resolve" [ref=e476] [cursor=pointer]
+                - generic [ref=e477]:
+                  - generic [ref=e478]:
+                    - generic [ref=e479]:
+                      - paragraph [ref=e480]: Compliance Employee NMC
+                      - paragraph [ref=e481]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e482]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e483]: "Workflow state: Open"
+                    - generic [ref=e484]: high
+                  - generic [ref=e485]:
+                    - button "Mark reviewed" [ref=e486] [cursor=pointer]
+                    - button "Request replacement" [ref=e487] [cursor=pointer]
+                    - button "Start renewal" [ref=e488] [cursor=pointer]
+                    - button "Resolve" [ref=e489] [cursor=pointer]
+                - generic [ref=e490]:
+                  - generic [ref=e491]:
+                    - generic [ref=e492]:
+                      - paragraph [ref=e493]: Compliance Employee NMC
+                      - paragraph [ref=e494]: Compliance Employee · NMC registration expired.
+                      - paragraph [ref=e495]: "Due: 2026-04-08 · -8 days remaining"
+                      - paragraph [ref=e496]: "Workflow state: Open"
+                    - generic [ref=e497]: high
+                  - generic [ref=e498]:
+                    - button "Mark reviewed" [ref=e499] [cursor=pointer]
+                    - button "Request replacement" [ref=e500] [cursor=pointer]
+                    - button "Start renewal" [ref=e501] [cursor=pointer]
+                    - button "Resolve" [ref=e502] [cursor=pointer]
+                - generic [ref=e503]:
+                  - generic [ref=e504]:
+                    - generic [ref=e505]:
+                      - paragraph [ref=e506]: Compliance Employee NMC Registration
+                      - paragraph [ref=e507]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e508]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e509]: "Workflow state: Open"
+                    - generic [ref=e510]: high
+                  - generic [ref=e511]:
+                    - button "Mark reviewed" [ref=e512] [cursor=pointer]
+                    - button "Request replacement" [ref=e513] [cursor=pointer]
+                    - button "Start renewal" [ref=e514] [cursor=pointer]
+                    - button "Resolve" [ref=e515] [cursor=pointer]
+                - generic [ref=e516]:
+                  - generic [ref=e517]:
+                    - generic [ref=e518]:
+                      - paragraph [ref=e519]: Compliance Employee NMC Registration
+                      - paragraph [ref=e520]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e521]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e522]: "Workflow state: Open"
+                    - generic [ref=e523]: high
+                  - generic [ref=e524]:
+                    - button "Mark reviewed" [ref=e525] [cursor=pointer]
+                    - button "Request replacement" [ref=e526] [cursor=pointer]
+                    - button "Start renewal" [ref=e527] [cursor=pointer]
+                    - button "Resolve" [ref=e528] [cursor=pointer]
+                - generic [ref=e529]:
+                  - generic [ref=e530]:
+                    - generic [ref=e531]:
+                      - paragraph [ref=e532]: Compliance Employee NMC Registration
+                      - paragraph [ref=e533]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e534]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e535]: "Workflow state: Open"
+                    - generic [ref=e536]: high
+                  - generic [ref=e537]:
+                    - button "Mark reviewed" [ref=e538] [cursor=pointer]
+                    - button "Request replacement" [ref=e539] [cursor=pointer]
+                    - button "Start renewal" [ref=e540] [cursor=pointer]
+                    - button "Resolve" [ref=e541] [cursor=pointer]
+                - generic [ref=e542]:
+                  - generic [ref=e543]:
+                    - generic [ref=e544]:
+                      - paragraph [ref=e545]: Compliance Employee NMC Registration
+                      - paragraph [ref=e546]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e547]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e548]: "Workflow state: Open"
+                    - generic [ref=e549]: high
+                  - generic [ref=e550]:
+                    - button "Mark reviewed" [ref=e551] [cursor=pointer]
+                    - button "Request replacement" [ref=e552] [cursor=pointer]
+                    - button "Start renewal" [ref=e553] [cursor=pointer]
+                    - button "Resolve" [ref=e554] [cursor=pointer]
+                - generic [ref=e555]:
+                  - generic [ref=e556]:
+                    - generic [ref=e557]:
+                      - paragraph [ref=e558]: Compliance Employee NMC Registration
+                      - paragraph [ref=e559]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e560]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e561]: "Workflow state: Open"
+                    - generic [ref=e562]: high
+                  - generic [ref=e563]:
+                    - button "Mark reviewed" [ref=e564] [cursor=pointer]
+                    - button "Request replacement" [ref=e565] [cursor=pointer]
+                    - button "Start renewal" [ref=e566] [cursor=pointer]
+                    - button "Resolve" [ref=e567] [cursor=pointer]
+                - generic [ref=e568]:
+                  - generic [ref=e569]:
+                    - generic [ref=e570]:
+                      - paragraph [ref=e571]: Compliance Employee NMC Registration
+                      - paragraph [ref=e572]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e573]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e574]: "Workflow state: Open"
+                    - generic [ref=e575]: high
+                  - generic [ref=e576]:
+                    - button "Mark reviewed" [ref=e577] [cursor=pointer]
+                    - button "Request replacement" [ref=e578] [cursor=pointer]
+                    - button "Start renewal" [ref=e579] [cursor=pointer]
+                    - button "Resolve" [ref=e580] [cursor=pointer]
+                - generic [ref=e581]:
+                  - generic [ref=e582]:
+                    - generic [ref=e583]:
+                      - paragraph [ref=e584]: Compliance Employee NMC Registration
+                      - paragraph [ref=e585]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e586]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e587]: "Workflow state: Open"
+                    - generic [ref=e588]: high
+                  - generic [ref=e589]:
+                    - button "Mark reviewed" [ref=e590] [cursor=pointer]
+                    - button "Request replacement" [ref=e591] [cursor=pointer]
+                    - button "Start renewal" [ref=e592] [cursor=pointer]
+                    - button "Resolve" [ref=e593] [cursor=pointer]
+                - generic [ref=e594]:
+                  - generic [ref=e595]:
+                    - generic [ref=e596]:
+                      - paragraph [ref=e597]: Compliance Employee NMC Registration
+                      - paragraph [ref=e598]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e599]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e600]: "Workflow state: Open"
+                    - generic [ref=e601]: high
+                  - generic [ref=e602]:
+                    - button "Mark reviewed" [ref=e603] [cursor=pointer]
+                    - button "Request replacement" [ref=e604] [cursor=pointer]
+                    - button "Start renewal" [ref=e605] [cursor=pointer]
+                    - button "Resolve" [ref=e606] [cursor=pointer]
+                - generic [ref=e607]:
+                  - generic [ref=e608]:
+                    - generic [ref=e609]:
+                      - paragraph [ref=e610]: Compliance Employee NMC Registration
+                      - paragraph [ref=e611]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e612]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e613]: "Workflow state: Open"
+                    - generic [ref=e614]: high
+                  - generic [ref=e615]:
+                    - button "Mark reviewed" [ref=e616] [cursor=pointer]
+                    - button "Request replacement" [ref=e617] [cursor=pointer]
+                    - button "Start renewal" [ref=e618] [cursor=pointer]
+                    - button "Resolve" [ref=e619] [cursor=pointer]
+                - generic [ref=e620]:
+                  - generic [ref=e621]:
+                    - generic [ref=e622]:
+                      - paragraph [ref=e623]: Compliance Employee NMC Registration
+                      - paragraph [ref=e624]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e625]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e626]: "Workflow state: Open"
+                    - generic [ref=e627]: high
+                  - generic [ref=e628]:
+                    - button "Mark reviewed" [ref=e629] [cursor=pointer]
+                    - button "Request replacement" [ref=e630] [cursor=pointer]
+                    - button "Start renewal" [ref=e631] [cursor=pointer]
+                    - button "Resolve" [ref=e632] [cursor=pointer]
+                - generic [ref=e633]:
+                  - generic [ref=e634]:
+                    - generic [ref=e635]:
+                      - paragraph [ref=e636]: Compliance Employee NMC Registration
+                      - paragraph [ref=e637]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e638]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e639]: "Workflow state: Open"
+                    - generic [ref=e640]: high
+                  - generic [ref=e641]:
+                    - button "Mark reviewed" [ref=e642] [cursor=pointer]
+                    - button "Request replacement" [ref=e643] [cursor=pointer]
+                    - button "Start renewal" [ref=e644] [cursor=pointer]
+                    - button "Resolve" [ref=e645] [cursor=pointer]
+                - generic [ref=e646]:
+                  - generic [ref=e647]:
+                    - generic [ref=e648]:
+                      - paragraph [ref=e649]: Compliance Employee NMC Registration
+                      - paragraph [ref=e650]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e651]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e652]: "Workflow state: Open"
+                    - generic [ref=e653]: high
+                  - generic [ref=e654]:
+                    - button "Mark reviewed" [ref=e655] [cursor=pointer]
+                    - button "Request replacement" [ref=e656] [cursor=pointer]
+                    - button "Start renewal" [ref=e657] [cursor=pointer]
+                    - button "Resolve" [ref=e658] [cursor=pointer]
+                - generic [ref=e659]:
+                  - generic [ref=e660]:
+                    - generic [ref=e661]:
+                      - paragraph [ref=e662]: Compliance Employee NMC Registration
+                      - paragraph [ref=e663]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e664]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e665]: "Workflow state: Open"
+                    - generic [ref=e666]: high
+                  - generic [ref=e667]:
+                    - button "Mark reviewed" [ref=e668] [cursor=pointer]
+                    - button "Request replacement" [ref=e669] [cursor=pointer]
+                    - button "Start renewal" [ref=e670] [cursor=pointer]
+                    - button "Resolve" [ref=e671] [cursor=pointer]
+                - generic [ref=e672]:
+                  - generic [ref=e673]:
+                    - generic [ref=e674]:
+                      - paragraph [ref=e675]: Compliance Employee NMC Registration
+                      - paragraph [ref=e676]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e677]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e678]: "Workflow state: Open"
+                    - generic [ref=e679]: high
+                  - generic [ref=e680]:
+                    - button "Mark reviewed" [ref=e681] [cursor=pointer]
+                    - button "Request replacement" [ref=e682] [cursor=pointer]
+                    - button "Start renewal" [ref=e683] [cursor=pointer]
+                    - button "Resolve" [ref=e684] [cursor=pointer]
+                - generic [ref=e685]:
+                  - generic [ref=e686]:
+                    - generic [ref=e687]:
+                      - paragraph [ref=e688]: Compliance Employee NMC Registration
+                      - paragraph [ref=e689]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e690]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e691]: "Workflow state: Open"
+                    - generic [ref=e692]: high
+                  - generic [ref=e693]:
+                    - button "Mark reviewed" [ref=e694] [cursor=pointer]
+                    - button "Request replacement" [ref=e695] [cursor=pointer]
+                    - button "Start renewal" [ref=e696] [cursor=pointer]
+                    - button "Resolve" [ref=e697] [cursor=pointer]
+                - generic [ref=e698]:
+                  - generic [ref=e699]:
+                    - generic [ref=e700]:
+                      - paragraph [ref=e701]: Compliance Employee NMC Registration
+                      - paragraph [ref=e702]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e703]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e704]: "Workflow state: Open"
+                    - generic [ref=e705]: high
+                  - generic [ref=e706]:
+                    - button "Mark reviewed" [ref=e707] [cursor=pointer]
+                    - button "Request replacement" [ref=e708] [cursor=pointer]
+                    - button "Start renewal" [ref=e709] [cursor=pointer]
+                    - button "Resolve" [ref=e710] [cursor=pointer]
+                - generic [ref=e711]:
+                  - generic [ref=e712]:
+                    - generic [ref=e713]:
+                      - paragraph [ref=e714]: Compliance Employee NMC Registration
+                      - paragraph [ref=e715]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e716]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e717]: "Workflow state: Open"
+                    - generic [ref=e718]: high
+                  - generic [ref=e719]:
+                    - button "Mark reviewed" [ref=e720] [cursor=pointer]
+                    - button "Request replacement" [ref=e721] [cursor=pointer]
+                    - button "Start renewal" [ref=e722] [cursor=pointer]
+                    - button "Resolve" [ref=e723] [cursor=pointer]
+                - generic [ref=e724]:
+                  - generic [ref=e725]:
+                    - generic [ref=e726]:
+                      - paragraph [ref=e727]: Compliance Employee NMC Registration
+                      - paragraph [ref=e728]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e729]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e730]: "Workflow state: Open"
+                    - generic [ref=e731]: high
+                  - generic [ref=e732]:
+                    - button "Mark reviewed" [ref=e733] [cursor=pointer]
+                    - button "Request replacement" [ref=e734] [cursor=pointer]
+                    - button "Start renewal" [ref=e735] [cursor=pointer]
+                    - button "Resolve" [ref=e736] [cursor=pointer]
+                - generic [ref=e737]:
+                  - generic [ref=e738]:
+                    - generic [ref=e739]:
+                      - paragraph [ref=e740]: Compliance Employee NMC Registration
+                      - paragraph [ref=e741]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e742]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e743]: "Workflow state: Open"
+                    - generic [ref=e744]: high
+                  - generic [ref=e745]:
+                    - button "Mark reviewed" [ref=e746] [cursor=pointer]
+                    - button "Request replacement" [ref=e747] [cursor=pointer]
+                    - button "Start renewal" [ref=e748] [cursor=pointer]
+                    - button "Resolve" [ref=e749] [cursor=pointer]
+                - generic [ref=e750]:
+                  - generic [ref=e751]:
+                    - generic [ref=e752]:
+                      - paragraph [ref=e753]: Compliance Employee NMC Registration
+                      - paragraph [ref=e754]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e755]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e756]: "Workflow state: Open"
+                    - generic [ref=e757]: high
+                  - generic [ref=e758]:
+                    - button "Mark reviewed" [ref=e759] [cursor=pointer]
+                    - button "Request replacement" [ref=e760] [cursor=pointer]
+                    - button "Start renewal" [ref=e761] [cursor=pointer]
+                    - button "Resolve" [ref=e762] [cursor=pointer]
+                - generic [ref=e763]:
+                  - generic [ref=e764]:
+                    - generic [ref=e765]:
+                      - paragraph [ref=e766]: Compliance Employee NMC Registration
+                      - paragraph [ref=e767]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e768]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e769]: "Workflow state: Open"
+                    - generic [ref=e770]: high
+                  - generic [ref=e771]:
+                    - button "Mark reviewed" [ref=e772] [cursor=pointer]
+                    - button "Request replacement" [ref=e773] [cursor=pointer]
+                    - button "Start renewal" [ref=e774] [cursor=pointer]
+                    - button "Resolve" [ref=e775] [cursor=pointer]
+                - generic [ref=e776]:
+                  - generic [ref=e777]:
+                    - generic [ref=e778]:
+                      - paragraph [ref=e779]: Compliance Employee NMC Registration
+                      - paragraph [ref=e780]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e781]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e782]: "Workflow state: Open"
+                    - generic [ref=e783]: high
+                  - generic [ref=e784]:
+                    - button "Mark reviewed" [ref=e785] [cursor=pointer]
+                    - button "Request replacement" [ref=e786] [cursor=pointer]
+                    - button "Start renewal" [ref=e787] [cursor=pointer]
+                    - button "Resolve" [ref=e788] [cursor=pointer]
+                - generic [ref=e789]:
+                  - generic [ref=e790]:
+                    - generic [ref=e791]:
+                      - paragraph [ref=e792]: Compliance Employee NMC Registration
+                      - paragraph [ref=e793]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e794]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e795]: "Workflow state: Open"
+                    - generic [ref=e796]: high
+                  - generic [ref=e797]:
+                    - button "Mark reviewed" [ref=e798] [cursor=pointer]
+                    - button "Request replacement" [ref=e799] [cursor=pointer]
+                    - button "Start renewal" [ref=e800] [cursor=pointer]
+                    - button "Resolve" [ref=e801] [cursor=pointer]
+                - generic [ref=e802]:
+                  - generic [ref=e803]:
+                    - generic [ref=e804]:
+                      - paragraph [ref=e805]: Compliance Employee NMC Registration
+                      - paragraph [ref=e806]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e807]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e808]: "Workflow state: Open"
+                    - generic [ref=e809]: high
+                  - generic [ref=e810]:
+                    - button "Mark reviewed" [ref=e811] [cursor=pointer]
+                    - button "Request replacement" [ref=e812] [cursor=pointer]
+                    - button "Start renewal" [ref=e813] [cursor=pointer]
+                    - button "Resolve" [ref=e814] [cursor=pointer]
+                - generic [ref=e815]:
+                  - generic [ref=e816]:
+                    - generic [ref=e817]:
+                      - paragraph [ref=e818]: Compliance Employee NMC Registration
+                      - paragraph [ref=e819]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e820]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e821]: "Workflow state: Open"
+                    - generic [ref=e822]: high
+                  - generic [ref=e823]:
+                    - button "Mark reviewed" [ref=e824] [cursor=pointer]
+                    - button "Request replacement" [ref=e825] [cursor=pointer]
+                    - button "Start renewal" [ref=e826] [cursor=pointer]
+                    - button "Resolve" [ref=e827] [cursor=pointer]
+                - generic [ref=e828]:
+                  - generic [ref=e829]:
+                    - generic [ref=e830]:
+                      - paragraph [ref=e831]: Compliance Employee NMC Registration
+                      - paragraph [ref=e832]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e833]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e834]: "Workflow state: Open"
+                    - generic [ref=e835]: high
+                  - generic [ref=e836]:
+                    - button "Mark reviewed" [ref=e837] [cursor=pointer]
+                    - button "Request replacement" [ref=e838] [cursor=pointer]
+                    - button "Start renewal" [ref=e839] [cursor=pointer]
+                    - button "Resolve" [ref=e840] [cursor=pointer]
+                - generic [ref=e841]:
+                  - generic [ref=e842]:
+                    - generic [ref=e843]:
+                      - paragraph [ref=e844]: Compliance Employee NMC Registration
+                      - paragraph [ref=e845]: Compliance Employee · professional registration expired.
+                      - paragraph [ref=e846]: "Due: 2026-04-09 · -7 days remaining"
+                      - paragraph [ref=e847]: "Workflow state: Open"
+                    - generic [ref=e848]: high
+                  - generic [ref=e849]:
+                    - button "Mark reviewed" [ref=e850] [cursor=pointer]
+                    - button "Request replacement" [ref=e851] [cursor=pointer]
+                    - button "Start renewal" [ref=e852] [cursor=pointer]
+                    - button "Resolve" [ref=e853] [cursor=pointer]
+                - generic [ref=e854]:
+                  - generic [ref=e855]:
+                    - generic [ref=e856]:
+                      - paragraph [ref=e857]: Compliance Employee contract
+                      - paragraph [ref=e858]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e859]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e860]: "Workflow state: Open"
+                    - generic [ref=e861]: medium
+                  - generic [ref=e862]:
+                    - button "Mark reviewed" [ref=e863] [cursor=pointer]
+                    - button "Request replacement" [ref=e864] [cursor=pointer]
+                    - button "Start renewal" [ref=e865] [cursor=pointer]
+                    - button "Resolve" [ref=e866] [cursor=pointer]
+                - generic [ref=e867]:
+                  - generic [ref=e868]:
+                    - generic [ref=e869]:
+                      - paragraph [ref=e870]: Compliance Employee contract
+                      - paragraph [ref=e871]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e872]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e873]: "Workflow state: Open"
+                    - generic [ref=e874]: medium
+                  - generic [ref=e875]:
+                    - button "Mark reviewed" [ref=e876] [cursor=pointer]
+                    - button "Request replacement" [ref=e877] [cursor=pointer]
+                    - button "Start renewal" [ref=e878] [cursor=pointer]
+                    - button "Resolve" [ref=e879] [cursor=pointer]
+                - generic [ref=e880]:
+                  - generic [ref=e881]:
+                    - generic [ref=e882]:
+                      - paragraph [ref=e883]: Compliance Employee contract
+                      - paragraph [ref=e884]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e885]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e886]: "Workflow state: Open"
+                    - generic [ref=e887]: medium
+                  - generic [ref=e888]:
+                    - button "Mark reviewed" [ref=e889] [cursor=pointer]
+                    - button "Request replacement" [ref=e890] [cursor=pointer]
+                    - button "Start renewal" [ref=e891] [cursor=pointer]
+                    - button "Resolve" [ref=e892] [cursor=pointer]
+                - generic [ref=e893]:
+                  - generic [ref=e894]:
+                    - generic [ref=e895]:
+                      - paragraph [ref=e896]: Compliance Employee contract
+                      - paragraph [ref=e897]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e898]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e899]: "Workflow state: Open"
+                    - generic [ref=e900]: medium
+                  - generic [ref=e901]:
+                    - button "Mark reviewed" [ref=e902] [cursor=pointer]
+                    - button "Request replacement" [ref=e903] [cursor=pointer]
+                    - button "Start renewal" [ref=e904] [cursor=pointer]
+                    - button "Resolve" [ref=e905] [cursor=pointer]
+                - generic [ref=e906]:
+                  - generic [ref=e907]:
+                    - generic [ref=e908]:
+                      - paragraph [ref=e909]: Compliance Employee contract
+                      - paragraph [ref=e910]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e911]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e912]: "Workflow state: Open"
+                    - generic [ref=e913]: medium
+                  - generic [ref=e914]:
+                    - button "Mark reviewed" [ref=e915] [cursor=pointer]
+                    - button "Request replacement" [ref=e916] [cursor=pointer]
+                    - button "Start renewal" [ref=e917] [cursor=pointer]
+                    - button "Resolve" [ref=e918] [cursor=pointer]
+                - generic [ref=e919]:
+                  - generic [ref=e920]:
+                    - generic [ref=e921]:
+                      - paragraph [ref=e922]: Compliance Employee contract
+                      - paragraph [ref=e923]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e924]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e925]: "Workflow state: Open"
+                    - generic [ref=e926]: medium
+                  - generic [ref=e927]:
+                    - button "Mark reviewed" [ref=e928] [cursor=pointer]
+                    - button "Request replacement" [ref=e929] [cursor=pointer]
+                    - button "Start renewal" [ref=e930] [cursor=pointer]
+                    - button "Resolve" [ref=e931] [cursor=pointer]
+                - generic [ref=e932]:
+                  - generic [ref=e933]:
+                    - generic [ref=e934]:
+                      - paragraph [ref=e935]: Compliance Employee contract
+                      - paragraph [ref=e936]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e937]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e938]: "Workflow state: Open"
+                    - generic [ref=e939]: medium
+                  - generic [ref=e940]:
+                    - button "Mark reviewed" [ref=e941] [cursor=pointer]
+                    - button "Request replacement" [ref=e942] [cursor=pointer]
+                    - button "Start renewal" [ref=e943] [cursor=pointer]
+                    - button "Resolve" [ref=e944] [cursor=pointer]
+                - generic [ref=e945]:
+                  - generic [ref=e946]:
+                    - generic [ref=e947]:
+                      - paragraph [ref=e948]: Compliance Employee contract
+                      - paragraph [ref=e949]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e950]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e951]: "Workflow state: Open"
+                    - generic [ref=e952]: medium
+                  - generic [ref=e953]:
+                    - button "Mark reviewed" [ref=e954] [cursor=pointer]
+                    - button "Request replacement" [ref=e955] [cursor=pointer]
+                    - button "Start renewal" [ref=e956] [cursor=pointer]
+                    - button "Resolve" [ref=e957] [cursor=pointer]
+                - generic [ref=e958]:
+                  - generic [ref=e959]:
+                    - generic [ref=e960]:
+                      - paragraph [ref=e961]: Compliance Employee contract
+                      - paragraph [ref=e962]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e963]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e964]: "Workflow state: Open"
+                    - generic [ref=e965]: medium
+                  - generic [ref=e966]:
+                    - button "Mark reviewed" [ref=e967] [cursor=pointer]
+                    - button "Request replacement" [ref=e968] [cursor=pointer]
+                    - button "Start renewal" [ref=e969] [cursor=pointer]
+                    - button "Resolve" [ref=e970] [cursor=pointer]
+                - generic [ref=e971]:
+                  - generic [ref=e972]:
+                    - generic [ref=e973]:
+                      - paragraph [ref=e974]: Compliance Employee contract
+                      - paragraph [ref=e975]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e976]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e977]: "Workflow state: Open"
+                    - generic [ref=e978]: medium
+                  - generic [ref=e979]:
+                    - button "Mark reviewed" [ref=e980] [cursor=pointer]
+                    - button "Request replacement" [ref=e981] [cursor=pointer]
+                    - button "Start renewal" [ref=e982] [cursor=pointer]
+                    - button "Resolve" [ref=e983] [cursor=pointer]
+                - generic [ref=e984]:
+                  - generic [ref=e985]:
+                    - generic [ref=e986]:
+                      - paragraph [ref=e987]: Compliance Employee contract
+                      - paragraph [ref=e988]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e989]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e990]: "Workflow state: Open"
+                    - generic [ref=e991]: medium
+                  - generic [ref=e992]:
+                    - button "Mark reviewed" [ref=e993] [cursor=pointer]
+                    - button "Request replacement" [ref=e994] [cursor=pointer]
+                    - button "Start renewal" [ref=e995] [cursor=pointer]
+                    - button "Resolve" [ref=e996] [cursor=pointer]
+                - generic [ref=e997]:
+                  - generic [ref=e998]:
+                    - generic [ref=e999]:
+                      - paragraph [ref=e1000]: Compliance Employee contract
+                      - paragraph [ref=e1001]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1002]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1003]: "Workflow state: Open"
+                    - generic [ref=e1004]: medium
+                  - generic [ref=e1005]:
+                    - button "Mark reviewed" [ref=e1006] [cursor=pointer]
+                    - button "Request replacement" [ref=e1007] [cursor=pointer]
+                    - button "Start renewal" [ref=e1008] [cursor=pointer]
+                    - button "Resolve" [ref=e1009] [cursor=pointer]
+                - generic [ref=e1010]:
+                  - generic [ref=e1011]:
+                    - generic [ref=e1012]:
+                      - paragraph [ref=e1013]: Compliance Employee contract
+                      - paragraph [ref=e1014]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1015]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1016]: "Workflow state: Open"
+                    - generic [ref=e1017]: medium
+                  - generic [ref=e1018]:
+                    - button "Mark reviewed" [ref=e1019] [cursor=pointer]
+                    - button "Request replacement" [ref=e1020] [cursor=pointer]
+                    - button "Start renewal" [ref=e1021] [cursor=pointer]
+                    - button "Resolve" [ref=e1022] [cursor=pointer]
+                - generic [ref=e1023]:
+                  - generic [ref=e1024]:
+                    - generic [ref=e1025]:
+                      - paragraph [ref=e1026]: Compliance Employee contract
+                      - paragraph [ref=e1027]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1028]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1029]: "Workflow state: Open"
+                    - generic [ref=e1030]: medium
+                  - generic [ref=e1031]:
+                    - button "Mark reviewed" [ref=e1032] [cursor=pointer]
+                    - button "Request replacement" [ref=e1033] [cursor=pointer]
+                    - button "Start renewal" [ref=e1034] [cursor=pointer]
+                    - button "Resolve" [ref=e1035] [cursor=pointer]
+                - generic [ref=e1036]:
+                  - generic [ref=e1037]:
+                    - generic [ref=e1038]:
+                      - paragraph [ref=e1039]: Compliance Employee contract
+                      - paragraph [ref=e1040]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1041]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1042]: "Workflow state: Open"
+                    - generic [ref=e1043]: medium
+                  - generic [ref=e1044]:
+                    - button "Mark reviewed" [ref=e1045] [cursor=pointer]
+                    - button "Request replacement" [ref=e1046] [cursor=pointer]
+                    - button "Start renewal" [ref=e1047] [cursor=pointer]
+                    - button "Resolve" [ref=e1048] [cursor=pointer]
+                - generic [ref=e1049]:
+                  - generic [ref=e1050]:
+                    - generic [ref=e1051]:
+                      - paragraph [ref=e1052]: Compliance Employee contract
+                      - paragraph [ref=e1053]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1054]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1055]: "Workflow state: Open"
+                    - generic [ref=e1056]: medium
+                  - generic [ref=e1057]:
+                    - button "Mark reviewed" [ref=e1058] [cursor=pointer]
+                    - button "Request replacement" [ref=e1059] [cursor=pointer]
+                    - button "Start renewal" [ref=e1060] [cursor=pointer]
+                    - button "Resolve" [ref=e1061] [cursor=pointer]
+                - generic [ref=e1062]:
+                  - generic [ref=e1063]:
+                    - generic [ref=e1064]:
+                      - paragraph [ref=e1065]: Compliance Employee contract
+                      - paragraph [ref=e1066]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1067]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1068]: "Workflow state: Open"
+                    - generic [ref=e1069]: medium
+                  - generic [ref=e1070]:
+                    - button "Mark reviewed" [ref=e1071] [cursor=pointer]
+                    - button "Request replacement" [ref=e1072] [cursor=pointer]
+                    - button "Start renewal" [ref=e1073] [cursor=pointer]
+                    - button "Resolve" [ref=e1074] [cursor=pointer]
+                - generic [ref=e1075]:
+                  - generic [ref=e1076]:
+                    - generic [ref=e1077]:
+                      - paragraph [ref=e1078]: Compliance Employee contract
+                      - paragraph [ref=e1079]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1080]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1081]: "Workflow state: Open"
+                    - generic [ref=e1082]: medium
+                  - generic [ref=e1083]:
+                    - button "Mark reviewed" [ref=e1084] [cursor=pointer]
+                    - button "Request replacement" [ref=e1085] [cursor=pointer]
+                    - button "Start renewal" [ref=e1086] [cursor=pointer]
+                    - button "Resolve" [ref=e1087] [cursor=pointer]
+                - generic [ref=e1088]:
+                  - generic [ref=e1089]:
+                    - generic [ref=e1090]:
+                      - paragraph [ref=e1091]: Compliance Employee contract
+                      - paragraph [ref=e1092]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1093]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1094]: "Workflow state: Open"
+                    - generic [ref=e1095]: medium
+                  - generic [ref=e1096]:
+                    - button "Mark reviewed" [ref=e1097] [cursor=pointer]
+                    - button "Request replacement" [ref=e1098] [cursor=pointer]
+                    - button "Start renewal" [ref=e1099] [cursor=pointer]
+                    - button "Resolve" [ref=e1100] [cursor=pointer]
+                - generic [ref=e1101]:
+                  - generic [ref=e1102]:
+                    - generic [ref=e1103]:
+                      - paragraph [ref=e1104]: Compliance Employee contract
+                      - paragraph [ref=e1105]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1106]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1107]: "Workflow state: Open"
+                    - generic [ref=e1108]: medium
+                  - generic [ref=e1109]:
+                    - button "Mark reviewed" [ref=e1110] [cursor=pointer]
+                    - button "Request replacement" [ref=e1111] [cursor=pointer]
+                    - button "Start renewal" [ref=e1112] [cursor=pointer]
+                    - button "Resolve" [ref=e1113] [cursor=pointer]
+                - generic [ref=e1114]:
+                  - generic [ref=e1115]:
+                    - generic [ref=e1116]:
+                      - paragraph [ref=e1117]: Compliance Employee contract
+                      - paragraph [ref=e1118]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1119]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1120]: "Workflow state: Open"
+                    - generic [ref=e1121]: medium
+                  - generic [ref=e1122]:
+                    - button "Mark reviewed" [ref=e1123] [cursor=pointer]
+                    - button "Request replacement" [ref=e1124] [cursor=pointer]
+                    - button "Start renewal" [ref=e1125] [cursor=pointer]
+                    - button "Resolve" [ref=e1126] [cursor=pointer]
+                - generic [ref=e1127]:
+                  - generic [ref=e1128]:
+                    - generic [ref=e1129]:
+                      - paragraph [ref=e1130]: Compliance Employee contract
+                      - paragraph [ref=e1131]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1132]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1133]: "Workflow state: Open"
+                    - generic [ref=e1134]: medium
+                  - generic [ref=e1135]:
+                    - button "Mark reviewed" [ref=e1136] [cursor=pointer]
+                    - button "Request replacement" [ref=e1137] [cursor=pointer]
+                    - button "Start renewal" [ref=e1138] [cursor=pointer]
+                    - button "Resolve" [ref=e1139] [cursor=pointer]
+                - generic [ref=e1140]:
+                  - generic [ref=e1141]:
+                    - generic [ref=e1142]:
+                      - paragraph [ref=e1143]: Compliance Employee contract
+                      - paragraph [ref=e1144]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1145]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1146]: "Workflow state: Open"
+                    - generic [ref=e1147]: medium
+                  - generic [ref=e1148]:
+                    - button "Mark reviewed" [ref=e1149] [cursor=pointer]
+                    - button "Request replacement" [ref=e1150] [cursor=pointer]
+                    - button "Start renewal" [ref=e1151] [cursor=pointer]
+                    - button "Resolve" [ref=e1152] [cursor=pointer]
+                - generic [ref=e1153]:
+                  - generic [ref=e1154]:
+                    - generic [ref=e1155]:
+                      - paragraph [ref=e1156]: Compliance Employee contract
+                      - paragraph [ref=e1157]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1158]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1159]: "Workflow state: Open"
+                    - generic [ref=e1160]: medium
+                  - generic [ref=e1161]:
+                    - button "Mark reviewed" [ref=e1162] [cursor=pointer]
+                    - button "Request replacement" [ref=e1163] [cursor=pointer]
+                    - button "Start renewal" [ref=e1164] [cursor=pointer]
+                    - button "Resolve" [ref=e1165] [cursor=pointer]
+                - generic [ref=e1166]:
+                  - generic [ref=e1167]:
+                    - generic [ref=e1168]:
+                      - paragraph [ref=e1169]: Compliance Employee contract
+                      - paragraph [ref=e1170]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1171]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1172]: "Workflow state: Open"
+                    - generic [ref=e1173]: medium
+                  - generic [ref=e1174]:
+                    - button "Mark reviewed" [ref=e1175] [cursor=pointer]
+                    - button "Request replacement" [ref=e1176] [cursor=pointer]
+                    - button "Start renewal" [ref=e1177] [cursor=pointer]
+                    - button "Resolve" [ref=e1178] [cursor=pointer]
+                - generic [ref=e1179]:
+                  - generic [ref=e1180]:
+                    - generic [ref=e1181]:
+                      - paragraph [ref=e1182]: Compliance Employee contract
+                      - paragraph [ref=e1183]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1184]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1185]: "Workflow state: Open"
+                    - generic [ref=e1186]: medium
+                  - generic [ref=e1187]:
+                    - button "Mark reviewed" [ref=e1188] [cursor=pointer]
+                    - button "Request replacement" [ref=e1189] [cursor=pointer]
+                    - button "Start renewal" [ref=e1190] [cursor=pointer]
+                    - button "Resolve" [ref=e1191] [cursor=pointer]
+                - generic [ref=e1192]:
+                  - generic [ref=e1193]:
+                    - generic [ref=e1194]:
+                      - paragraph [ref=e1195]: Compliance Employee contract
+                      - paragraph [ref=e1196]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1197]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1198]: "Workflow state: Open"
+                    - generic [ref=e1199]: medium
+                  - generic [ref=e1200]:
+                    - button "Mark reviewed" [ref=e1201] [cursor=pointer]
+                    - button "Request replacement" [ref=e1202] [cursor=pointer]
+                    - button "Start renewal" [ref=e1203] [cursor=pointer]
+                    - button "Resolve" [ref=e1204] [cursor=pointer]
+                - generic [ref=e1205]:
+                  - generic [ref=e1206]:
+                    - generic [ref=e1207]:
+                      - paragraph [ref=e1208]: Compliance Employee contract
+                      - paragraph [ref=e1209]: Compliance Employee · Contract ends on 2026-04-19.
+                      - paragraph [ref=e1210]: "Due: 2026-04-19 · 3 days remaining"
+                      - paragraph [ref=e1211]: "Workflow state: Open"
+                    - generic [ref=e1212]: medium
+                  - generic [ref=e1213]:
+                    - button "Mark reviewed" [ref=e1214] [cursor=pointer]
+                    - button "Request replacement" [ref=e1215] [cursor=pointer]
+                    - button "Start renewal" [ref=e1216] [cursor=pointer]
+                    - button "Resolve" [ref=e1217] [cursor=pointer]
+                - generic [ref=e1218]:
+                  - generic [ref=e1219]:
+                    - generic [ref=e1220]:
+                      - paragraph [ref=e1221]: Hannah Lee Passport Copy
+                      - paragraph [ref=e1222]: Hannah Lee · id expires soon.
+                      - paragraph [ref=e1223]: "Due: 2026-04-28 · 12 days remaining"
+                      - paragraph [ref=e1224]: "Workflow state: Open"
+                    - generic [ref=e1225]: medium
+                  - generic [ref=e1226]:
+                    - button "Mark reviewed" [ref=e1227] [cursor=pointer]
+                    - button "Request replacement" [ref=e1228] [cursor=pointer]
+                    - button "Start renewal" [ref=e1229] [cursor=pointer]
+                    - button "Resolve" [ref=e1230] [cursor=pointer]
+                - generic [ref=e1231]:
+                  - generic [ref=e1232]:
+                    - generic [ref=e1233]:
+                      - paragraph [ref=e1234]: Hannah Lee contract
+                      - paragraph [ref=e1235]: Hannah Lee · Contract ends on 2026-05-29.
+                      - paragraph [ref=e1236]: "Due: 2026-05-29 · 43 days remaining"
+                      - paragraph [ref=e1237]: "Workflow state: Open"
+                    - generic [ref=e1238]: medium
+                  - generic [ref=e1239]:
+                    - button "Mark reviewed" [ref=e1240] [cursor=pointer]
+                    - button "Request replacement" [ref=e1241] [cursor=pointer]
+                    - button "Start renewal" [ref=e1242] [cursor=pointer]
+                    - button "Resolve" [ref=e1243] [cursor=pointer]
+            - generic [ref=e1244]:
+              - generic [ref=e1245]:
+                - generic [ref=e1246]:
+                  - generic [ref=e1247]: Priority snapshot
+                  - generic [ref=e1248]: Dashboard alerts remain visible here so HR can compare overall risk with the action queue.
+                - generic [ref=e1249]:
+                  - generic [ref=e1250]:
+                    - paragraph [ref=e1251]: Hannah Lee contract nearing expiry
+                    - paragraph [ref=e1252]: Contract ends in 43 days.
+                  - generic [ref=e1253]:
+                    - paragraph [ref=e1254]: Compliance Employee contract nearing expiry
+                    - paragraph [ref=e1255]: Contract ends in 3 days.
+                  - generic [ref=e1256]:
+                    - paragraph [ref=e1257]: Compliance Employee contract nearing expiry
+                    - paragraph [ref=e1258]: Contract ends in 3 days.
+                  - generic [ref=e1259]:
+                    - paragraph [ref=e1260]: Compliance Employee contract nearing expiry
+                    - paragraph [ref=e1261]: Contract ends in 3 days.
+                  - generic [ref=e1262]:
+                    - paragraph [ref=e1263]: Compliance Employee contract nearing expiry
+                    - paragraph [ref=e1264]: Contract ends in 3 days.
+              - generic [ref=e1265]:
+                - generic [ref=e1266]:
+                  - generic [ref=e1267]: Reminder activity
+                  - generic [ref=e1268]: Reminder digests are deduplicated and logged here so HR can see what has already been sent.
+                - generic [ref=e1269]:
+                  - generic [ref=e1270]:
+                    - generic [ref=e1271]:
+                      - paragraph [ref=e1272]: "Registration reminder: Compliance Employee"
+                      - generic [ref=e1273]: Professional registration reminder
+                    - paragraph [ref=e1274]: NMC registration expired on 2026-04-08.
+                    - paragraph [ref=e1275]: Sent 4/15/2026, 11:20:29 PM
+                  - generic [ref=e1276]:
+                    - generic [ref=e1277]:
+                      - paragraph [ref=e1278]: "Registration reminder: Compliance Employee"
+                      - generic [ref=e1279]: Professional registration reminder
+                    - paragraph [ref=e1280]: NMC registration expired on 2026-04-08.
+                    - paragraph [ref=e1281]: Sent 4/15/2026, 11:20:29 PM
+                  - generic [ref=e1282]:
+                    - generic [ref=e1283]:
+                      - paragraph [ref=e1284]: "Registration reminder: Compliance Employee"
+                      - generic [ref=e1285]: Professional registration reminder
+                    - paragraph [ref=e1286]: NMC registration expired on 2026-04-08.
+                    - paragraph [ref=e1287]: Sent 4/15/2026, 11:20:29 PM
+                  - generic [ref=e1288]:
+                    - generic [ref=e1289]:
+                      - paragraph [ref=e1290]: "Registration reminder: Compliance Employee"
+                      - generic [ref=e1291]: Professional registration reminder
+                    - paragraph [ref=e1292]: NMC registration expired on 2026-04-08.
+                    - paragraph [ref=e1293]: Sent 4/15/2026, 11:20:29 PM
+                  - generic [ref=e1294]:
+                    - generic [ref=e1295]:
+                      - paragraph [ref=e1296]: "Registration reminder: Compliance Employee"
+                      - generic [ref=e1297]: Professional registration reminder
+                    - paragraph [ref=e1298]: NMC registration expired on 2026-04-08.
+                    - paragraph [ref=e1299]: Sent 4/15/2026, 11:20:29 PM
+                  - generic [ref=e1300]:
+                    - generic [ref=e1301]:
+                      - paragraph [ref=e1302]: "Registration reminder: Compliance Employee"
+                      - generic [ref=e1303]: Professional registration reminder
+                    - paragraph [ref=e1304]: NMC registration expired on 2026-04-08.
+                    - paragraph [ref=e1305]: Sent 4/15/2026, 11:20:29 PM
+                  - generic [ref=e1306]:
+                    - generic [ref=e1307]:
+                      - paragraph [ref=e1308]: "Registration reminder: Compliance Employee"
+                      - generic [ref=e1309]: Professional registration reminder
+                    - paragraph [ref=e1310]: NMC registration expired on 2026-04-08.
+                    - paragraph [ref=e1311]: Sent 4/15/2026, 11:20:29 PM
+                  - generic [ref=e1312]:
+                    - generic [ref=e1313]:
+                      - paragraph [ref=e1314]: "Registration reminder: Compliance Employee"
+                      - generic [ref=e1315]: Professional registration reminder
+                    - paragraph [ref=e1316]: NMC registration expired on 2026-04-08.
+                    - paragraph [ref=e1317]: Sent 4/15/2026, 11:20:29 PM
+                  - generic [ref=e1318]:
+                    - generic [ref=e1319]:
+                      - paragraph [ref=e1320]: "Pending leave approval: Hannah Lee"
+                      - generic [ref=e1321]: Pending leave approval reminder
+                    - paragraph [ref=e1322]: 3 day annual request awaits approval from 2026-04-21 to 2026-04-23.
+                    - paragraph [ref=e1323]: Sent 4/15/2026, 11:20:29 PM
+                  - generic [ref=e1324]:
+                    - generic [ref=e1325]:
+                      - paragraph [ref=e1326]: "Contract reminder: Compliance Employee"
+                      - generic [ref=e1327]: Contract expiry reminder
+                    - paragraph [ref=e1328]: Contract ends soon on 2026-04-19.
+                    - paragraph [ref=e1329]: Sent 4/15/2026, 11:20:29 PM
+              - generic [ref=e1330]:
+                - generic [ref=e1331]:
+                  - generic [ref=e1332]: Queue guidance
+                  - generic [ref=e1333]: Use these workflow states consistently so reminders and operations stay aligned.
+                - generic [ref=e1334]:
+                  - paragraph [ref=e1335]: Reviewed confirms the item has been checked and triaged.
+                  - paragraph [ref=e1336]: Request replacement records that a newer document or evidence pack has been requested.
+                  - paragraph [ref=e1337]: Start renewal advances contracts, documents, and registrations by updating the persisted due date and status.
+                  - paragraph [ref=e1338]: Resolve closes the workflow once the record is no longer at risk.
+          - generic [ref=e1339]:
+            - generic [ref=e1340]:
+              - generic [ref=e1341]: Open item focus list
+              - generic [ref=e1342]: These items have not yet been moved beyond the initial open state.
+            - generic [ref=e1343]:
+              - generic [ref=e1344]:
+                - generic [ref=e1345]:
+                  - paragraph [ref=e1346]: Compliance Employee NMC
+                  - paragraph [ref=e1347]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1348]: high
+              - generic [ref=e1349]:
+                - generic [ref=e1350]:
+                  - paragraph [ref=e1351]: Compliance Employee NMC
+                  - paragraph [ref=e1352]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1353]: high
+              - generic [ref=e1354]:
+                - generic [ref=e1355]:
+                  - paragraph [ref=e1356]: Compliance Employee NMC
+                  - paragraph [ref=e1357]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1358]: high
+              - generic [ref=e1359]:
+                - generic [ref=e1360]:
+                  - paragraph [ref=e1361]: Compliance Employee NMC
+                  - paragraph [ref=e1362]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1363]: high
+              - generic [ref=e1364]:
+                - generic [ref=e1365]:
+                  - paragraph [ref=e1366]: Compliance Employee NMC
+                  - paragraph [ref=e1367]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1368]: high
+              - generic [ref=e1369]:
+                - generic [ref=e1370]:
+                  - paragraph [ref=e1371]: Compliance Employee NMC
+                  - paragraph [ref=e1372]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1373]: high
+              - generic [ref=e1374]:
+                - generic [ref=e1375]:
+                  - paragraph [ref=e1376]: Compliance Employee NMC
+                  - paragraph [ref=e1377]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1378]: high
+              - generic [ref=e1379]:
+                - generic [ref=e1380]:
+                  - paragraph [ref=e1381]: Compliance Employee NMC
+                  - paragraph [ref=e1382]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1383]: high
+              - generic [ref=e1384]:
+                - generic [ref=e1385]:
+                  - paragraph [ref=e1386]: Compliance Employee NMC
+                  - paragraph [ref=e1387]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1388]: high
+              - generic [ref=e1389]:
+                - generic [ref=e1390]:
+                  - paragraph [ref=e1391]: Compliance Employee NMC
+                  - paragraph [ref=e1392]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1393]: high
+              - generic [ref=e1394]:
+                - generic [ref=e1395]:
+                  - paragraph [ref=e1396]: Compliance Employee NMC
+                  - paragraph [ref=e1397]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1398]: high
+              - generic [ref=e1399]:
+                - generic [ref=e1400]:
+                  - paragraph [ref=e1401]: Compliance Employee NMC
+                  - paragraph [ref=e1402]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1403]: high
+              - generic [ref=e1404]:
+                - generic [ref=e1405]:
+                  - paragraph [ref=e1406]: Compliance Employee NMC
+                  - paragraph [ref=e1407]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1408]: high
+              - generic [ref=e1409]:
+                - generic [ref=e1410]:
+                  - paragraph [ref=e1411]: Compliance Employee NMC
+                  - paragraph [ref=e1412]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1413]: high
+              - generic [ref=e1414]:
+                - generic [ref=e1415]:
+                  - paragraph [ref=e1416]: Compliance Employee NMC
+                  - paragraph [ref=e1417]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1418]: high
+              - generic [ref=e1419]:
+                - generic [ref=e1420]:
+                  - paragraph [ref=e1421]: Compliance Employee NMC
+                  - paragraph [ref=e1422]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1423]: high
+              - generic [ref=e1424]:
+                - generic [ref=e1425]:
+                  - paragraph [ref=e1426]: Compliance Employee NMC
+                  - paragraph [ref=e1427]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1428]: high
+              - generic [ref=e1429]:
+                - generic [ref=e1430]:
+                  - paragraph [ref=e1431]: Compliance Employee NMC
+                  - paragraph [ref=e1432]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1433]: high
+              - generic [ref=e1434]:
+                - generic [ref=e1435]:
+                  - paragraph [ref=e1436]: Compliance Employee NMC
+                  - paragraph [ref=e1437]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1438]: high
+              - generic [ref=e1439]:
+                - generic [ref=e1440]:
+                  - paragraph [ref=e1441]: Compliance Employee NMC
+                  - paragraph [ref=e1442]: Compliance Employee · due 2026-04-08
+                - generic [ref=e1443]: high
+              - generic [ref=e1444]:
+                - generic [ref=e1445]:
+                  - paragraph [ref=e1446]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1447]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1448]: high
+              - generic [ref=e1449]:
+                - generic [ref=e1450]:
+                  - paragraph [ref=e1451]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1452]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1453]: high
+              - generic [ref=e1454]:
+                - generic [ref=e1455]:
+                  - paragraph [ref=e1456]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1457]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1458]: high
+              - generic [ref=e1459]:
+                - generic [ref=e1460]:
+                  - paragraph [ref=e1461]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1462]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1463]: high
+              - generic [ref=e1464]:
+                - generic [ref=e1465]:
+                  - paragraph [ref=e1466]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1467]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1468]: high
+              - generic [ref=e1469]:
+                - generic [ref=e1470]:
+                  - paragraph [ref=e1471]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1472]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1473]: high
+              - generic [ref=e1474]:
+                - generic [ref=e1475]:
+                  - paragraph [ref=e1476]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1477]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1478]: high
+              - generic [ref=e1479]:
+                - generic [ref=e1480]:
+                  - paragraph [ref=e1481]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1482]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1483]: high
+              - generic [ref=e1484]:
+                - generic [ref=e1485]:
+                  - paragraph [ref=e1486]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1487]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1488]: high
+              - generic [ref=e1489]:
+                - generic [ref=e1490]:
+                  - paragraph [ref=e1491]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1492]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1493]: high
+              - generic [ref=e1494]:
+                - generic [ref=e1495]:
+                  - paragraph [ref=e1496]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1497]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1498]: high
+              - generic [ref=e1499]:
+                - generic [ref=e1500]:
+                  - paragraph [ref=e1501]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1502]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1503]: high
+              - generic [ref=e1504]:
+                - generic [ref=e1505]:
+                  - paragraph [ref=e1506]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1507]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1508]: high
+              - generic [ref=e1509]:
+                - generic [ref=e1510]:
+                  - paragraph [ref=e1511]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1512]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1513]: high
+              - generic [ref=e1514]:
+                - generic [ref=e1515]:
+                  - paragraph [ref=e1516]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1517]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1518]: high
+              - generic [ref=e1519]:
+                - generic [ref=e1520]:
+                  - paragraph [ref=e1521]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1522]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1523]: high
+              - generic [ref=e1524]:
+                - generic [ref=e1525]:
+                  - paragraph [ref=e1526]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1527]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1528]: high
+              - generic [ref=e1529]:
+                - generic [ref=e1530]:
+                  - paragraph [ref=e1531]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1532]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1533]: high
+              - generic [ref=e1534]:
+                - generic [ref=e1535]:
+                  - paragraph [ref=e1536]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1537]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1538]: high
+              - generic [ref=e1539]:
+                - generic [ref=e1540]:
+                  - paragraph [ref=e1541]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1542]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1543]: high
+              - generic [ref=e1544]:
+                - generic [ref=e1545]:
+                  - paragraph [ref=e1546]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1547]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1548]: high
+              - generic [ref=e1549]:
+                - generic [ref=e1550]:
+                  - paragraph [ref=e1551]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1552]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1553]: high
+              - generic [ref=e1554]:
+                - generic [ref=e1555]:
+                  - paragraph [ref=e1556]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1557]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1558]: high
+              - generic [ref=e1559]:
+                - generic [ref=e1560]:
+                  - paragraph [ref=e1561]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1562]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1563]: high
+              - generic [ref=e1564]:
+                - generic [ref=e1565]:
+                  - paragraph [ref=e1566]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1567]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1568]: high
+              - generic [ref=e1569]:
+                - generic [ref=e1570]:
+                  - paragraph [ref=e1571]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1572]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1573]: high
+              - generic [ref=e1574]:
+                - generic [ref=e1575]:
+                  - paragraph [ref=e1576]: Compliance Employee NMC Registration
+                  - paragraph [ref=e1577]: Compliance Employee · due 2026-04-09
+                - generic [ref=e1578]: high
+              - generic [ref=e1579]:
+                - generic [ref=e1580]:
+                  - paragraph [ref=e1581]: Compliance Employee contract
+                  - paragraph [ref=e1582]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1583]: medium
+              - generic [ref=e1584]:
+                - generic [ref=e1585]:
+                  - paragraph [ref=e1586]: Compliance Employee contract
+                  - paragraph [ref=e1587]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1588]: medium
+              - generic [ref=e1589]:
+                - generic [ref=e1590]:
+                  - paragraph [ref=e1591]: Compliance Employee contract
+                  - paragraph [ref=e1592]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1593]: medium
+              - generic [ref=e1594]:
+                - generic [ref=e1595]:
+                  - paragraph [ref=e1596]: Compliance Employee contract
+                  - paragraph [ref=e1597]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1598]: medium
+              - generic [ref=e1599]:
+                - generic [ref=e1600]:
+                  - paragraph [ref=e1601]: Compliance Employee contract
+                  - paragraph [ref=e1602]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1603]: medium
+              - generic [ref=e1604]:
+                - generic [ref=e1605]:
+                  - paragraph [ref=e1606]: Compliance Employee contract
+                  - paragraph [ref=e1607]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1608]: medium
+              - generic [ref=e1609]:
+                - generic [ref=e1610]:
+                  - paragraph [ref=e1611]: Compliance Employee contract
+                  - paragraph [ref=e1612]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1613]: medium
+              - generic [ref=e1614]:
+                - generic [ref=e1615]:
+                  - paragraph [ref=e1616]: Compliance Employee contract
+                  - paragraph [ref=e1617]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1618]: medium
+              - generic [ref=e1619]:
+                - generic [ref=e1620]:
+                  - paragraph [ref=e1621]: Compliance Employee contract
+                  - paragraph [ref=e1622]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1623]: medium
+              - generic [ref=e1624]:
+                - generic [ref=e1625]:
+                  - paragraph [ref=e1626]: Compliance Employee contract
+                  - paragraph [ref=e1627]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1628]: medium
+              - generic [ref=e1629]:
+                - generic [ref=e1630]:
+                  - paragraph [ref=e1631]: Compliance Employee contract
+                  - paragraph [ref=e1632]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1633]: medium
+              - generic [ref=e1634]:
+                - generic [ref=e1635]:
+                  - paragraph [ref=e1636]: Compliance Employee contract
+                  - paragraph [ref=e1637]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1638]: medium
+              - generic [ref=e1639]:
+                - generic [ref=e1640]:
+                  - paragraph [ref=e1641]: Compliance Employee contract
+                  - paragraph [ref=e1642]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1643]: medium
+              - generic [ref=e1644]:
+                - generic [ref=e1645]:
+                  - paragraph [ref=e1646]: Compliance Employee contract
+                  - paragraph [ref=e1647]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1648]: medium
+              - generic [ref=e1649]:
+                - generic [ref=e1650]:
+                  - paragraph [ref=e1651]: Compliance Employee contract
+                  - paragraph [ref=e1652]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1653]: medium
+              - generic [ref=e1654]:
+                - generic [ref=e1655]:
+                  - paragraph [ref=e1656]: Compliance Employee contract
+                  - paragraph [ref=e1657]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1658]: medium
+              - generic [ref=e1659]:
+                - generic [ref=e1660]:
+                  - paragraph [ref=e1661]: Compliance Employee contract
+                  - paragraph [ref=e1662]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1663]: medium
+              - generic [ref=e1664]:
+                - generic [ref=e1665]:
+                  - paragraph [ref=e1666]: Compliance Employee contract
+                  - paragraph [ref=e1667]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1668]: medium
+              - generic [ref=e1669]:
+                - generic [ref=e1670]:
+                  - paragraph [ref=e1671]: Compliance Employee contract
+                  - paragraph [ref=e1672]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1673]: medium
+              - generic [ref=e1674]:
+                - generic [ref=e1675]:
+                  - paragraph [ref=e1676]: Compliance Employee contract
+                  - paragraph [ref=e1677]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1678]: medium
+              - generic [ref=e1679]:
+                - generic [ref=e1680]:
+                  - paragraph [ref=e1681]: Compliance Employee contract
+                  - paragraph [ref=e1682]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1683]: medium
+              - generic [ref=e1684]:
+                - generic [ref=e1685]:
+                  - paragraph [ref=e1686]: Compliance Employee contract
+                  - paragraph [ref=e1687]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1688]: medium
+              - generic [ref=e1689]:
+                - generic [ref=e1690]:
+                  - paragraph [ref=e1691]: Compliance Employee contract
+                  - paragraph [ref=e1692]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1693]: medium
+              - generic [ref=e1694]:
+                - generic [ref=e1695]:
+                  - paragraph [ref=e1696]: Compliance Employee contract
+                  - paragraph [ref=e1697]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1698]: medium
+              - generic [ref=e1699]:
+                - generic [ref=e1700]:
+                  - paragraph [ref=e1701]: Compliance Employee contract
+                  - paragraph [ref=e1702]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1703]: medium
+              - generic [ref=e1704]:
+                - generic [ref=e1705]:
+                  - paragraph [ref=e1706]: Compliance Employee contract
+                  - paragraph [ref=e1707]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1708]: medium
+              - generic [ref=e1709]:
+                - generic [ref=e1710]:
+                  - paragraph [ref=e1711]: Compliance Employee contract
+                  - paragraph [ref=e1712]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1713]: medium
+              - generic [ref=e1714]:
+                - generic [ref=e1715]:
+                  - paragraph [ref=e1716]: Compliance Employee contract
+                  - paragraph [ref=e1717]: Compliance Employee · due 2026-04-19
+                - generic [ref=e1718]: medium
+              - generic [ref=e1719]:
+                - generic [ref=e1720]:
+                  - paragraph [ref=e1721]: Hannah Lee Passport Copy
+                  - paragraph [ref=e1722]: Hannah Lee · due 2026-04-28
+                - generic [ref=e1723]: medium
+              - generic [ref=e1724]:
+                - generic [ref=e1725]:
+                  - paragraph [ref=e1726]: Hannah Lee contract
+                  - paragraph [ref=e1727]: Hannah Lee · due 2026-05-29
+                - generic [ref=e1728]: medium
+```
+
+# Test source
+
+```ts
+  9   | 
+  10  | test.describe("pilot rollout flows", () => {
+  11  |   test("admin can open pilot help and download the human-friendly CSV sample", async ({ page }) => {
+  12  |     await page.goto("/pilot-help?impersonate=off");
+  13  | 
+  14  |     await expect(page.getByRole("heading", { name: "Pilot tester help" }).last()).toBeVisible();
+  15  |     await expect(page.getByText("Human-friendly employee CSV sample")).toBeVisible();
+  16  | 
+  17  |     const downloadPromise = page.waitForEvent("download");
+  18  |     await page.getByRole("button", { name: "Download pack" }).first().click();
+  19  |     const download = await downloadPromise;
+  20  | 
+  21  |     expect(download.suggestedFilename()).toBe("pilot-human-friendly-employee-import.csv");
+  22  |   });
+  23  | 
+  24  |   test("admin can export and import employees through the CSV workspace", async ({ page }) => {
+  25  |     const employeeNumber = `EMP-E2E-${Date.now()}`;
+  26  |     const niNumber = `QQ${String(Date.now()).slice(-6)}A`;
+  27  |     const csvBuffer = Buffer.from(buildHumanFriendlyCsv(employeeNumber, niNumber), "utf-8");
+  28  | 
+  29  |     await page.goto("/employees?impersonate=off");
+  30  | 
+  31  |     await expect(page.getByRole("heading", { name: "Employee records" })).toBeVisible();
+  32  |     await expect(page.getByText("Bulk CSV administration")).toBeVisible();
+  33  | 
+  34  |     const exportDownloadPromise = page.waitForEvent("download");
+  35  |     await page.getByRole("button", { name: "Export CSV" }).click();
+  36  |     const exportDownload = await exportDownloadPromise;
+  37  |     expect(exportDownload.suggestedFilename()).toMatch(/\.csv$/i);
+  38  | 
+  39  |     await page.locator("#employee-csv-upload").setInputFiles({
+  40  |       name: `${employeeNumber}.csv`,
+  41  |       mimeType: "text/csv",
+  42  |       buffer: csvBuffer,
+  43  |     });
+  44  |     await expect(page.getByText(`${employeeNumber}.csv`)).toBeVisible();
+  45  | 
+  46  |     await page.getByRole("button", { name: "Import CSV" }).click();
+  47  | 
+  48  |     await expect(page.getByText("Last import summary")).toBeVisible();
+  49  |     await expect(page.getByText(/Created\s+1\s+employee record/i)).toBeVisible();
+  50  |     await expect(page.getByText(new RegExp(`Imported employee numbers: ${employeeNumber}`))).toBeVisible();
+  51  |   });
+  52  | 
+  53  |   test("manager impersonation keeps navigation scoped and blocks admin-only access", async ({ page }) => {
+  54  |     await page.goto("/?impersonate=manager");
+  55  | 
+  56  |     await expect(page.getByText("Manager dashboard")).toBeVisible();
+  57  |     await expect(page.getByRole("link", { name: /Dashboard/i })).toBeVisible();
+  58  |     await expect(page.getByRole("link", { name: /Employees/i })).toBeVisible();
+  59  |     await expect(page.getByRole("link", { name: /Leave/i })).toBeVisible();
+  60  |     await expect(page.getByRole("link", { name: /Pilot help/i })).toBeVisible();
+  61  |     await expect(page.getByRole("link", { name: /Access/i })).toHaveCount(0);
+  62  |     await expect(page.getByRole("link", { name: /Compliance/i })).toHaveCount(0);
+  63  | 
+  64  |     await page.goto("/access?impersonate=manager");
+  65  |     await expect(page.getByText("Access restricted")).toBeVisible();
+  66  |   });
+  67  | 
+  68  |   test("employee can submit leave and manager can approve the same request", async ({ page }) => {
+  69  |     const startDate = "2026-09-15";
+  70  |     const endDate = "2026-09-16";
+  71  |     const uniqueNote = `pilot-e2e-leave-${Date.now()}`;
+  72  | 
+  73  |     await page.goto("/leave?impersonate=employee");
+  74  | 
+  75  |     await expect(page.getByRole("heading", { name: "Leave workflow", exact: true })).toBeVisible();
+  76  |     await expect(page.getByText("Leave pilot guidance")).toBeVisible();
+  77  |     await expect(page.getByRole("button", { name: /^Approve$/ })).toHaveCount(0);
+  78  | 
+  79  |     await page.locator('input[type="date"]').nth(0).fill(startDate);
+  80  |     await page.locator('input[type="date"]').nth(1).fill(endDate);
+  81  |     await page.locator('input[type="number"]').fill("2");
+  82  |     await page.locator('textarea').fill(uniqueNote);
+  83  |     await page.getByRole("button", { name: "Submit request" }).click();
+  84  | 
+  85  |     await expect(page.getByText("Leave request created.")).toBeVisible();
+  86  | 
+  87  |     await page.goto("/leave?impersonate=manager");
+  88  | 
+  89  |     const firstPendingApproval = page.getByRole("button", { name: "Approve" }).first();
+  90  |     await expect(firstPendingApproval).toBeVisible();
+  91  |     await firstPendingApproval.click();
+  92  | 
+  93  |     await expect(page.getByText("Leave request approved.")).toBeVisible();
+  94  |     await expect(page.getByText("approved").first()).toBeVisible();
+  95  |   });
+  96  | 
+  97  |   test("admin can execute a compliance workflow transition from the action queue", async ({ page }) => {
+  98  |     await page.goto("/compliance?impersonate=off");
+  99  | 
+  100 |     const actionableCard = page.locator("div.rounded-2xl").filter({
+  101 |       has: page.getByRole("button", { name: "Start renewal" }),
+  102 |     }).first();
+  103 |     const renewalsMetric = page.getByText("Renewals in progress").locator("..");
+  104 |     const renewalsBefore = (await renewalsMetric.textContent()) ?? "";
+  105 | 
+  106 |     await expect(actionableCard).toBeVisible();
+  107 |     await actionableCard.getByRole("button", { name: "Start renewal" }).click();
+  108 | 
+> 109 |     await expect.poll(async () => (await renewalsMetric.textContent()) ?? "").not.toBe(renewalsBefore);
+      |     ^ Error: expect(received).not.toBe(expected) // Object.is equality
+  110 |   });
+  111 | });
+  112 | 
+```

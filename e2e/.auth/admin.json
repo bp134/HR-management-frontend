@@ -1,0 +1,14 @@
+{
+  "cookies": [
+    {
+      "name": "app_session_id",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcGVuSWQiOiJkSG8yS1BLYUVtWVFpRlNyOEdXdmkzIiwiYXBwSWQiOiJtU3p6N1lkNWhjek01M0NZY1hhZDZxIiwibmFtZSI6IkJlbGZpZWxkIFBoYXJtYWN5IiwiZXhwIjoxODA3ODU4MjA4fQ.DqDSxBuvCiyZkWoIg0H9KeasgAZ_9CjM4C1WZHAElCk",
+      "url": "http://127.0.0.1:3000",
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax",
+      "expires": 1807858208
+    }
+  ],
+  "origins": []
+}

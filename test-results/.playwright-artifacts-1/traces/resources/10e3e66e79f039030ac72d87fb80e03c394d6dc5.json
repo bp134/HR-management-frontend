@@ -1,0 +1,1 @@
+[{"result":{"data":{"json":{"id":1,"employeeId":3,"approverId":150028,"leaveType":"annual","startDate":"2026-04-21","endDate":"2026-04-23","daysRequested":3,"notes":"Family trip","status":"approved","createdAt":"2026-04-11T09:00:00.000Z","updatedAt":"2026-04-16T03:26:25.000Z"},"meta":{"values":{"createdAt":["Date"],"updatedAt":["Date"]}}}}}]
