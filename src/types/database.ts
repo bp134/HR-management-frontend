@@ -1,6 +1,3 @@
-// Auto-generated types matching your Supabase schema.
-// Re-run `supabase gen types typescript` after schema changes.
-
 export type Role = 'admin' | 'hr' | 'manager' | 'employee'
 export type EmploymentType = 'full-time' | 'part-time' | 'permanent' | 'locum'
 export type LeaveStatus = 'pending' | 'approved' | 'rejected'
@@ -22,13 +19,13 @@ export interface Employee {
   start_date: string | null
   end_date: string | null
   created_at: string | null
-  // Added by migration
   user_id: string | null
   role: Role
 }
 
 export interface Department {
   department_id: string
+  name?: string | null
   [key: string]: unknown
 }
 
@@ -43,6 +40,11 @@ export interface LeaveRequest {
   employee_id: string
   approved_by: string | null
   status: LeaveStatus
+  leave_type: string | null
+  start_date: string | null
+  end_date: string | null
+  reason: string | null
+  created_at?: string | null
   [key: string]: unknown
 }
 
@@ -78,7 +80,14 @@ export interface DisciplinaryRecord {
   [key: string]: unknown
 }
 
-// Supabase Database type for createClient generic
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
 export interface Database {
   public: {
     Tables: {
@@ -129,9 +138,18 @@ export interface Database {
       }
     }
     Functions: {
-      get_my_employee_id: { Returns: string | null }
-      get_my_role: { Returns: string | null }
-      link_employee_to_auth: { Returns: { status: string; message?: string; employee_id?: string; role?: string } }
+      get_my_employee_id: {
+        Args: Record<string, never>
+        Returns: string | null
+      }
+      get_my_role: {
+        Args: Record<string, never>
+        Returns: string | null
+      }
+      link_employee_to_auth: {
+        Args: Record<string, never>
+        Returns: Json
+      }
     }
   }
 }

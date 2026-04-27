@@ -209,7 +209,7 @@ export function LeaveListPage() {
                     )}
                     <div className="flex items-center gap-3 flex-wrap">
                       <p className="text-sm text-gray-700 font-medium capitalize">
-                        {(req.leave_type as string | null)?.replace('_', ' ') ?? 'Leave'}
+                        {req.leave_type?.replace('_', ' ') ?? 'Leave'}
                       </p>
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border capitalize ${STATUS_COLOURS[req.status]}`}>
                         {req.status}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # HR Management — Supabase-native frontend
 
 A clean React + Supabase frontend for your HR management database.
@@ -168,3 +169,7 @@ your production URL to the **Redirect URLs** list so magic links work in product
 - Magic link login means no passwords to manage, rotate, or leak.
 - Consider enabling **Supabase MFA** (Dashboard → Authentication → MFA) for admin
   and HR accounts given the sensitivity of the data.
+=======
+# HR-management-frontend
+vibe coded frontend for HR management
+>>>>>>> 195bca99f30fe1f004ebd2f3fa6d417f2fa00376
