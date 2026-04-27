@@ -164,16 +164,16 @@ export function EmployeeDetailPage() {
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Employment type</label>
                 <select
-  value={form.employment_type ?? ''}
-  onChange={e => setForm(f => ({ ...f, employment_type: e.target.value as any }))}
-  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
->
-  <option value="">— Select —</option>
-  <option value="full-time">Full-time</option>
-  <option value="part-time">Part-time</option>
-  <option value="permanent">Permanent</option>
-  <option value="locum">Locum</option>
-</select>
+                  value={form.employment_type ?? ''}
+                  onChange={e => setForm(f => ({ ...f, employment_type: e.target.value as any }))}
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  <option value="">— Select —</option>
+                  <option value="permanent">Permanent</option>
+                  <option value="fixed_term">Fixed term</option>
+                  <option value="temporary">Temporary</option>
+                  <option value="contractor">Contractor</option>
+                </select>
               </div>
               <Input label="Start date" field="start_date" type="date" />
               <Input label="End date" field="end_date" type="date" />

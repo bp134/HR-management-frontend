@@ -28,14 +28,11 @@ export function useLeaveRequests(statusFilter?: LeaveStatus): UseLeaveReturn {
     setLoading(true)
     setError(null)
 
-    async function fetch() {
+    async function fetchLeave() {
       let query = supabase
         .from('leaverequests')
-        .select(`
-          *,
-          employees!leaverequests_employee_id_fkey ( first_name, last_name, email )
-        `)
-        .order('created_at' as any, { ascending: false })
+        .select('*')
+        .order('created_at', { ascending: false })
 
       if (statusFilter) {
         query = query.eq('status', statusFilter)
@@ -49,25 +46,24 @@ export function useLeaveRequests(statusFilter?: LeaveStatus): UseLeaveReturn {
         setError(err.message)
         setRequests([])
       } else {
-        const flat: LeaveRequestWithEmployee[] = (data ?? []).map((row: any) => ({
+        const flat: LeaveRequestWithEmployee[] = ((data ?? []) as LeaveRequest[]).map(row => ({
           ...row,
-          employee_first_name: row.employees?.first_name ?? null,
-          employee_last_name: row.employees?.last_name ?? null,
-          employee_email: row.employees?.email ?? null,
+          employee_first_name: null,
+          employee_last_name: null,
+          employee_email: null,
         }))
         setRequests(flat)
       }
       setLoading(false)
     }
 
-    fetch()
+    fetchLeave()
     return () => { cancelled = true }
   }, [statusFilter, tick])
 
   return { requests, loading, error, refresh }
 }
 
-// Submit a new leave request for the current employee
 export async function submitLeaveRequest(fields: {
   employee_id: string
   leave_type?: string
@@ -75,14 +71,13 @@ export async function submitLeaveRequest(fields: {
   end_date: string
   reason?: string
 }): Promise<{ error: string | null }> {
-  const { error } = await supabase.from('leaverequests').insert({
-    ...fields,
-    status: 'pending',
-  })
+  const { error } = await supabase
+    .from('leaverequests')
+    .insert({ ...fields, status: 'pending' } as Record<string, unknown>)
+
   return { error: error?.message ?? null }
 }
 
-// Approve or reject a leave request (manager/admin — RLS enforced on server)
 export async function updateLeaveStatus(
   leaveId: string,
   status: 'approved' | 'rejected',
@@ -90,7 +85,7 @@ export async function updateLeaveStatus(
 ): Promise<{ error: string | null }> {
   const { error } = await supabase
     .from('leaverequests')
-    .update({ status, approved_by: approvedBy })
+    .update({ status, approved_by: approvedBy } as Record<string, unknown>)
     .eq('leave_id', leaveId)
 
   return { error: error?.message ?? null }

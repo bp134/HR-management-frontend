@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-import type { Employee } from '../types/database'
+import type { Employee, Role } from '../types/database'
 
 export interface Profile extends Employee {
-  // Convenience: is the current user in one of these roles?
   isAdmin: boolean
   isHR: boolean
   isManager: boolean
@@ -12,7 +11,6 @@ export interface Profile extends Employee {
 interface UseProfileReturn {
   profile: Profile | null
   loading: boolean
-  // 'no_employee' means the auth email doesn't exist in employees table
   accessStatus: 'ok' | 'no_employee' | 'error' | null
 }
 
@@ -33,20 +31,20 @@ export function useProfile(): UseProfileReturn {
         return
       }
 
-      // Call the SECURITY DEFINER function to link auth <-> employee on first login
+      // Link auth user to employee record on first login
       const { data: linkResult } = await supabase.rpc('link_employee_to_auth')
+      const link = linkResult as { status: string; message?: string } | null
 
-     if (linkResult?.status === 'no_employee') {
-  if (!cancelled) {
-    setAccessStatus('no_employee')
-    setProfile(null)
-    setLoading(false)
-  }
-  return
-}
-// 'created' status is fine — employee record was just auto-created, continue
+      if (link?.status === 'no_employee') {
+        if (!cancelled) {
+          setAccessStatus('no_employee')
+          setProfile(null)
+          setLoading(false)
+        }
+        return
+      }
 
-      // Fetch the employee row (now user_id is set, RLS will allow this)
+      // Fetch the employee row
       const { data: emp, error } = await supabase
         .from('employees')
         .select('*')
@@ -59,12 +57,13 @@ export function useProfile(): UseProfileReturn {
         setAccessStatus('error')
         setProfile(null)
       } else {
+        const employee = emp as Employee
         setAccessStatus('ok')
         setProfile({
-          ...emp,
-          isAdmin: emp.role === 'admin',
-          isHR: emp.role === 'hr' || emp.role === 'admin',
-          isManager: emp.role === 'manager' || emp.role === 'admin' || emp.role === 'hr',
+          ...employee,
+          isAdmin: employee.role === 'admin',
+          isHR: employee.role === 'hr' || employee.role === 'admin',
+          isManager: employee.role === 'manager' || employee.role === 'admin' || employee.role === 'hr',
         })
       }
       setLoading(false)
@@ -72,7 +71,6 @@ export function useProfile(): UseProfileReturn {
 
     loadProfile()
 
-    // Re-run when auth state changes (login / logout)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
       if (!cancelled) loadProfile()
     })

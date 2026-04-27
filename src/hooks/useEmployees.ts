@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
 import type { Employee } from '../types/database'
 
-// Employees joined with their department name for display
 export interface EmployeeWithDept extends Employee {
   department_name: string | null
   manager_name: string | null
@@ -28,16 +27,10 @@ export function useEmployees(search = ''): UseEmployeesReturn {
     setLoading(true)
     setError(null)
 
-    async function fetch() {
-      // RLS automatically filters to rows the current user can see.
-      // We join departments for the department name.
+    async function fetchEmployees() {
       let query = supabase
         .from('employees')
-        .select(`
-          *,
-          departments ( department_id ),
-          managers:employees!employees_manager_id_fkey ( first_name, last_name )
-        `)
+        .select('*')
         .order('last_name', { ascending: true })
 
       if (search.trim()) {
@@ -54,27 +47,23 @@ export function useEmployees(search = ''): UseEmployeesReturn {
         setError(err.message)
         setEmployees([])
       } else {
-        // Flatten joined data
-        const flat: EmployeeWithDept[] = (data ?? []).map((row: any) => ({
+        const flat: EmployeeWithDept[] = ((data ?? []) as Employee[]).map(row => ({
           ...row,
-          department_name: row.departments ? String(row.departments.department_id ?? '') : null,
-          manager_name: row.managers
-            ? `${row.managers.first_name ?? ''} ${row.managers.last_name ?? ''}`.trim() || null
-            : null,
+          department_name: null,
+          manager_name: null,
         }))
         setEmployees(flat)
       }
       setLoading(false)
     }
 
-    fetch()
+    fetchEmployees()
     return () => { cancelled = true }
   }, [search, tick])
 
   return { employees, loading, error, refresh }
 }
 
-// Single employee detail
 export function useEmployee(employeeId: string | undefined) {
   const [employee, setEmployee] = useState<Employee | null>(null)
   const [loading, setLoading] = useState(true)
@@ -93,7 +82,7 @@ export function useEmployee(employeeId: string | undefined) {
       .then(({ data, error: err }) => {
         if (cancelled) return
         if (err) { setError(err.message); setEmployee(null) }
-        else setEmployee(data)
+        else setEmployee(data as Employee)
         setLoading(false)
       })
 
@@ -103,14 +92,13 @@ export function useEmployee(employeeId: string | undefined) {
   return { employee, loading, error }
 }
 
-// Update employee fields (admin/hr only — RLS enforced on server)
 export async function updateEmployee(
   employeeId: string,
   fields: Partial<Omit<Employee, 'employee_id' | 'created_at' | 'user_id'>>
 ): Promise<{ error: string | null }> {
   const { error } = await supabase
     .from('employees')
-    .update(fields)
+    .update(fields as Record<string, unknown>)
     .eq('employee_id', employeeId)
 
   return { error: error?.message ?? null }
