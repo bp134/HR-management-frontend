@@ -1,0 +1,10 @@
+{
+  "name": "hr-monorepo",
+  "private": true,
+  "scripts": {
+    "dev:api": "npm run dev --prefix hr-api",
+    "dev:web": "npm run dev --prefix hr-frontend",
+    "build:api": "npm run build --prefix hr-api",
+    "build:web": "npm run build --prefix hr-frontend"
+  }
+}

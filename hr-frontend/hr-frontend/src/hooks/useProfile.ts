@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
-import type { Employee, Role } from '../types/database'
+import { useIsAuthenticated, useMsal } from '@azure/msal-react'
+import { useCallback, useEffect, useState } from 'react'
+import { useMsalReady } from '../auth/AuthProvider'
+import { ApiError, getMe, type AccessStatus } from '../lib/api'
+import type { Employee } from '../types/database'
 
 export interface Profile extends Employee {
   isAdmin: boolean
@@ -11,75 +13,81 @@ export interface Profile extends Employee {
 interface UseProfileReturn {
   profile: Profile | null
   loading: boolean
-  accessStatus: 'ok' | 'no_employee' | 'error' | null
+  accessStatus: AccessStatus | 'error' | null
+  errorMessage: string | null
+  refresh: () => void
 }
 
 export function useProfile(): UseProfileReturn {
+  const msalReady = useMsalReady()
+  const isAuthenticated = useIsAuthenticated()
+  const { accounts } = useMsal()
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
   const [accessStatus, setAccessStatus] = useState<UseProfileReturn['accessStatus']>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [tick, setTick] = useState(0)
+
+  const refresh = useCallback(() => setTick(t => t + 1), [])
 
   useEffect(() => {
     let cancelled = false
 
-    async function loadProfile() {
-      setLoading(true)
-
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!session) {
-        if (!cancelled) { setProfile(null); setLoading(false) }
-        return
-      }
-
-      // Link auth user to employee record on first login
-      const { data: linkResult } = await supabase.rpc('link_employee_to_auth')
-      const link = linkResult as { status: string; message?: string } | null
-
-      if (link?.status === 'no_employee') {
+    async function loadProfile(attempt = 0) {
+      if (!msalReady || !isAuthenticated || accounts.length === 0) {
         if (!cancelled) {
-          setAccessStatus('no_employee')
           setProfile(null)
+          setAccessStatus(null)
+          setErrorMessage(null)
           setLoading(false)
         }
         return
       }
 
-      // Fetch the employee row
-      const { data: emp, error } = await supabase
-        .from('employees')
-        .select('*')
-        .eq('user_id', session.user.id)
-        .single()
+      setLoading(true)
+      setErrorMessage(null)
+      try {
+        const me = await getMe()
+        if (cancelled) return
 
-      if (cancelled) return
+        setAccessStatus(me.accessStatus)
+        setErrorMessage(null)
 
-      if (error || !emp) {
+        if (me.accessStatus === 'ok' && me.employee && me.flags) {
+          setProfile({
+            ...me.employee,
+            isAdmin: me.flags.isAdmin,
+            isHR: me.flags.isHR,
+            isManager: me.flags.isManager,
+          })
+        } else {
+          setProfile(null)
+        }
+      } catch (err) {
+        if (cancelled) return
+        if (err instanceof ApiError && err.status === 401 && attempt < 1) {
+          await new Promise(r => setTimeout(r, 500))
+          if (!cancelled) return loadProfile(attempt + 1)
+          return
+        }
+        const message = err instanceof ApiError
+          ? err.message
+          : err instanceof Error
+            ? err.message
+            : 'Unknown error'
+        if (import.meta.env.DEV) {
+          console.error('getMe failed:', err)
+        }
         setAccessStatus('error')
+        setErrorMessage(message)
         setProfile(null)
-      } else {
-        const employee = emp as Employee
-        setAccessStatus('ok')
-        setProfile({
-          ...employee,
-          isAdmin: employee.role === 'admin',
-          isHR: employee.role === 'hr' || employee.role === 'admin',
-          isManager: employee.role === 'manager' || employee.role === 'admin' || employee.role === 'hr',
-        })
       }
-      setLoading(false)
+      if (!cancelled) setLoading(false)
     }
 
     loadProfile()
+    return () => { cancelled = true }
+  }, [msalReady, isAuthenticated, accounts, tick])
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
-      if (!cancelled) loadProfile()
-    })
-
-    return () => {
-      cancelled = true
-      subscription.unsubscribe()
-    }
-  }, [])
-
-  return { profile, loading, accessStatus }
+  return { profile, loading, accessStatus, errorMessage, refresh }
 }

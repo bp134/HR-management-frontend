@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
+import { signOut } from '../auth/AuthProvider'
 import { useProfile } from '../hooks/useProfile'
-import { supabase } from '../lib/supabase'
 
 interface NavItem {
   label: string
@@ -66,8 +66,7 @@ export function Layout() {
   )
 
   async function handleSignOut() {
-    await supabase.auth.signOut()
-    window.location.href = '/login'
+    await signOut()
   }
 
   const NavIcon = ({ d }: { d: React.ReactNode }) => (
@@ -85,7 +84,6 @@ export function Layout() {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
       )}
       <div className={`relative flex flex-col flex-1 bg-indigo-900 ${mobile ? 'w-64' : 'w-full'}`}>
-        {/* Logo */}
         <div className="flex items-center h-16 px-6 border-b border-indigo-800">
           <div className="w-7 h-7 bg-indigo-400 rounded-lg flex items-center justify-center mr-3">
             <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -96,7 +94,6 @@ export function Layout() {
           <span className="text-white font-semibold text-sm">HR System</span>
         </div>
 
-        {/* Profile summary */}
         {profile && (
           <div className="px-4 py-4 border-b border-indigo-800">
             <div className="flex items-center gap-3">
@@ -113,7 +110,6 @@ export function Layout() {
           </div>
         )}
 
-        {/* Nav links */}
         <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
           {visibleNav.map(item => (
             <NavLink
@@ -135,7 +131,6 @@ export function Layout() {
           ))}
         </div>
 
-        {/* Sign out */}
         <div className="px-3 pb-4 border-t border-indigo-800 pt-3">
           <button
             onClick={handleSignOut}
@@ -154,15 +149,11 @@ export function Layout() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Mobile sidebar */}
       {sidebarOpen && <Sidebar mobile />}
 
-      {/* Desktop sidebar */}
       <Sidebar />
 
-      {/* Main content */}
       <div className="md:pl-64">
-        {/* Mobile top bar */}
         <div className="md:hidden flex items-center h-16 px-4 bg-indigo-900 border-b border-indigo-800">
           <button
             onClick={() => setSidebarOpen(true)}
@@ -175,7 +166,6 @@ export function Layout() {
           <span className="text-white font-semibold text-sm">HR System</span>
         </div>
 
-        {/* Page content */}
         <main className="p-4 md:p-8">
           <Outlet />
         </main>

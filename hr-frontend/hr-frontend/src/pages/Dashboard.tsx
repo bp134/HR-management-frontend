@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { getDashboardStats } from '../lib/api'
 import { useProfile } from '../hooks/useProfile'
-import { supabase } from '../lib/supabase'
 
 interface Stats {
   totalEmployees: number
@@ -15,21 +15,22 @@ export function DashboardPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    async function loadStats() {
-      const [empResult, leaveResult] = await Promise.all([
-        supabase.from('employees').select('employee_id', { count: 'exact', head: true }),
-        supabase.from('leaverequests').select('leave_id', { count: 'exact', head: true }).eq('status', 'pending'),
-      ])
-
-      setStats({
-        totalEmployees: empResult.count ?? 0,
-        pendingLeave: leaveResult.count ?? 0,
-        activeContracts: 0, // extend once you know the contracts columns
-      })
+    if (!profile?.isManager) {
       setLoading(false)
+      return
     }
-    loadStats()
-  }, [])
+
+    getDashboardStats()
+      .then(data => {
+        setStats({
+          totalEmployees: data.totalEmployees,
+          pendingLeave: data.pendingLeave,
+          activeContracts: data.activeContracts,
+        })
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
+  }, [profile?.isManager])
 
   if (!profile) return null
 
@@ -54,7 +55,6 @@ export function DashboardPage() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-semibold text-gray-900">
           {greeting()}, {profile.first_name}
@@ -64,7 +64,6 @@ export function DashboardPage() {
         </p>
       </div>
 
-      {/* Stats — only shown to admin/hr/manager; employees see their own quick links */}
       {profile.isManager && !loading && (
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
           <StatCard
@@ -84,7 +83,6 @@ export function DashboardPage() {
         </div>
       )}
 
-      {/* Quick actions */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
         <h2 className="text-sm font-semibold text-gray-700 mb-4">Quick actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

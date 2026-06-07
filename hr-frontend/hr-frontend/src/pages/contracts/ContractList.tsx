@@ -1,6 +1,6 @@
 // Placeholder — extend with the same pattern as EmployeeList / LeaveList once
 // you've confirmed the column names for contracts and documents tables.
-// Run this in Supabase SQL editor to see what columns you have:
+// Run a column query on the contracts table to confirm structure, then extend this page.
 //   SELECT column_name, data_type FROM information_schema.columns
 //   WHERE table_schema = 'public' AND table_name = 'contracts'
 //   ORDER BY ordinal_position;

@@ -3,7 +3,7 @@ export function DocumentsPage() {
     <div className="max-w-4xl mx-auto">
       <h1 className="text-2xl font-semibold text-gray-900 mb-2">Documents</h1>
       <p className="text-sm text-gray-500 mb-6">
-        Run the column query in Supabase to confirm the documents table structure, then extend this page.
+        Run a column query on the documents table to confirm structure, then extend this page.
       </p>
       <div className="bg-white rounded-xl border border-dashed border-gray-300 p-12 text-center">
         <p className="text-sm text-gray-400">

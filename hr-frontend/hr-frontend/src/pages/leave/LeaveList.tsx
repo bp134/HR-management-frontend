@@ -48,7 +48,7 @@ export function LeaveListPage() {
   async function handleApprove(leaveId: string) {
     if (!profile) return
     setActionError(null)
-    const { error: err } = await updateLeaveStatus(leaveId, 'approved', profile.employee_id)
+    const { error: err } = await updateLeaveStatus(leaveId, 'approved')
     if (err) setActionError(err)
     else refresh()
   }
@@ -56,7 +56,7 @@ export function LeaveListPage() {
   async function handleReject(leaveId: string) {
     if (!profile) return
     setActionError(null)
-    const { error: err } = await updateLeaveStatus(leaveId, 'rejected', profile.employee_id)
+    const { error: err } = await updateLeaveStatus(leaveId, 'rejected')
     if (err) setActionError(err)
     else refresh()
   }

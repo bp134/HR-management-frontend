@@ -1,4 +1,6 @@
+import { useIsAuthenticated } from '@azure/msal-react'
 import { Navigate } from 'react-router-dom'
+import { signOut, useMsalReady } from '../auth/AuthProvider'
 import { useProfile } from '../hooks/useProfile'
 
 interface Props {
@@ -7,9 +9,11 @@ interface Props {
 }
 
 export function ProtectedRoute({ children, requireRole }: Props) {
-  const { profile, loading, accessStatus } = useProfile()
+  const msalReady = useMsalReady()
+  const isAuthenticated = useIsAuthenticated()
+  const { profile, loading, accessStatus, errorMessage } = useProfile()
 
-  if (loading) {
+  if (!msalReady) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
@@ -20,11 +24,22 @@ export function ProtectedRoute({ children, requireRole }: Props) {
     )
   }
 
-  if (!profile) {
-    // Not logged in at all
-    if (accessStatus === null) return <Navigate to="/login" replace />
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />
+  }
 
-    // Logged in but email not in employees table
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-sm text-gray-500">Loading your profile…</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!profile) {
     if (accessStatus === 'no_employee') {
       return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -37,11 +52,11 @@ export function ProtectedRoute({ children, requireRole }: Props) {
             </div>
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Access not granted</h2>
             <p className="text-sm text-gray-500 mb-6">
-              Your email address is not registered as an employee in this system.
+              Your Microsoft account is not registered as an employee in this system.
               Please contact HR to have your record set up.
             </p>
             <button
-              onClick={() => supabase_signout()}
+              onClick={() => signOut()}
               className="text-sm text-indigo-600 hover:underline"
             >
               Sign out
@@ -51,10 +66,54 @@ export function ProtectedRoute({ children, requireRole }: Props) {
       )
     }
 
+    if (accessStatus === 'already_linked') {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+          <div className="max-w-md w-full bg-white rounded-xl shadow p-8 text-center">
+            <h2 className="text-lg font-semibold text-gray-900 mb-2">Account already linked</h2>
+            <p className="text-sm text-gray-500 mb-6">
+              This employee record is linked to a different Microsoft account. Contact HR if you need help.
+            </p>
+            <button
+              onClick={() => signOut()}
+              className="text-sm text-indigo-600 hover:underline"
+            >
+              Sign out
+            </button>
+          </div>
+        </div>
+      )
+    }
+
+    if (accessStatus === 'error') {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+          <div className="max-w-md w-full bg-white rounded-xl shadow p-8 text-center">
+            <h2 className="text-lg font-semibold text-gray-900 mb-2">Could not connect to HR API</h2>
+            <p className="text-sm text-gray-500 mb-4">
+              Microsoft sign-in worked, but the app could not reach the API or get an access token.
+              Check that the API is running on port 3001, your <code className="text-xs bg-gray-100 px-1 rounded">.env</code> scope is correct,
+              and the SPA app has permission for the HR API scope in Entra.
+            </p>
+            {errorMessage && (
+              <p className="text-xs text-red-600 bg-red-50 rounded-lg px-3 py-2 mb-4 text-left font-mono break-words">
+                {errorMessage}
+              </p>
+            )}
+            <button
+              onClick={() => signOut()}
+              className="text-sm text-indigo-600 hover:underline"
+            >
+              Sign out and try again
+            </button>
+          </div>
+        </div>
+      )
+    }
+
     return <Navigate to="/login" replace />
   }
 
-  // Role check
   if (requireRole && !requireRole.includes(profile.role)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -70,10 +129,3 @@ export function ProtectedRoute({ children, requireRole }: Props) {
 
   return <>{children}</>
 }
-// Helper used in the no-employee screen above
-async function supabase_signout() {
-  const { supabase } = await import('../lib/supabase')
-  await supabase.auth.signOut()
-  window.location.href = '/login'
-}
-

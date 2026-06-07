@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react'
-import { supabase } from '../lib/supabase'
+import { useCallback, useEffect, useState } from 'react'
+import { getEmployee, getEmployees, updateEmployeeApi } from '../lib/api'
 import type { Employee } from '../types/database'
 
 export interface EmployeeWithDept extends Employee {
@@ -27,37 +27,24 @@ export function useEmployees(search = ''): UseEmployeesReturn {
     setLoading(true)
     setError(null)
 
-    async function fetchEmployees() {
-      let query = supabase
-        .from('employees')
-        .select('*')
-        .order('last_name', { ascending: true })
-
-      if (search.trim()) {
-        query = query.or(
-          `first_name.ilike.%${search}%,last_name.ilike.%${search}%,email.ilike.%${search}%,job_title.ilike.%${search}%`
-        )
-      }
-
-      const { data, error: err } = await query
-
-      if (cancelled) return
-
-      if (err) {
-        setError(err.message)
-        setEmployees([])
-      } else {
-        const flat: EmployeeWithDept[] = ((data ?? []) as Employee[]).map(row => ({
+    getEmployees(search)
+      .then(({ employees: rows }) => {
+        if (cancelled) return
+        const flat: EmployeeWithDept[] = rows.map(row => ({
           ...row,
           department_name: null,
           manager_name: null,
         }))
         setEmployees(flat)
-      }
-      setLoading(false)
-    }
+        setLoading(false)
+      })
+      .catch(err => {
+        if (cancelled) return
+        setError(err instanceof Error ? err.message : 'Failed to load employees')
+        setEmployees([])
+        setLoading(false)
+      })
 
-    fetchEmployees()
     return () => { cancelled = true }
   }, [search, tick])
 
@@ -68,38 +55,43 @@ export function useEmployee(employeeId: string | undefined) {
   const [employee, setEmployee] = useState<Employee | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [tick, setTick] = useState(0)
+
+  const refresh = useCallback(() => setTick(t => t + 1), [])
 
   useEffect(() => {
     if (!employeeId) { setLoading(false); return }
     let cancelled = false
     setLoading(true)
 
-    supabase
-      .from('employees')
-      .select('*')
-      .eq('employee_id', employeeId)
-      .single()
-      .then(({ data, error: err }) => {
+    getEmployee(employeeId)
+      .then(({ employee: row }) => {
         if (cancelled) return
-        if (err) { setError(err.message); setEmployee(null) }
-        else setEmployee(data as Employee)
+        setEmployee(row)
+        setError(null)
+        setLoading(false)
+      })
+      .catch(err => {
+        if (cancelled) return
+        setError(err instanceof Error ? err.message : 'Failed to load employee')
+        setEmployee(null)
         setLoading(false)
       })
 
     return () => { cancelled = true }
-  }, [employeeId])
+  }, [employeeId, tick])
 
-  return { employee, loading, error }
+  return { employee, loading, error, refresh }
 }
 
 export async function updateEmployee(
   employeeId: string,
   fields: Partial<Omit<Employee, 'employee_id' | 'created_at' | 'user_id'>>
 ): Promise<{ error: string | null }> {
-  const { error } = await supabase
-    .from('employees')
-    .update(fields as Record<string, unknown>)
-    .eq('employee_id', employeeId)
-
-  return { error: error?.message ?? null }
+  try {
+    await updateEmployeeApi(employeeId, fields as Record<string, unknown>)
+    return { error: null }
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Update failed' }
+  }
 }
