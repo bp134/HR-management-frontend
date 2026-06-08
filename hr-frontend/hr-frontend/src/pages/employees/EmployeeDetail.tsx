@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { useEmployee, updateEmployee } from '../../hooks/useEmployees'
+import { createEmployee, useEmployee, updateEmployee } from '../../hooks/useEmployees'
 import { useProfile } from '../../hooks/useProfile'
-import type { Employee } from '../../types/database'
+import { EMPLOYMENT_TYPE_OPTIONS, formatEmploymentType, type Employee, type EmploymentType } from '../../types/database'
 
 type EditableFields = Partial<
   Pick<Employee,
@@ -12,19 +12,38 @@ type EditableFields = Partial<
   >
 >
 
+const emptyForm = (): EditableFields => ({
+  first_name: '',
+  last_name: '',
+  email: '',
+  phone: '',
+  address: '',
+  emergency_contact_name: '',
+  emergency_contact_phone: '',
+  job_title: '',
+  employment_type: undefined,
+  start_date: '',
+  end_date: '',
+})
+
 export function EmployeeDetailPage() {
   const { id } = useParams<{ id: string }>()
+  const isCreate = id === 'new'
   const { employee, loading, error } = useEmployee(id)
   const { profile } = useProfile()
   const navigate = useNavigate()
 
-  const [editing, setEditing] = useState(false)
-  const [form, setForm] = useState<EditableFields>({})
+  const [editing, setEditing] = useState(isCreate)
+  const [form, setForm] = useState<EditableFields>(emptyForm())
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
 
-  // Initialise form when employee loads
   useEffect(() => {
+    if (isCreate) {
+      setEditing(true)
+      setForm(emptyForm())
+      return
+    }
     if (employee) {
       setForm({
         first_name: employee.first_name ?? '',
@@ -40,14 +59,28 @@ export function EmployeeDetailPage() {
         end_date: employee.end_date ?? '',
       })
     }
-  }, [employee])
+  }, [employee, isCreate])
 
-  const canEdit = profile?.isHR || profile?.employee_id === employee?.employee_id
+  const canEdit = isCreate
+    ? profile?.isHR
+    : profile?.isHR || profile?.employee_id === employee?.employee_id
 
   async function handleSave() {
-    if (!id) return
     setSaving(true)
     setSaveError(null)
+
+    if (isCreate) {
+      const { employee: created, error: err } = await createEmployee(form)
+      setSaving(false)
+      if (err) {
+        setSaveError(err)
+      } else if (created) {
+        navigate(`/employees/${created.employee_id}`)
+      }
+      return
+    }
+
+    if (!id) return
     const { error: err } = await updateEmployee(id, form)
     setSaving(false)
     if (err) {
@@ -79,7 +112,20 @@ export function EmployeeDetailPage() {
     </div>
   )
 
-  if (loading) {
+  if (isCreate && !profile?.isHR) {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+          <p className="text-sm text-red-700">Only HR or admin can add employees.</p>
+          <Link to="/employees" className="text-sm text-indigo-600 hover:underline mt-3 block">
+            ← Back to employees
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
+  if (!isCreate && loading) {
     return (
       <div className="flex items-center justify-center h-48">
         <div className="w-6 h-6 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
@@ -87,7 +133,7 @@ export function EmployeeDetailPage() {
     )
   }
 
-  if (error || !employee) {
+  if (!isCreate && (error || !employee)) {
     return (
       <div className="max-w-2xl mx-auto">
         <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
@@ -106,29 +152,32 @@ export function EmployeeDetailPage() {
       <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
         <Link to="/employees" className="hover:text-gray-600">Employees</Link>
         <span>›</span>
-        <span className="text-gray-700">{employee.first_name} {employee.last_name}</span>
+        <span className="text-gray-700">
+          {isCreate ? 'New employee' : `${employee!.first_name} ${employee!.last_name}`}
+        </span>
       </div>
 
       {/* Header card */}
+      {!isCreate && (
       <div className="bg-white rounded-xl border border-gray-200 p-6 mb-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xl font-semibold">
-              {((employee.first_name?.[0] ?? '') + (employee.last_name?.[0] ?? '')).toUpperCase() || '?'}
+              {((employee!.first_name?.[0] ?? '') + (employee!.last_name?.[0] ?? '')).toUpperCase() || '?'}
             </div>
             <div>
               <h1 className="text-xl font-semibold text-gray-900">
-                {employee.first_name} {employee.last_name}
+                {employee!.first_name} {employee!.last_name}
               </h1>
-              <p className="text-sm text-gray-500">{employee.job_title ?? 'No title set'}</p>
+              <p className="text-sm text-gray-500">{employee!.job_title ?? 'No title set'}</p>
               <div className="flex items-center gap-2 mt-1">
-                {employee.employment_type && (
+                {employee!.employment_type && (
                   <span className="inline-flex px-2 py-0.5 rounded-full text-xs bg-indigo-50 text-indigo-700 font-medium capitalize">
-                    {employee.employment_type.replace('_', ' ')}
+                    {formatEmploymentType(employee!.employment_type)}
                   </span>
                 )}
                 <span className="inline-flex px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-600 capitalize">
-                  {employee.role}
+                  {employee!.role}
                 </span>
               </div>
             </div>
@@ -148,12 +197,18 @@ export function EmployeeDetailPage() {
           )}
         </div>
       </div>
+      )}
 
       {/* Details / Edit form */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
+        {isCreate && (
+          <h1 className="text-xl font-semibold text-gray-900 mb-5">Add employee</h1>
+        )}
         {editing ? (
           <div className="space-y-5">
-            <h2 className="text-sm font-semibold text-gray-700">Edit employee details</h2>
+            <h2 className="text-sm font-semibold text-gray-700">
+              {isCreate ? 'Employee details' : 'Edit employee details'}
+            </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input label="First name" field="first_name" />
@@ -165,14 +220,16 @@ export function EmployeeDetailPage() {
                 <label className="block text-xs font-medium text-gray-500 mb-1">Employment type</label>
                 <select
                   value={form.employment_type ?? ''}
-                  onChange={e => setForm(f => ({ ...f, employment_type: e.target.value as any }))}
+                  onChange={e => setForm(f => ({
+                    ...f,
+                    employment_type: (e.target.value || undefined) as EmploymentType | undefined,
+                  }))}
                   className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="">— Select —</option>
-                  <option value="permanent">Permanent</option>
-                  <option value="fixed_term">Fixed term</option>
-                  <option value="temporary">Temporary</option>
-                  <option value="contractor">Contractor</option>
+                  {EMPLOYMENT_TYPE_OPTIONS.map(opt => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
                 </select>
               </div>
               <Input label="Start date" field="start_date" type="date" />
@@ -209,17 +266,24 @@ export function EmployeeDetailPage() {
                 disabled={saving}
                 className="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50 transition-colors"
               >
-                {saving ? 'Saving…' : 'Save changes'}
+                {saving ? 'Saving…' : isCreate ? 'Create employee' : 'Save changes'}
               </button>
               <button
-                onClick={() => { setEditing(false); setSaveError(null) }}
+                onClick={() => {
+                  if (isCreate) {
+                    navigate('/employees')
+                  } else {
+                    setEditing(false)
+                    setSaveError(null)
+                  }
+                }}
                 className="text-sm text-gray-500 hover:text-gray-700"
               >
                 Cancel
               </button>
             </div>
           </div>
-        ) : (
+        ) : employee ? (
           <div className="space-y-6">
             <div>
               <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Contact</h2>
@@ -247,7 +311,7 @@ export function EmployeeDetailPage() {
               </div>
             </div>
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   )

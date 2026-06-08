@@ -1,4 +1,5 @@
 import { useProfile } from '../../hooks/useProfile'
+import { formatEmploymentType } from '../../types/database'
 
 export function ProfilePage() {
   const { profile } = useProfile()
@@ -48,7 +49,7 @@ export function ProfilePage() {
           <div className="border-t pt-4">
             <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Employment</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Field label="Employment type" value={profile.employment_type?.replace('_', ' ')} />
+              <Field label="Employment type" value={formatEmploymentType(profile.employment_type)} />
               <Field label="Start date" value={formatDate(profile.start_date)} />
               {profile.end_date && <Field label="End date" value={formatDate(profile.end_date)} />}
             </div>

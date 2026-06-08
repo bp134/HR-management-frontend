@@ -2,6 +2,19 @@ export type Role = 'admin' | 'hr' | 'manager' | 'employee'
 export type EmploymentType = 'full-time' | 'part-time' | 'permanent' | 'locum'
 export type LeaveStatus = 'pending' | 'approved' | 'rejected'
 
+/** Matches PostgreSQL enum `employment_type` — see database/schema/schema.md */
+export const EMPLOYMENT_TYPE_OPTIONS: { value: EmploymentType; label: string }[] = [
+  { value: 'full-time', label: 'Full time' },
+  { value: 'part-time', label: 'Part time' },
+  { value: 'permanent', label: 'Permanent' },
+  { value: 'locum', label: 'Locum' },
+]
+
+export function formatEmploymentType(value: string | null | undefined): string {
+  if (!value) return '—'
+  return value.replace(/-/g, ' ')
+}
+
 export interface Employee {
   employee_id: string
   first_name: string | null
@@ -43,7 +56,6 @@ export interface LeaveRequest {
   leave_type: string | null
   start_date: string | null
   end_date: string | null
-  reason: string | null
   created_at?: string | null
   [key: string]: unknown
 }

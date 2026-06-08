@@ -1,0 +1,439 @@
+{
+  "generatedAt": "2026-06-07T23:59:16.375Z",
+  "enums": {
+    "employee_role": [
+      "admin",
+      "hr",
+      "employee",
+      "manager"
+    ],
+    "employment_type": [
+      "full-time",
+      "part-time",
+      "permanent",
+      "locum"
+    ]
+  },
+  "tables": {
+    "attendance": [
+      {
+        "name": "attendance_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "name": "employee_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "clock_in",
+        "type": "timestamp without time zone",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "clock_out",
+        "type": "timestamp without time zone",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "total_hours",
+        "type": "numeric",
+        "nullable": true,
+        "default": null
+      }
+    ],
+    "contracts": [
+      {
+        "name": "contract_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "name": "employee_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "salary",
+        "type": "numeric",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "hourly_rate",
+        "type": "numeric",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "contracted_hours",
+        "type": "integer",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "contract_type",
+        "type": "character varying(50)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "start_date",
+        "type": "date",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "end_date",
+        "type": "date",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "file_path",
+        "type": "text",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "file_name",
+        "type": "text",
+        "nullable": true,
+        "default": null
+      }
+    ],
+    "departments": [
+      {
+        "name": "department_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": "gen_random_uuid()"
+      },
+      {
+        "name": "name",
+        "type": "character varying(255)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "nullable": true,
+        "default": null
+      }
+    ],
+    "disciplinaryrecords": [
+      {
+        "name": "record_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "name": "employee_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "incident_date",
+        "type": "date",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "description",
+        "type": "text",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "action_taken",
+        "type": "text",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "outcome",
+        "type": "text",
+        "nullable": true,
+        "default": null
+      }
+    ],
+    "documents": [
+      {
+        "name": "document_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "name": "employee_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "document_type",
+        "type": "character varying(50)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "file_path",
+        "type": "text",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "uploaded_at",
+        "type": "timestamp without time zone",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP"
+      },
+      {
+        "name": "file_name",
+        "type": "text",
+        "nullable": true,
+        "default": null
+      }
+    ],
+    "employees": [
+      {
+        "name": "employee_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "name": "first_name",
+        "type": "character varying(100)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "last_name",
+        "type": "character varying(100)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "date_of_birth",
+        "type": "date",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "email",
+        "type": "character varying(255)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "phone",
+        "type": "character varying(50)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "address",
+        "type": "text",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "emergency_contact_name",
+        "type": "character varying(100)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "emergency_contact_phone",
+        "type": "character varying(50)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "department_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "manager_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "job_title",
+        "type": "character varying(100)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "employment_type",
+        "type": "employment_type",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "start_date",
+        "type": "date",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "end_date",
+        "type": "date",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP"
+      },
+      {
+        "name": "user_id",
+        "type": "text",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "role",
+        "type": "employee_role",
+        "nullable": false,
+        "default": "'employee'::employee_role"
+      }
+    ],
+    "leavebalances": [
+      {
+        "name": "balance_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "name": "employee_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "leave_type",
+        "type": "character varying(50)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "balance_days",
+        "type": "numeric",
+        "nullable": true,
+        "default": null
+      }
+    ],
+    "leaverequests": [
+      {
+        "name": "leave_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "name": "employee_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "leave_type",
+        "type": "character varying(50)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "start_date",
+        "type": "date",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "end_date",
+        "type": "date",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "status",
+        "type": "character varying(50)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "approved_by",
+        "type": "uuid",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP"
+      }
+    ],
+    "performancereviews": [
+      {
+        "name": "review_id",
+        "type": "uuid",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "name": "employee_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "reviewer_id",
+        "type": "uuid",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "review_date",
+        "type": "date",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "rating",
+        "type": "integer",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "comments",
+        "type": "text",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "name": "goals",
+        "type": "text",
+        "nullable": true,
+        "default": null
+      }
+    ]
+  }
+}

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { getEmployee, getEmployees, updateEmployeeApi } from '../lib/api'
+import { createEmployeeApi, getEmployee, getEmployees, updateEmployeeApi } from '../lib/api'
 import type { Employee } from '../types/database'
 
 export interface EmployeeWithDept extends Employee {
@@ -60,7 +60,12 @@ export function useEmployee(employeeId: string | undefined) {
   const refresh = useCallback(() => setTick(t => t + 1), [])
 
   useEffect(() => {
-    if (!employeeId) { setLoading(false); return }
+    if (!employeeId || employeeId === 'new') {
+      setEmployee(null)
+      setError(null)
+      setLoading(false)
+      return
+    }
     let cancelled = false
     setLoading(true)
 
@@ -82,6 +87,17 @@ export function useEmployee(employeeId: string | undefined) {
   }, [employeeId, tick])
 
   return { employee, loading, error, refresh }
+}
+
+export async function createEmployee(
+  fields: Partial<Omit<Employee, 'employee_id' | 'created_at' | 'user_id'>>
+): Promise<{ employee: Employee | null; error: string | null }> {
+  try {
+    const { employee } = await createEmployeeApi(fields as Record<string, unknown>)
+    return { employee, error: null }
+  } catch (err) {
+    return { employee: null, error: err instanceof Error ? err.message : 'Create failed' }
+  }
 }
 
 export async function updateEmployee(

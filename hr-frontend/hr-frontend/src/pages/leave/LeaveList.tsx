@@ -15,7 +15,7 @@ export function LeaveListPage() {
   const { requests, loading, error, refresh } = useLeaveRequests(filter)
 
   const [showForm, setShowForm] = useState(false)
-  const [form, setForm] = useState({ start_date: '', end_date: '', leave_type: 'annual', reason: '' })
+  const [form, setForm] = useState({ start_date: '', end_date: '', leave_type: 'annual' })
   const [submitting, setSubmitting] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
 
@@ -40,7 +40,7 @@ export function LeaveListPage() {
       setFormError(err)
     } else {
       setShowForm(false)
-      setForm({ start_date: '', end_date: '', leave_type: 'annual', reason: '' })
+      setForm({ start_date: '', end_date: '', leave_type: 'annual' })
       refresh()
     }
   }
@@ -122,16 +122,6 @@ export function LeaveListPage() {
                   className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Reason (optional)</label>
-              <textarea
-                value={form.reason}
-                onChange={e => setForm(f => ({ ...f, reason: e.target.value }))}
-                rows={2}
-                placeholder="Briefly describe your reason…"
-                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
-              />
             </div>
             {formError && (
               <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{formError}</p>
@@ -218,9 +208,6 @@ export function LeaveListPage() {
                     <p className="text-xs text-gray-400 mt-1">
                       {formatDate(req.start_date as string | null)} → {formatDate(req.end_date as string | null)}
                     </p>
-                    {req.reason && (
-                      <p className="text-xs text-gray-500 mt-1 italic">"{req.reason as string}"</p>
-                    )}
                   </div>
 
                   {/* Approve / Reject buttons */}

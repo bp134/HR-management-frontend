@@ -62,7 +62,6 @@ export async function submitLeaveRequest(fields: {
   leave_type?: string
   start_date: string
   end_date: string
-  reason?: string
 }): Promise<{ error: string | null }> {
   try {
     await submitLeaveRequestApi(fields)

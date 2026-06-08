@@ -97,6 +97,13 @@ export function getEmployee(id: string) {
   return apiFetch<{ employee: Employee }>(`/api/employees/${id}`)
 }
 
+export function createEmployeeApi(fields: Record<string, unknown>) {
+  return apiFetch<{ employee: Employee }>('/api/employees', {
+    method: 'POST',
+    body: JSON.stringify(fields),
+  })
+}
+
 export function updateEmployeeApi(
   id: string,
   fields: Record<string, unknown>
@@ -117,7 +124,6 @@ export function submitLeaveRequestApi(body: {
   leave_type?: string
   start_date: string
   end_date: string
-  reason?: string
 }) {
   return apiFetch<{ request: LeaveRequest }>('/api/leave-requests', {
     method: 'POST',

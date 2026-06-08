@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useEmployees } from '../../hooks/useEmployees'
+import { formatEmploymentType } from '../../types/database'
 import { useProfile } from '../../hooks/useProfile'
 
 export function EmployeeListPage() {
@@ -110,7 +111,7 @@ export function EmployeeListPage() {
                   <td className="px-5 py-3 hidden lg:table-cell">
                     {emp.employment_type ? (
                       <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 capitalize">
-                        {emp.employment_type.replace('_', ' ')}
+                        {formatEmploymentType(emp.employment_type)}
                       </span>
                     ) : '—'}
                   </td>
