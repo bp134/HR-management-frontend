@@ -1,0 +1,50 @@
+name: Azure Static Web Apps CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - New-HR-frontend
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+      - New-HR-frontend
+
+jobs:
+  build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_DUNE_047AC8C03 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: upload
+          # Vite React app — NOT the monorepo root (hr-frontend/ has no build script)
+          app_location: hr-frontend/hr-frontend
+          api_location: ""
+          output_location: dist
+          app_build_command: npm run build
+        env:
+          # Set the same values in Azure Portal → Static Web App → Configuration
+          VITE_AZURE_CLIENT_ID: ${{ secrets.VITE_AZURE_CLIENT_ID }}
+          VITE_AZURE_TENANT_ID: ${{ secrets.VITE_AZURE_TENANT_ID }}
+          VITE_AZURE_API_SCOPE: ${{ secrets.VITE_AZURE_API_SCOPE }}
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_DUNE_047AC8C03 }}
+          action: close
