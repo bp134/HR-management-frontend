@@ -40,6 +40,12 @@ function validateEmploymentType(value: unknown): string | null | undefined {
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
+function routeParam(value: string | string[] | undefined): string | undefined {
+  if (typeof value === 'string') return value
+  if (Array.isArray(value)) return value[0]
+  return undefined
+}
+
 function isUuid(value: string): boolean {
   return UUID_RE.test(value)
 }
@@ -136,7 +142,8 @@ employeesRouter.get('/', async (req: AuthenticatedRequest, res) => {
 })
 
 employeesRouter.get('/:id', async (req: AuthenticatedRequest, res) => {
-  if (!isUuid(req.params.id)) {
+  const id = routeParam(req.params.id)
+  if (!id || !isUuid(id)) {
     res.status(404).json({ error: 'not_found', message: 'Employee not found' })
     return
   }
@@ -144,7 +151,7 @@ employeesRouter.get('/:id', async (req: AuthenticatedRequest, res) => {
   const ctx = await loadContext(req.authUser!)
   const result = await query<EmployeeRow>(
     'SELECT * FROM employees WHERE employee_id = $1',
-    [req.params.id]
+    [id]
   )
   const employee = result.rows[0]
   if (!employee) {
@@ -159,7 +166,8 @@ employeesRouter.get('/:id', async (req: AuthenticatedRequest, res) => {
 })
 
 employeesRouter.patch('/:id', async (req: AuthenticatedRequest, res) => {
-  if (!isUuid(req.params.id)) {
+  const id = routeParam(req.params.id)
+  if (!id || !isUuid(id)) {
     res.status(404).json({ error: 'not_found', message: 'Employee not found' })
     return
   }
@@ -167,7 +175,7 @@ employeesRouter.patch('/:id', async (req: AuthenticatedRequest, res) => {
   const ctx = await loadContext(req.authUser!)
   const result = await query<EmployeeRow>(
     'SELECT * FROM employees WHERE employee_id = $1',
-    [req.params.id]
+    [id]
   )
   const employee = result.rows[0]
   if (!employee) {
@@ -222,7 +230,7 @@ employeesRouter.patch('/:id', async (req: AuthenticatedRequest, res) => {
     params.push(value === '' ? null : value)
     i++
   }
-  params.push(req.params.id)
+  params.push(id)
 
   const updated = await query<EmployeeRow>(
     `UPDATE employees SET ${setClauses.join(', ')} WHERE employee_id = $${i} RETURNING *`,

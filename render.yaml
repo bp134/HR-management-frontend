@@ -1,0 +1,33 @@
+# Render Blueprint — HR API (Express)
+# Dashboard: set Root Directory to hr-frontend/hr-api if not using this file.
+
+services:
+  - type: web
+    name: hr-api
+    runtime: node
+    rootDir: hr-frontend/hr-api
+    # NODE_ENV=production skips devDependencies; TypeScript needs @types/* and tsc at build time.
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: AZURE_TENANT_ID
+        sync: false
+      - key: AZURE_API_CLIENT_ID
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: DATABASE_AUTH
+        value: password
+      - key: DATABASE_HOST
+        sync: false
+      - key: DATABASE_PORT
+        value: "5432"
+      - key: DATABASE_NAME
+        sync: false
+      - key: DATABASE_USER
+        sync: false
+      - key: DATABASE_PASSWORD
+        sync: false
