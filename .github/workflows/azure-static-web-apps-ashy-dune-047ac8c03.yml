@@ -37,17 +37,21 @@ jobs:
           # Until Render API is live, use http://localhost:3001 or your future API URL
           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
 
-      - name: Deploy to Azure Static Web Apps
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          # Use ONE secret: AZURE_STATIC_WEB_APPS_API_TOKEN (see docs/SWA-DEPLOY.md)
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: upload
-          skip_app_build: true
-          app_location: hr-frontend/hr-frontend/dist
-          api_location: ""
-          output_location: ""
+      - name: Verify deployment token is set
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::error::GitHub secret AZURE_STATIC_WEB_APPS_API_TOKEN is empty. Reset token in Azure Portal and add the secret."
+            exit 1
+          fi
+          echo "Deployment token secret is configured."
+        env:
+          TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+
+      # SWA CLI deploy — avoids GitHub-action "event info" / token sync issues
+      - name: Deploy to Azure Static Web Apps (CLI)
+        run: npx @azure/static-web-apps-cli@latest deploy hr-frontend/hr-frontend/dist --env production
+        env:
+          SWA_CLI_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

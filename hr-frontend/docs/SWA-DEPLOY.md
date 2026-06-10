@@ -10,6 +10,18 @@ Deploy only the React SPA. The Express API (`hr-api`) is hosted separately (Rend
 | App path | `hr-frontend/hr-frontend/dist` |
 | Deploy to SWA | Needs valid **`AZURE_STATIC_WEB_APPS_API_TOKEN`** |
 
+## About `swa-db-connections` in the logs
+
+You may see:
+
+```text
+Try to validate location at: '/github/workspace/swa-db-connections'.
+```
+
+**This is normal.** The Azure deploy tool always checks for that folder. It is used only if you enable **Database connections** on your Static Web App in Azure. You do not need it in your GitHub repo, and **it is not the cause of the token error**.
+
+---
+
 ## Fix: invalid deployment token
 
 Error: `No matching Static Web App was found or the api key was invalid`
@@ -36,9 +48,17 @@ The build is fine. The deploy step cannot authenticate to your Static Web App.
 
 If you have older secrets like `AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_DUNE_047AC8C03`, the workflow no longer uses them. You can delete them to avoid updating the wrong one.
 
-**4. Re-run the workflow**
+**4. Check deployment authorization in Azure**
+
+Azure Portal → Static Web App → **Configuration** (or **Deployment** settings):
+
+- **Deployment authorization policy** should allow **Deployment token** (not GitHub-only if you paste the token manually).
+
+**5. Re-run the workflow**
 
 **Actions** → **Azure Static Web Apps CI/CD** → **Run workflow** → branch `New-HR-frontend`
+
+The workflow now deploys with **SWA CLI** (`swa deploy`) instead of the Docker-based GitHub action, which avoids some "event info" / token sync problems.
 
 ---
 
@@ -52,6 +72,18 @@ If you have older secrets like `AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_DUNE_047AC8
 | **Fresh token** | Reset in Azure, copy once, paste into GitHub immediately |
 | **Azure deployment link** | Azure → SWA → Deployment → repo = `bp134/HR-management-frontend` |
 | **No fork** | Deploying from the same repo Azure is connected to |
+| **Same Azure subscription** | Token copied from the SWA that owns `ashy-dune-047ac8c03.7.azurestaticapps.net` |
+
+### Test the token locally (optional)
+
+From your PC, after `npm run build` in `hr-frontend/hr-frontend`:
+
+```powershell
+$env:SWA_CLI_DEPLOYMENT_TOKEN = "paste-token-here"
+npx @azure/static-web-apps-cli deploy dist --env production
+```
+
+If this fails with the same error, the token or Static Web App resource is wrong — not the GitHub workflow.
 
 ### Check what secrets GitHub actually has
 
