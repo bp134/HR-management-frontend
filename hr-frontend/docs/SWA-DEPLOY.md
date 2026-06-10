@@ -74,16 +74,31 @@ The workflow now deploys with **SWA CLI** (`swa deploy`) instead of the Docker-b
 | **No fork** | Deploying from the same repo Azure is connected to |
 | **Same Azure subscription** | Token copied from the SWA that owns `ashy-dune-047ac8c03.7.azurestaticapps.net` |
 
-### Test the token locally (optional)
+### Test the token locally (optional, Windows)
 
 From your PC, after `npm run build` in `hr-frontend/hr-frontend`:
 
 ```powershell
+cd c:\New-HR-frontend\hr-frontend\hr-frontend
 $env:SWA_CLI_DEPLOYMENT_TOKEN = "paste-token-here"
-npx @azure/static-web-apps-cli deploy dist --env production
+npx @azure/static-web-apps-cli deploy dist --env production --verbose silly
 ```
 
-If this fails with the same error, the token or Static Web App resource is wrong — not the GitHub workflow.
+**Do not pipe to `Select-Object -Last 30`** — that hides the real error line.
+
+#### If you see `StaticSitesClient.exe` exit code 1
+
+This is common on Windows. The CLI downloads `StaticSitesClient.exe` first (normal). Exit code 1 is a wrapper — scroll up in the **full** output for the real reason, usually one of:
+
+| Hidden message | Fix |
+|----------------|-----|
+| `api key was invalid` | Reset token in Azure, update `AZURE_STATIC_WEB_APPS_API_TOKEN` |
+| `maximum number of staging environments (3)` | Azure Portal → SWA → **Environments** → delete old preview envs |
+| `Failed to validate staticwebapp.config.json` | Fix `public/staticwebapp.config.json` |
+
+**Prefer GitHub Actions for deploy** — it runs on Linux and is more reliable than local Windows CLI.
+
+If local CLI fails but you need to confirm the token, check **Azure Portal → Static Web App → Environments** after a GitHub Actions run.
 
 ### Check what secrets GitHub actually has
 

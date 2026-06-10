@@ -47,9 +47,17 @@ jobs:
         env:
           TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
 
-      # SWA CLI deploy — avoids GitHub-action "event info" / token sync issues
+      # SWA CLI deploy on Linux (more reliable than Windows StaticSitesClient.exe locally)
       - name: Deploy to Azure Static Web Apps (CLI)
-        run: npx @azure/static-web-apps-cli@latest deploy hr-frontend/hr-frontend/dist --env production
+        run: |
+          npx @azure/static-web-apps-cli@latest deploy hr-frontend/hr-frontend/dist --env production --verbose silly 2>&1 | tee deploy.log
+          if grep -qE "Project deployed to|Visit your site at|deployment has completed" deploy.log; then
+            echo "Deploy succeeded"
+          else
+            echo "::error::SWA deploy failed — see deploy.log"
+            cat deploy.log
+            exit 1
+          fi
         env:
           SWA_CLI_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
 
