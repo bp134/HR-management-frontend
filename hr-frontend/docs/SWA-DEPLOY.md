@@ -32,15 +32,25 @@ The build is fine. Azure is rejecting the deployment token before upload.
 
 ### Step-by-step (do in this order)
 
-**1. Confirm the Static Web App still exists**
+**1. Find the real Static Web App name (not the URL slug)**
 
-Azure Portal → search **Static Web Apps** → open the one whose URL is:
+The URL `ashy-dune-047ac8c03.7.azurestaticapps.net` is **not** the Azure resource name.
 
-`https://ashy-dune-047ac8c03.7.azurestaticapps.net`
+List all Static Web Apps:
 
-Note the exact **Name** and **Resource group** on Overview.
+```powershell
+az staticwebapp list --query "[].{name:name, resourceGroup:resourceGroup, url:defaultHostname}" -o table
+```
 
-If you have **more than one** Static Web App, the token from App A will never work for App B.
+For this project the resource is:
+
+| Field | Value |
+|-------|--------|
+| **Name** | `hr-api` |
+| **Resource group** | `postgresql-db` |
+| **URL** | `ashy-dune-047ac8c03.7.azurestaticapps.net` |
+
+If you use `ashy-dune-047ac8c03` as `--name`, Azure returns **ResourceNotFound**.
 
 **2. Reset the token with Azure CLI (most reliable)**
 
@@ -48,12 +58,12 @@ In PowerShell (after `az login`):
 
 ```powershell
 az staticwebapp secrets reset-api-key `
-  --name ashy-dune-047ac8c03 `
-  --resource-group YOUR_RESOURCE_GROUP `
+  --name hr-api `
+  --resource-group postgresql-db `
   --query properties.apiKey -o tsv
 ```
 
-Copy the output **exactly** — one long string, no spaces. If `--name` fails, use the exact name from the portal Overview.
+Copy the output **exactly** — one long string, no spaces.
 
 **Or via Portal:** Overview → **Manage deployment token** → **Reset** → **Copy**
 
