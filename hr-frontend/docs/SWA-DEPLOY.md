@@ -26,39 +26,75 @@ Try to validate location at: '/github/workspace/swa-db-connections'.
 
 Error: `No matching Static Web App was found or the api key was invalid`
 
-The build is fine. The deploy step cannot authenticate to your Static Web App.
+Often preceded by: `Could not get event info. Proceeding` — **that warning is harmless** when deploying with a token (local CLI or `workflow_dispatch`). The real failure is always the **token / Static Web App mismatch**.
+
+The build is fine. Azure is rejecting the deployment token before upload.
 
 ### Step-by-step (do in this order)
 
-**1. Reset the token in Azure** (important — old tokens stop working)
+**1. Confirm the Static Web App still exists**
 
-1. [Azure Portal](https://portal.azure.com) → Static Web App **ashy-dune-047ac8c03**
-2. **Overview** → **Manage deployment token**
-3. Click **Reset token**, then **Copy** the new value immediately
+Azure Portal → search **Static Web Apps** → open the one whose URL is:
 
-**2. Create ONE GitHub secret with the simple name**
+`https://ashy-dune-047ac8c03.7.azurestaticapps.net`
 
-1. GitHub → `bp134/HR-management-frontend` → **Settings** → **Secrets and variables** → **Actions**
-2. **New repository secret** (or update if it exists):
-   - **Name:** `AZURE_STATIC_WEB_APPS_API_TOKEN` *(exactly this — no long suffix)*
-   - **Value:** paste the token from step 1 — no spaces, no quotes
-3. Save
+Note the exact **Name** and **Resource group** on Overview.
 
-**3. Remove confusion from old secrets (optional)**
+If you have **more than one** Static Web App, the token from App A will never work for App B.
 
-If you have older secrets like `AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_DUNE_047AC8C03`, the workflow no longer uses them. You can delete them to avoid updating the wrong one.
+**2. Reset the token with Azure CLI (most reliable)**
 
-**4. Check deployment authorization in Azure**
+In PowerShell (after `az login`):
 
-Azure Portal → Static Web App → **Configuration** (or **Deployment** settings):
+```powershell
+az staticwebapp secrets reset-api-key `
+  --name ashy-dune-047ac8c03 `
+  --resource-group YOUR_RESOURCE_GROUP `
+  --query properties.apiKey -o tsv
+```
 
-- **Deployment authorization policy** should allow **Deployment token** (not GitHub-only if you paste the token manually).
+Copy the output **exactly** — one long string, no spaces. If `--name` fails, use the exact name from the portal Overview.
 
-**5. Re-run the workflow**
+**Or via Portal:** Overview → **Manage deployment token** → **Reset** → **Copy**
 
-**Actions** → **Azure Static Web Apps CI/CD** → **Run workflow** → branch `New-HR-frontend`
+**3. Update GitHub secret**
 
-The workflow now deploys with **SWA CLI** (`swa deploy`) instead of the Docker-based GitHub action, which avoids some "event info" / token sync problems.
+GitHub → `bp134/HR-management-frontend` → **Settings** → **Secrets** → **Actions**
+
+| Name | Value |
+|------|--------|
+| `AZURE_STATIC_WEB_APPS_API_TOKEN` | output from step 2 |
+
+Also check if Azure auto-created a **second** secret with a long name (e.g. `..._ASHY_DUNE_047AC8C03_7`). If so, update **that one too** with the same token, or delete it to avoid confusion.
+
+**4. Check deployment authorization**
+
+Azure Portal → Static Web App → **Configuration** / **Deployment**:
+
+- **Deployment authorization policy** must include **Deployment token** (not GitHub-only).
+
+**5. Clear old preview environments (if max reached)**
+
+Azure Portal → Static Web App → **Environments** → delete unused preview/staging envs (free tier allows limited slots).
+
+**6. Re-run the workflow**
+
+**Actions** → **Azure Static Web Apps CI/CD** → **Run workflow** → `New-HR-frontend`
+
+---
+
+### If the token still fails — create a fresh Static Web App
+
+Sometimes the original SWA resource gets out of sync with GitHub. Create a new one:
+
+1. Azure Portal → **Create** → **Static Web App**
+2. **Deployment details:** choose **Other** (not GitHub) — deploy via token only
+3. After creation: **Manage deployment token** → copy token
+4. Update `AZURE_STATIC_WEB_APPS_API_TOKEN` in GitHub
+5. Add the **new** URL to Entra SPA redirect URIs
+6. Re-run workflow
+
+You can delete the old `ashy-dune-047ac8c03` app once the new one works.
 
 ---
 
