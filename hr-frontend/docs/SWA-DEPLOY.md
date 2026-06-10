@@ -38,7 +38,7 @@ GitHub → `bp134/HR-management-frontend` → **Settings** → **Secrets and var
 | `AZURE_STATIC_WEB_APPS_API_TOKEN_LEMON_GRASS_046E94503` | Yes | Auto-created by Azure — do not delete |
 | `VITE_AZURE_CLIENT_ID` | Yes | Entra SPA client ID |
 | `VITE_AZURE_TENANT_ID` | Yes | Entra tenant ID |
-| `VITE_AZURE_API_SCOPE` | Yes | e.g. `api://e005eb5b-.../access_as_user` |
+| `VITE_AZURE_API_SCOPE` | Yes | **Value only:** `api://e005eb5b-.../access_as_user` — do **not** paste `VITE_AZURE_API_SCOPE=` in the secret |
 | `VITE_API_BASE_URL` | Yes | Your API URL (Render/App Service — **not** the SWA URL) |
 
 You can remove the old secret `AZURE_STATIC_WEB_APPS_API_TOKEN` if you are no longer using the old SWA.

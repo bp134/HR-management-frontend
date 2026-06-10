@@ -2,7 +2,20 @@ import { Configuration, LogLevel } from '@azure/msal-browser'
 
 const clientId = import.meta.env.VITE_AZURE_CLIENT_ID
 const tenantId = import.meta.env.VITE_AZURE_TENANT_ID
-const apiScope = import.meta.env.VITE_AZURE_API_SCOPE
+
+/** Strip accidental "VITE_AZURE_API_SCOPE=api://..." pasted into the GitHub secret value. */
+function readApiScope(raw: string | undefined): string | undefined {
+  if (!raw) return undefined
+  let value = raw.trim()
+  if (value.includes('VITE_AZURE_API_SCOPE=')) {
+    value = value.split('VITE_AZURE_API_SCOPE=').pop()?.trim() ?? value
+  } else if (value.includes('=') && value.includes('api://')) {
+    value = value.split('=').pop()?.trim() ?? value
+  }
+  return value.startsWith('api://') ? value : undefined
+}
+
+const apiScope = readApiScope(import.meta.env.VITE_AZURE_API_SCOPE)
 
 if (!clientId || !tenantId || !apiScope) {
   console.warn('Missing VITE_AZURE_CLIENT_ID, VITE_AZURE_TENANT_ID, or VITE_AZURE_API_SCOPE')
