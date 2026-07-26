@@ -13,7 +13,6 @@ interface LeaveRow {
   leave_type: string | null
   start_date: string | null
   end_date: string | null
-  reason: string | null
   created_at: string | null
 }
 
@@ -56,11 +55,10 @@ leaveRouter.post('/', async (req: AuthenticatedRequest, res) => {
     return
   }
 
-  const { start_date, end_date, leave_type, reason, employee_id } = req.body as {
+  const { start_date, end_date, leave_type, employee_id } = req.body as {
     start_date?: string
     end_date?: string
     leave_type?: string
-    reason?: string
     employee_id?: string
   }
 
@@ -76,10 +74,10 @@ leaveRouter.post('/', async (req: AuthenticatedRequest, res) => {
   }
 
   const inserted = await query<LeaveRow>(
-    `INSERT INTO leaverequests (employee_id, status, leave_type, start_date, end_date, reason)
-     VALUES ($1, 'pending', $2, $3, $4, $5)
+    `INSERT INTO leaverequests (leave_id, employee_id, status, leave_type, start_date, end_date)
+     VALUES (gen_random_uuid(), $1, 'pending', $2, $3, $4)
      RETURNING *`,
-    [targetId, leave_type ?? 'annual', start_date, end_date, reason ?? null]
+    [targetId, leave_type ?? 'annual', start_date, end_date]
   )
 
   res.status(201).json({ request: inserted.rows[0] })
