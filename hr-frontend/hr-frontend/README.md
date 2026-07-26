@@ -17,6 +17,8 @@ VITE_API_BASE_URL=http://localhost:3001
 # VITE_API_BASE_URL=https://your-render-service.onrender.com
 ```
 
+Production builds read the Render API URL from `.env.production`.
+
 ## Scripts
 
 ```bash

@@ -64,7 +64,6 @@ Environment variables:
 - `VITE_AZURE_CLIENT_ID`
 - `VITE_AZURE_TENANT_ID`
 - `VITE_AZURE_API_SCOPE` (e.g. `api://<api-app-id>/access_as_user`)
-- `VITE_API_BASE_URL` (Render API URL)
 
 Add the Static Web App URL to the SPA app registration **Redirect URIs**. The frontend redirects Microsoft sign-in back to the site origin, for example:
 
@@ -73,6 +72,8 @@ https://<your-static-web-app>.azurestaticapps.net
 ```
 
 The Vite `public/staticwebapp.config.json` file is copied into `dist/` at build time and rewrites SPA routes such as `/login` back to `/index.html`.
+
+The production Render API URL is configured in `hr-frontend/.env.production` because Vite exposes `VITE_*` values in the browser bundle. Keep it pointed at the Render service, not the Static Web App URL.
 
 ### Render (API)
 
