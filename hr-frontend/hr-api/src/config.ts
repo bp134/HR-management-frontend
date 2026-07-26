@@ -23,6 +23,13 @@ export interface PasswordDatabaseConfig {
 
 export type DatabaseConfig = EntraDatabaseConfig | PasswordDatabaseConfig
 
+function optionalCsv(name: string, fallback = ''): string[] {
+  return (process.env[name] ?? fallback)
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean)
+}
+
 function buildPasswordUrl(
   host: string,
   port: string,
