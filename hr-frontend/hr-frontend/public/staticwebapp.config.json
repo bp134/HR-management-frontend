@@ -1,4 +1,7 @@
 {
+  "globalHeaders": {
+    "Cache-Control": "no-store"
+  },
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": ["/assets/*", "/*.{css,scss,js,png,gif,ico,jpg,jpeg,svg,webp,woff,woff2}"]

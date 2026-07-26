@@ -1,16 +1,19 @@
 import type { Employee, LeaveRequest, LeaveStatus } from '../types/database'
 
-const baseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
+const renderApiBaseUrl = 'https://hr-management-frontend-1.onrender.com'
+const configuredBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
 
-function pointsAtStaticWebAppOrigin(url: string): boolean {
-  if (typeof window === 'undefined') return false
+function pointsAtStaticWebApp(url: string): boolean {
   try {
-    return new URL(url).origin === window.location.origin
-      && window.location.hostname.endsWith('.azurestaticapps.net')
+    return new URL(url).hostname.endsWith('.azurestaticapps.net')
   } catch {
     return false
   }
 }
+
+const baseUrl = configuredBaseUrl && !pointsAtStaticWebApp(configuredBaseUrl)
+  ? configuredBaseUrl
+  : renderApiBaseUrl
 
 let tokenGetter: (() => Promise<string | null>) | null = null
 
@@ -33,14 +36,6 @@ async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> 
   if (!baseUrl) {
     throw new ApiError(
       'VITE_API_BASE_URL is not set. For production it should point to the Render API URL.',
-      0,
-      'config'
-    )
-  }
-
-  if (pointsAtStaticWebAppOrigin(baseUrl)) {
-    throw new ApiError(
-      `VITE_API_BASE_URL points at the Static Web App (${baseUrl}) instead of the Render API URL.`,
       0,
       'config'
     )

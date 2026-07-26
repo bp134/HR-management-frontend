@@ -92,7 +92,7 @@ export function ProtectedRoute({ children, requireRole }: Props) {
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Could not connect to HR API</h2>
             <p className="text-sm text-gray-500 mb-4">
               Microsoft sign-in worked, but the app could not reach the API or get an access token.
-              Check that the API is running on port 3001, your <code className="text-xs bg-gray-100 px-1 rounded">.env</code> scope is correct,
+              Check that the Render API is running, Render CORS includes this Static Web App URL,
               and the SPA app has permission for the HR API scope in Entra.
             </p>
             {errorMessage && (
