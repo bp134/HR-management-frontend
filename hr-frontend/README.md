@@ -4,8 +4,8 @@ Monorepo for the HR application after migrating off Supabase.
 
 | Package | Description |
 |---------|-------------|
-| [`hr-frontend/`](hr-frontend/) | React SPA (Vercel) — MSAL sign-in, calls HR API |
-| [`hr-api/`](hr-api/) | Node/Express API (Azure App Service) — JWT auth, PostgreSQL |
+| [`hr-frontend/`](hr-frontend/) | React SPA (Azure Static Web Apps) — MSAL sign-in, calls HR API |
+| [`hr-api/`](hr-api/) | Node/Express API (Render) — JWT auth, PostgreSQL |
 | [`database/migrations/`](database/migrations/) | SQL scripts for Azure PostgreSQL |
 
 ## Architecture
@@ -57,23 +57,29 @@ Open [http://localhost:5173](http://localhost:5173) and sign in with Microsoft.
 
 ## Deploy
 
-### Vercel (frontend)
+### Azure Static Web Apps (frontend)
 
 Environment variables:
 
 - `VITE_AZURE_CLIENT_ID`
 - `VITE_AZURE_TENANT_ID`
 - `VITE_AZURE_API_SCOPE` (e.g. `api://<api-app-id>/access_as_user`)
-- `VITE_API_BASE_URL` (App Service URL)
+- `VITE_API_BASE_URL` (Render API URL)
 
-Add the Vercel URL to the SPA app registration **Redirect URIs**.
+Add the Static Web App URL to the SPA app registration **Redirect URIs**. The frontend redirects Microsoft sign-in back to the site origin, for example:
 
-### Azure App Service (API)
+```text
+https://<your-static-web-app>.azurestaticapps.net
+```
 
-1. Create Linux Node 20 Web App.
-2. Deploy `hr-api` (`npm run build`, start command: `node dist/index.js`).
-3. Application settings: `DATABASE_URL`, `AZURE_TENANT_ID`, `AZURE_API_CLIENT_ID`, `CORS_ORIGINS` (include Vercel URL).
-4. Allow App Service outbound IPs on PostgreSQL firewall (or use VNet integration).
+The Vite `public/staticwebapp.config.json` file is copied into `dist/` at build time and rewrites SPA routes such as `/login` back to `/index.html`.
+
+### Render (API)
+
+1. Create a Node service rooted at `hr-frontend/hr-api`.
+2. Build command: `npm ci && npm run build`.
+3. Start command: `npm start`.
+4. Environment variables: `DATABASE_URL`, `AZURE_TENANT_ID`, `AZURE_API_CLIENT_ID`, `CORS_ORIGINS` (include the Static Web App URL).
 
 ## API routes
 
