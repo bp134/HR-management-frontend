@@ -56,7 +56,7 @@ export function AuthProvider({ children }: Props) {
 
   useEffect(() => {
     ensureMsalInitialized()
-      .then(() => msalInstance.handleRedirectPromise())
+      .then(() => msalInstance.handleRedirectPromise({ navigateToLoginRequestUrl: false }))
       .then(result => {
         const account = result?.account ?? msalInstance.getAllAccounts()[0]
         if (account) {

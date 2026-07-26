@@ -122,5 +122,5 @@ export function useParams<T extends Record<string, string | undefined>>(): T {
   const employeeMatch = pathname.match(/^\/employees\/([^/]+)$/)
   return {
     id: employeeMatch?.[1] ? decodeURIComponent(employeeMatch[1]) : undefined,
-  } as T
+  } as unknown as T
 }
