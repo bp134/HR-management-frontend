@@ -1,6 +1,6 @@
 # Azure Static Web Apps — frontend deploy
 
-Deploy only the React SPA. The Express API (`hr-api`) is hosted separately (Render, then Azure App Service later).
+Deploy only the React SPA. The Express API (`hr-api`) is hosted separately on Render.
 
 ## Current Static Web App
 
@@ -13,7 +13,7 @@ Deploy only the React SPA. The Express API (`hr-api`) is hosted separately (Rend
 | **Workflow file** | `.github/workflows/azure-static-web-apps-lemon-grass-046e94503.yml` |
 | **Deploy secret** | `AZURE_STATIC_WEB_APPS_API_TOKEN_LEMON_GRASS_046E94503` *(auto-created when you linked GitHub)* |
 
-The old SWA (`hr-api` / `ashy-dune-047ac8c03`) can be deleted once the new app is working.
+The lemon-grass Static Web App is the canonical frontend. Do not use any older Static Web App hostnames for frontend or API configuration.
 
 ---
 
@@ -39,15 +39,14 @@ GitHub → `bp134/HR-management-frontend` → **Settings** → **Secrets and var
 | `VITE_AZURE_CLIENT_ID` | Yes | Entra SPA client ID |
 | `VITE_AZURE_TENANT_ID` | Yes | Entra tenant ID |
 | `VITE_AZURE_API_SCOPE` | Yes | **Value only:** `api://e005eb5b-.../access_as_user` — do **not** paste `VITE_AZURE_API_SCOPE=` in the secret |
-| `VITE_API_BASE_URL` | Yes | Your API URL (Render/App Service — **not** the SWA URL) |
 
-You can remove the old secret `AZURE_STATIC_WEB_APPS_API_TOKEN` if you are no longer using the old SWA.
+`VITE_API_BASE_URL` is intentionally not a GitHub secret. It is public browser configuration and is set in `hr-frontend/hr-frontend/.env.production`.
 
 ### 2. Push the fixed workflow (or re-run after push)
 
 After the corrected workflow is on `New-HR-frontend`, run:
 
-**Actions** → **Deploy HR-API-STATICWEBAPP** → **Run workflow** → branch `New-HR-frontend`
+**Actions** → **Deploy lemon-grass Static Web App** → **Run workflow** → branch `New-HR-frontend`
 
 ### 3. Add Entra redirect URI
 
@@ -63,9 +62,15 @@ Also add the same URL under **Single-page application** redirect URIs if not alr
 
 Open `https://lemon-grass-046e94503.7.azurestaticapps.net` — you should see the HR login page.
 
-### 5. Later: point frontend at the API
+### 5. Verify frontend API target
 
-When `hr-api` is deployed (Render or App Service), set `VITE_API_BASE_URL` in GitHub secrets and re-run the workflow so the build embeds the correct API URL.
+The frontend production build reads the Render API URL from `hr-frontend/hr-frontend/.env.production`:
+
+```text
+VITE_API_BASE_URL=https://hr-management-frontend-1.onrender.com
+```
+
+Do not set `VITE_API_BASE_URL` to a Static Web App URL in GitHub secrets or workflow env.
 
 ---
 
@@ -110,9 +115,9 @@ Or: Azure Portal → **HR-API-STATICWEBAPP** → **Overview** → **Manage deplo
 
 | Check | What to do |
 |-------|------------|
-| **Correct SWA** | Token from `HR-API-STATICWEBAPP`, not old `hr-api` / `ashy-dune` |
+| **Correct SWA** | Token from the lemon-grass Static Web App resource |
 | **Correct secret name** | `AZURE_STATIC_WEB_APPS_API_TOKEN_LEMON_GRASS_046E94503` |
-| **Old workflow removed** | Do not keep `azure-static-web-apps-ashy-dune-047ac8c03.yml` |
+| **Old workflow removed** | Keep only the lemon-grass workflow file |
 | **Deployment authorization** | Azure → SWA → Configuration → **Deployment token** enabled |
 | **Preview env limit** | Free tier: delete unused preview envs under **Environments** |
 
