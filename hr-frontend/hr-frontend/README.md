@@ -1,6 +1,6 @@
 # HR Frontend
 
-React SPA using **Microsoft Entra ID** (MSAL) and the **HR API** on Azure App Service.
+React SPA using **Microsoft Entra ID** (MSAL) and the **HR API** on Render.
 
 See the [monorepo README](../README.md) for Entra setup, database migration, and deployment.
 
@@ -13,6 +13,8 @@ VITE_AZURE_CLIENT_ID=...
 VITE_AZURE_TENANT_ID=...
 VITE_AZURE_API_SCOPE=api://<api-client-id>/access_as_user
 VITE_API_BASE_URL=http://localhost:3001
+# production example:
+# VITE_API_BASE_URL=https://your-render-service.onrender.com
 ```
 
 ## Scripts

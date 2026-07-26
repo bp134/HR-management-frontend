@@ -27,6 +27,7 @@ export const msalConfig: Configuration = {
     authority: `https://login.microsoftonline.com/${tenantId ?? 'common'}`,
     redirectUri: typeof window !== 'undefined' ? window.location.origin : undefined,
     postLogoutRedirectUri: typeof window !== 'undefined' ? `${window.location.origin}/login` : undefined,
+    navigateToLoginRequestUrl: false,
   },
   cache: {
     cacheLocation: 'sessionStorage',
