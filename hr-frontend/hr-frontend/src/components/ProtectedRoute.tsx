@@ -1,5 +1,5 @@
 import { useIsAuthenticated } from '@azure/msal-react'
-import { Navigate } from 'react-router-dom'
+import { Navigate } from '../lib/router'
 import { signOut, useMsalReady } from '../auth/AuthProvider'
 import { useProfile } from '../hooks/useProfile'
 

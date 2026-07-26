@@ -15,7 +15,7 @@ export async function getPostgresAccessToken(): Promise<string> {
   if (!result?.token) {
     throw new Error(
       'Failed to acquire Microsoft Entra token for PostgreSQL. ' +
-      'Locally: run "az login". On Azure App Service: enable managed identity and add it as a PostgreSQL Entra admin.'
+      'Locally: run "az login". On Render, prefer DATABASE_AUTH=password with DATABASE_URL unless you provide Azure workload identity credentials.'
     )
   }
 

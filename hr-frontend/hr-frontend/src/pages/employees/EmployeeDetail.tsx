@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from '../../lib/router'
 import { createEmployee, useEmployee, updateEmployee } from '../../hooks/useEmployees'
 import { useProfile } from '../../hooks/useProfile'
 import { EMPLOYMENT_TYPE_OPTIONS, formatEmploymentType, type Employee, type EmploymentType } from '../../types/database'

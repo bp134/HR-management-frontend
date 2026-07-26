@@ -2,6 +2,8 @@
 
 Monorepo for the HR application after migrating off Supabase.
 
+See [`DEPLOYMENT.md`](DEPLOYMENT.md) for the canonical Azure Static Web Apps, Render, GitHub Actions, and Entra configuration.
+
 | Package | Description |
 |---------|-------------|
 | [`hr-frontend/`](hr-frontend/) | React SPA (Azure Static Web Apps) — MSAL sign-in, calls HR API |
@@ -13,6 +15,8 @@ Monorepo for the HR application after migrating off Supabase.
 - **Authentication:** Microsoft Entra ID (single tenant, work accounts)
 - **Authorization:** HR API enforces roles (`employees.role`) and row access (ported from former RLS)
 - **Database:** Azure Database for PostgreSQL Flexible Server (RLS disabled)
+- **Frontend:** Azure Static Web Apps at `https://lemon-grass-046e94503.7.azurestaticapps.net`
+- **API:** Render at `https://hr-management-frontend-1.onrender.com`
 
 ## Quick start (local)
 
@@ -64,22 +68,36 @@ Environment variables:
 - `VITE_AZURE_CLIENT_ID`
 - `VITE_AZURE_TENANT_ID`
 - `VITE_AZURE_API_SCOPE` (e.g. `api://<api-app-id>/access_as_user`)
-- `VITE_API_BASE_URL` (Render API URL)
 
 Add the Static Web App URL to the SPA app registration **Redirect URIs**. The frontend redirects Microsoft sign-in back to the site origin, for example:
 
 ```text
-https://<your-static-web-app>.azurestaticapps.net
+https://lemon-grass-046e94503.7.azurestaticapps.net
 ```
 
 The Vite `public/staticwebapp.config.json` file is copied into `dist/` at build time and rewrites SPA routes such as `/login` back to `/index.html`.
+
+The production Render API URL is configured in `hr-frontend/.env.production` because Vite exposes `VITE_*` values in the browser bundle. Keep it pointed at the Render service, not the Static Web App URL.
+
+GitHub Actions expects these secrets:
+
+- `AZURE_STATIC_WEB_APPS_API_TOKEN_LEMON_GRASS_046E94503`
+- `VITE_AZURE_CLIENT_ID`
+- `VITE_AZURE_TENANT_ID`
+- `VITE_AZURE_API_SCOPE`
 
 ### Render (API)
 
 1. Create a Node service rooted at `hr-frontend/hr-api`.
 2. Build command: `npm ci && npm run build`.
 3. Start command: `npm start`.
-4. Environment variables: `DATABASE_URL`, `AZURE_TENANT_ID`, `AZURE_API_CLIENT_ID`, `CORS_ORIGINS` (include the Static Web App URL).
+4. Environment variables:
+   - `NODE_ENV=production`
+   - `DATABASE_AUTH=password`
+   - `DATABASE_URL=<postgres connection string>`
+   - `AZURE_TENANT_ID=<tenant id>`
+   - `AZURE_API_CLIENT_ID=<HR API app client id>`
+   - `CORS_ORIGINS=https://lemon-grass-046e94503.7.azurestaticapps.net`
 
 ## API routes
 

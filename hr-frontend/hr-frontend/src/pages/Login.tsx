@@ -1,6 +1,6 @@
 import { useIsAuthenticated, useMsal } from '@azure/msal-react'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from '../lib/router'
 import { useMsalReady } from '../auth/AuthProvider'
 import { loginRequest } from '../lib/authConfig'
 import { ensureMsalInitialized } from '../auth/msalInstance'

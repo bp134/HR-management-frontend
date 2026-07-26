@@ -2,6 +2,16 @@ import type { Employee, LeaveRequest, LeaveStatus } from '../types/database'
 
 const baseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
 
+function pointsAtStaticWebAppOrigin(url: string): boolean {
+  if (typeof window === 'undefined') return false
+  try {
+    return new URL(url).origin === window.location.origin
+      && window.location.hostname.endsWith('.azurestaticapps.net')
+  } catch {
+    return false
+  }
+}
+
 let tokenGetter: (() => Promise<string | null>) | null = null
 
 export function setApiTokenGetter(getter: () => Promise<string | null>) {
@@ -22,7 +32,15 @@ export class ApiError extends Error {
 async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
   if (!baseUrl) {
     throw new ApiError(
-      'VITE_API_BASE_URL is not set. Add it to hr-frontend/.env and restart the dev server.',
+      'VITE_API_BASE_URL is not set. For production it should point to the Render API URL.',
+      0,
+      'config'
+    )
+  }
+
+  if (pointsAtStaticWebAppOrigin(baseUrl)) {
+    throw new ApiError(
+      `VITE_API_BASE_URL points at the Static Web App (${baseUrl}) instead of the Render API URL.`,
       0,
       'config'
     )
@@ -48,7 +66,7 @@ async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> 
     res = await fetch(`${baseUrl}${path}`, { ...options, headers })
   } catch {
     throw new ApiError(
-      `Network error reaching ${baseUrl}. Is the API running on port 3001?`,
+      `Network error reaching ${baseUrl}. Check the Render service is running and CORS_ORIGINS includes this Static Web App URL.`,
       0,
       'network'
     )

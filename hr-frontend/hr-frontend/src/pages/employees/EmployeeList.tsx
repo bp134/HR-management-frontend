@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '../../lib/router'
 import { useEmployees } from '../../hooks/useEmployees'
 import { formatEmploymentType } from '../../types/database'
 import { useProfile } from '../../hooks/useProfile'
