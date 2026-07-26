@@ -48,6 +48,7 @@ async function start() {
 
   app.listen(config.port, () => {
     console.log(`HR API listening on port ${config.port}`)
+    console.log(`Allowed CORS origins: ${config.corsOrigins.join(', ')}`)
   })
 }
 

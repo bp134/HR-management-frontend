@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { useState, type ReactNode } from 'react'
+import { NavLink } from '../lib/router'
 import { signOut } from '../auth/AuthProvider'
 import { useProfile } from '../hooks/useProfile'
 
@@ -57,7 +57,7 @@ const navItems: NavItem[] = [
   },
 ]
 
-export function Layout() {
+export function Layout({ children }: { children: ReactNode }) {
   const { profile } = useProfile()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
@@ -167,7 +167,7 @@ export function Layout() {
         </div>
 
         <main className="p-4 md:p-8">
-          <Outlet />
+          {children}
         </main>
       </div>
     </div>

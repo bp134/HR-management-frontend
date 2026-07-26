@@ -1,6 +1,6 @@
 # HR API
 
-Express API for Azure App Service. Validates Entra JWTs and reads/writes Azure PostgreSQL.
+Express API for Render. Validates Microsoft Entra JWTs and reads/writes PostgreSQL.
 
 ## Environment
 
@@ -12,13 +12,26 @@ See `.env.example`.
 npm install
 npm run dev     # watch mode with tsx
 npm run build   # compile to dist/
-npm start       # run dist/index.js (App Service)
+npm start       # run dist/index.js
 ```
 
-## Azure App Service
+## Render
 
-- **Runtime:** Node 20 LTS
+- **Root directory:** `hr-frontend/hr-api`
+- **Runtime:** Node 22
+- **Build command:** `npm ci && npm run build`
 - **Startup command:** `node dist/index.js`
-- **Build during deploy:** `npm install && npm run build`
+- **Health check path:** `/health`
 
-Ensure PostgreSQL firewall allows the App Service outbound addresses.
+Required environment variables:
+
+```text
+NODE_ENV=production
+DATABASE_AUTH=password
+DATABASE_URL=postgresql://...
+AZURE_TENANT_ID=...
+AZURE_API_CLIENT_ID=...
+CORS_ORIGINS=https://lemon-grass-046e94503.7.azurestaticapps.net
+```
+
+If your PostgreSQL firewall restricts inbound traffic, allow Render outbound connectivity or use the database provider's recommended Render integration.

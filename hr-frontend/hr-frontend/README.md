@@ -14,10 +14,11 @@ VITE_AZURE_TENANT_ID=...
 VITE_AZURE_API_SCOPE=api://<api-client-id>/access_as_user
 VITE_API_BASE_URL=http://localhost:3001
 # production example:
-# VITE_API_BASE_URL=https://your-render-service.onrender.com
+# VITE_API_BASE_URL=https://hr-management-frontend-1.onrender.com
 ```
 
 Production builds read the Render API URL from `.env.production`.
+The active Azure Static Web App origin is `https://lemon-grass-046e94503.7.azurestaticapps.net`.
 
 ## Scripts
 
