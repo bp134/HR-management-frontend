@@ -1,6 +1,6 @@
 import type { Employee, LeaveRequest, LeaveStatus } from '../types/database'
 
-const renderApiBaseUrl = 'https://hr-management-frontend-1.onrender.com'
+const renderApiBaseUrl = 'https://hr-management-frontend-gz9u.onrender.com'
 const configuredBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
 
 function pointsAtStaticWebApp(url: string): boolean {

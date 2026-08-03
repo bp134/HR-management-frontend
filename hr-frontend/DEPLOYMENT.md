@@ -7,7 +7,7 @@ This repository is standardized on one frontend Static Web App and one Render AP
 | Component | Host |
 | --- | --- |
 | Frontend | `https://lemon-grass-046e94503.7.azurestaticapps.net` |
-| API | `https://hr-management-frontend-1.onrender.com` |
+| API | `https://hr-management-frontend-gz9u.onrender.com` |
 
 ## GitHub Actions
 
@@ -67,8 +67,8 @@ CORS_ORIGINS=https://lemon-grass-046e94503.7.azurestaticapps.net
 After deploy:
 
 ```bash
-curl https://hr-management-frontend-1.onrender.com/health
-curl https://hr-management-frontend-1.onrender.com/api/health
+curl https://hr-management-frontend-gz9u.onrender.com/health
+curl https://hr-management-frontend-gz9u.onrender.com/api/health
 ```
 
 Then open the frontend and sign in:

@@ -16,7 +16,7 @@ See [`DEPLOYMENT.md`](DEPLOYMENT.md) for the canonical Azure Static Web Apps, Re
 - **Authorization:** HR API enforces roles (`employees.role`) and row access (ported from former RLS)
 - **Database:** Azure Database for PostgreSQL Flexible Server (RLS disabled)
 - **Frontend:** Azure Static Web Apps at `https://lemon-grass-046e94503.7.azurestaticapps.net`
-- **API:** Render at `https://hr-management-frontend-1.onrender.com`
+- **API:** Render at `https://hr-management-frontend-gz9u.onrender.com`
 
 ## Quick start (local)
 
