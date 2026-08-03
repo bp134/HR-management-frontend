@@ -67,7 +67,7 @@ Open `https://lemon-grass-046e94503.7.azurestaticapps.net` — you should see th
 The frontend production build reads the Render API URL from `hr-frontend/hr-frontend/.env.production`:
 
 ```text
-VITE_API_BASE_URL=https://hr-management-frontend-1.onrender.com
+VITE_API_BASE_URL=https://hr-management-frontend-gz9u.onrender.com
 ```
 
 Do not set `VITE_API_BASE_URL` to a Static Web App URL in GitHub secrets or workflow env.
