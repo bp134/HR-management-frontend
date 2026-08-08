@@ -142,7 +142,9 @@ if (!id || !isUuid(id)) {
   const requesterEmployeeId = ctx.employeeId
   const canAccess =
     isAdminOrHr(ctx.role) ||
-    documentEmployeeId === requesterEmployeeId ||
+    (documentEmployeeId != null &&
+      requesterEmployeeId != null &&
+      documentEmployeeId === requesterEmployeeId) ||
     (ctx.role === 'manager' &&
       requesterEmployeeId != null &&
       documentEmployeeId != null &&
