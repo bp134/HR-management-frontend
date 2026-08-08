@@ -148,12 +148,13 @@ if (!id || !isUuid(id)) {
   }
 
   // Access check
+  const contractEmployeeId = contract.employee_id
   const canAccess =
     isAdminOrHr(ctx.role) ||
-    contract.employee_id === ctx.employeeId ||
+    contractEmployeeId === ctx.employeeId ||
     (ctx.role === 'manager' &&
-      contract.employee_id != null &&
-      await isDirectReport(ctx.employeeId, contract.employee_id))
+      contractEmployeeId != null &&
+      await isDirectReport(ctx.employeeId, contractEmployeeId))
 
   if (!canAccess) {
     res.status(403).json({ error: 'forbidden', message: 'Access denied' })
