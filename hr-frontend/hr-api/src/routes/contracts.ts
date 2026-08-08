@@ -130,8 +130,8 @@ contractsRouter.post(
 
 // GET /api/contracts/:id/download — returns a short-lived signed URL
 contractsRouter.get('/:id/download', async (req: AuthenticatedRequest, res) => {
-  const { id } = req.params
-  if (!isUuid(id)) {
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id
+if (!id || !isUuid(id)) {
     res.status(404).json({ error: 'not_found', message: 'Contract not found' })
     return
   }
@@ -164,7 +164,7 @@ contractsRouter.get('/:id/download', async (req: AuthenticatedRequest, res) => {
   }
 
   try {
-    const url = await getSignedUrl(CONTRACTS_CONTAINER, contract.file_path, 60)
+    const url = await getSignedUrl(CONTRACTS_CONTAINER, contract.file_path!, 60)
     res.json({ url })
   } catch (err) {
     console.error('SAS generation failed:', err)
@@ -174,8 +174,8 @@ contractsRouter.get('/:id/download', async (req: AuthenticatedRequest, res) => {
 
 // DELETE /api/contracts/:id — HR/admin only
 contractsRouter.delete('/:id', async (req: AuthenticatedRequest, res) => {
-  const { id } = req.params
-  if (!isUuid(id)) {
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id
+if (!id || !isUuid(id)) {
     res.status(404).json({ error: 'not_found', message: 'Contract not found' })
     return
   }
@@ -199,7 +199,7 @@ contractsRouter.delete('/:id', async (req: AuthenticatedRequest, res) => {
   // Delete from blob storage first
   if (contract.file_path) {
     try {
-      await deleteBlob(CONTRACTS_CONTAINER, contract.file_path)
+      await deleteBlob(CONTRACTS_CONTAINER, contract.file_path!)
     } catch (err) {
       console.error('Blob delete failed (continuing):', err)
     }

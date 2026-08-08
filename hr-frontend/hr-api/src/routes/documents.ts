@@ -121,8 +121,8 @@ documentsRouter.post(
 
 // GET /api/documents/:id/download
 documentsRouter.get('/:id/download', async (req: AuthenticatedRequest, res) => {
-  const { id } = req.params
-  if (!isUuid(id)) {
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id
+if (!id || !isUuid(id)) {
     res.status(404).json({ error: 'not_found', message: 'Document not found' })
     return
   }
@@ -154,7 +154,7 @@ documentsRouter.get('/:id/download', async (req: AuthenticatedRequest, res) => {
   }
 
   try {
-    const url = await getSignedUrl(DOCUMENTS_CONTAINER, doc.file_path, 60)
+    const url = await getSignedUrl(DOCUMENTS_CONTAINER, doc.file_path!, 60)
     res.json({ url })
   } catch (err) {
     console.error('SAS generation failed:', err)
@@ -164,8 +164,8 @@ documentsRouter.get('/:id/download', async (req: AuthenticatedRequest, res) => {
 
 // DELETE /api/documents/:id — HR/admin only
 documentsRouter.delete('/:id', async (req: AuthenticatedRequest, res) => {
-  const { id } = req.params
-  if (!isUuid(id)) {
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id
+if (!id || !isUuid(id)) {
     res.status(404).json({ error: 'not_found', message: 'Document not found' })
     return
   }
@@ -188,7 +188,7 @@ documentsRouter.delete('/:id', async (req: AuthenticatedRequest, res) => {
 
   if (doc.file_path) {
     try {
-      await deleteBlob(DOCUMENTS_CONTAINER, doc.file_path)
+      await deleteBlob(DOCUMENTS_CONTAINER, doc.file_path!)
     } catch (err) {
       console.error('Blob delete failed (continuing):', err)
     }
