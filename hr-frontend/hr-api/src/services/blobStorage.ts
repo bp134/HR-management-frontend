@@ -1,12 +1,14 @@
 import { BlobServiceClient } from '@azure/storage-blob'
 import { Readable } from 'stream'
 
-const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING
-if (!connectionString) {
-  throw new Error('AZURE_STORAGE_CONNECTION_STRING is not set')
-}
+const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING ?? ''
 
-const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString)
+function getBlobServiceClient(): BlobServiceClient {
+  if (!connectionString) {
+    throw new Error('AZURE_STORAGE_CONNECTION_STRING is not set')
+  }
+  return BlobServiceClient.fromConnectionString(connectionString)
+}
 
 export const CONTRACTS_CONTAINER = process.env.AZURE_STORAGE_CONTRACTS_CONTAINER ?? 'contracts'
 export const DOCUMENTS_CONTAINER = process.env.AZURE_STORAGE_DOCUMENTS_CONTAINER ?? 'documents'
@@ -18,7 +20,7 @@ export async function uploadBlob(
   buffer: Buffer,
   contentType: string
 ): Promise<string> {
-  const containerClient = blobServiceClient.getContainerClient(containerName)
+  const containerClient = getBlobServiceClient.getContainerClient(containerName)
   const blockBlobClient = containerClient.getBlockBlobClient(blobName)
 
   await blockBlobClient.uploadData(buffer, {
@@ -34,7 +36,7 @@ export async function getSignedUrl(
   blobName: string,
   expirySeconds = 60
 ): Promise<string> {
-  const containerClient = blobServiceClient.getContainerClient(containerName)
+  const containerClient = getBlobServiceClient.getContainerClient(containerName)
   const blockBlobClient = containerClient.getBlockBlobClient(blobName)
 
   const expiresOn = new Date()
@@ -53,7 +55,7 @@ export async function deleteBlob(
   containerName: string,
   blobName: string
 ): Promise<void> {
-  const containerClient = blobServiceClient.getContainerClient(containerName)
+  const containerClient = getBlobServiceClient.getContainerClient(containerName)
   const blockBlobClient = containerClient.getBlockBlobClient(blobName)
   await blockBlobClient.deleteIfExists()
 }
