@@ -53,7 +53,7 @@ jobs:
 
       - name: Deploy to Azure Static Web Apps (CLI)
         run: |
-          npx @azure/static-web-apps-cli@latest deploy hr-frontend/hr-frontend/dist --env production --verbose silly 2>&1 | tee deploy.log
+          npx @azure/static-web-apps-cli@latest deploy hr-frontend/hr-frontend/dist --env "$DEPLOY_ENV" --verbose silly 2>&1 | tee deploy.log
           if grep -qE "Project deployed to|Visit your site at|deployment has completed" deploy.log; then
             echo "Deploy succeeded"
           else
@@ -63,6 +63,7 @@ jobs:
           fi
         env:
           SWA_CLI_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_LEMON_GRASS_046E94503 }}
+          DEPLOY_ENV: ${{ github.event_name == 'pull_request' && 'preview' || 'production' }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -74,3 +75,4 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_LEMON_GRASS_046E94503 }}
           action: close
+6c1ed407e156dcc51583af941729330ab0ead22a
