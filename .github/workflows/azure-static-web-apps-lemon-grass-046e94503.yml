@@ -25,7 +25,13 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: hr-frontend/hr-frontend/package-lock.json
+          cache-dependency-path: |
+            hr-frontend/hr-api/package-lock.json
+            hr-frontend/hr-frontend/package-lock.json
+
+      - name: Install and build API
+        working-directory: hr-frontend/hr-api
+        run: npm ci && npm run build
 
       - name: Install and build frontend
         working-directory: hr-frontend/hr-frontend
