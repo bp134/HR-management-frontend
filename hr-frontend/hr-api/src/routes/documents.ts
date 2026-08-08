@@ -148,13 +148,14 @@ if (!id || !isUuid(id)) {
     return
   }
 
-  if (!doc.file_path) {
-    res.status(404).json({ error: 'not_found', message: 'No file attached to this document' })
-    return
-  }
+  const filePath = doc.file_path as string | null 
+if (!filePath) { 
+  res.status(404).json({ error: 'not_found', message: 'No file attached to this contract' }) 
+  return 
+} 
 
-  try {
-    const url = await getSignedUrl(DOCUMENTS_CONTAINER, doc.file_path!, 60)
+try { 
+  const url = await getSignedUrl(DOCUMENTS_CONTAINER, filePath, 60)
     res.json({ url })
   } catch (err) {
     console.error('SAS generation failed:', err)
