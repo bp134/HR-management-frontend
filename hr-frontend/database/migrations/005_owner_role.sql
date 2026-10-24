@@ -1,0 +1,33 @@
+-- ============================================================
+-- MIGRATION 005: Owner (superuser) role
+-- Run in Azure Postgres BEFORE assigning the role to anyone.
+-- ============================================================
+--
+-- 'owner' is the highest application role. An owner passes every admin check,
+-- plus:
+--   * only an owner can create, amend, delete or promote an owner;
+--   * admin and HR cannot amend or delete an owner account.
+--
+-- IMPORTANT: PostgreSQL does not allow a new enum value to be used in the same
+-- transaction that adds it (PostgreSQL 12+ allows the ALTER itself in a
+-- transaction, but the value cannot be referenced until that transaction
+-- commits). Run the ALTER below on its own.
+--
+-- Deploy the API and frontend that understand 'owner' BEFORE promoting anyone.
+-- If you set role = 'owner' against an older API, the app will treat the
+-- account as an unknown role and deny access.
+--
+-- Then, in a SEPARATE statement, promote your account:
+--
+--   UPDATE employees
+--   SET role = 'owner'
+--   WHERE lower(email) = lower('your.email@example.com')
+--   RETURNING employee_id, first_name, last_name, email, role;
+--
+-- Verify first if you prefer:
+--
+--   SELECT employee_id, first_name, last_name, email, role
+--   FROM employees
+--   WHERE lower(email) = lower('your.email@example.com');
+
+ALTER TYPE employee_role ADD VALUE IF NOT EXISTS 'owner';

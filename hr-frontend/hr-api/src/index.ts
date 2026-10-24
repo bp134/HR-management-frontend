@@ -7,6 +7,8 @@ import { dashboardRouter } from './routes/dashboard.js'
 import { employeesRouter } from './routes/employees.js'
 import { leaveRouter } from './routes/leave.js'
 import { meRouter } from './routes/me.js'
+import { contractsRouter } from './routes/contracts.js'
+import { documentsRouter } from './routes/documents.js'
 
 const app = express()
 
@@ -30,6 +32,8 @@ api.use('/me', meRouter)
 api.use('/employees', employeesRouter)
 api.use('/leave-requests', leaveRouter)
 api.use('/dashboard', dashboardRouter)
+api.use('/contracts', contractsRouter)
+api.use('/documents', documentsRouter)
 
 app.use('/api', api)
 

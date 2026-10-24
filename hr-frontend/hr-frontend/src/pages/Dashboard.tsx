@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from '../lib/router'
 import { getDashboardStats } from '../lib/api'
 import { useProfile } from '../hooks/useProfile'
+import { EmployeeManagementPanel } from '../components/EmployeeManagementPanel'
 
 interface Stats {
   totalEmployees: number
@@ -13,6 +14,7 @@ export function DashboardPage() {
   const { profile } = useProfile()
   const [stats, setStats] = useState<Stats>({ totalEmployees: 0, pendingLeave: 0, activeContracts: 0 })
   const [loading, setLoading] = useState(true)
+  const [statsTick, setStatsTick] = useState(0)
 
   useEffect(() => {
     if (!profile?.isManager) {
@@ -30,7 +32,7 @@ export function DashboardPage() {
         setLoading(false)
       })
       .catch(() => setLoading(false))
-  }, [profile?.isManager])
+  }, [profile?.isManager, statsTick])
 
   if (!profile) return null
 
@@ -81,6 +83,15 @@ export function DashboardPage() {
             colour="bg-amber-500"
           />
         </div>
+      )}
+
+      {profile.isHR && (
+        <EmployeeManagementPanel
+          currentEmployeeId={profile.employee_id}
+          isAdmin={profile.isAdmin}
+          isOwner={profile.isOwner}
+          onChanged={() => setStatsTick(tick => tick + 1)}
+        />
       )}
 
       <div className="bg-white rounded-xl border border-gray-200 p-5">

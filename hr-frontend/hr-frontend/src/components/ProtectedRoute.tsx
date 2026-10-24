@@ -5,7 +5,7 @@ import { useProfile } from '../hooks/useProfile'
 
 interface Props {
   children: React.ReactNode
-  requireRole?: ('admin' | 'hr' | 'manager' | 'employee')[]
+  requireRole?: ('owner' | 'admin' | 'hr' | 'manager' | 'employee')[]
 }
 
 export function ProtectedRoute({ children, requireRole }: Props) {

@@ -1,4 +1,10 @@
-import type { Employee, LeaveRequest, LeaveStatus } from '../types/database'
+import type {
+  Employee,
+  EmploymentType,
+  LeaveRequest,
+  LeaveStatus,
+  Role,
+} from '../types/database'
 
 const renderApiBaseUrl = 'https://hr-management-frontend-gz9u.onrender.com'
 const configuredBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
@@ -93,6 +99,7 @@ export interface MeResponse {
     isAdmin: boolean
     isHR: boolean
     isManager: boolean
+    isOwner: boolean
   } | null
   message?: string
 }
@@ -124,6 +131,13 @@ export function updateEmployeeApi(
   return apiFetch<{ employee: Employee }>(`/api/employees/${id}`, {
     method: 'PATCH',
     body: JSON.stringify(fields),
+  })
+}
+
+export function deleteEmployeeApi(employeeId: string, reason?: string) {
+  return apiFetch<{ success: boolean; archiveId: string }>(`/api/employees/${employeeId}`, {
+    method: 'DELETE',
+    body: reason?.trim() ? JSON.stringify({ reason: reason.trim() }) : undefined,
   })
 }
 
@@ -163,4 +177,216 @@ export interface DashboardStats {
 
 export function getDashboardStats() {
   return apiFetch<DashboardStats>('/api/dashboard/stats')
+}
+
+// ── Contracts ──────────────────────────────────────────────────
+
+export interface Contract {
+  contract_id: string
+  employee_id: string
+  file_path: string | null
+  file_name: string | null
+  contract_type: string | null
+  salary: number | null
+  hourly_rate: number | null
+  contracted_hours: number | null
+  start_date: string | null
+  end_date: string | null
+}
+
+export function getContracts(employeeId?: string) {
+  const q = employeeId ? `?employee_id=${encodeURIComponent(employeeId)}` : ''
+  return apiFetch<{ contracts: Contract[] }>(`/api/contracts${q}`)
+}
+
+export function getContractDownloadUrl(contractId: string) {
+  return apiFetch<{ url: string }>(`/api/contracts/${contractId}/download`)
+}
+
+export async function uploadContractApi(
+  employeeId: string,
+  file: File,
+  meta: {
+    contract_type?: string
+    salary?: string
+    hourly_rate?: string
+    contracted_hours?: string
+    start_date?: string
+    end_date?: string
+  }
+): Promise<{ contract: Contract }> {
+  // FormData — must NOT set Content-Type so browser sets multipart boundary
+  const form = new FormData()
+  form.append('file', file)
+  form.append('employee_id', employeeId)
+  Object.entries(meta).forEach(([k, v]) => { if (v) form.append(k, v) })
+
+  const token = tokenGetter ? await tokenGetter() : null
+  if (!token) {
+    throw new ApiError(
+      'Could not get an API access token.',
+      401,
+      'no_token'
+    )
+  }
+
+  let res: Response
+  try {
+    res = await fetch(`${baseUrl}/api/contracts`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: form,
+    })
+  } catch {
+    throw new ApiError('Network error during upload.', 0, 'network')
+  }
+
+  if (!res.ok) {
+    let message = res.statusText
+    let code: string | undefined
+    try {
+      const body = await res.json() as { message?: string; error?: string }
+      message = body.message ?? message
+      code = body.error
+    } catch { /* ignore */ }
+    throw new ApiError(message, res.status, code)
+  }
+
+  return res.json() as Promise<{ contract: Contract }>
+}
+
+export function deleteContractApi(contractId: string) {
+  return apiFetch<{ success: boolean }>(`/api/contracts/${contractId}`, {
+    method: 'DELETE',
+  })
+}
+
+// ── Documents ──────────────────────────────────────────────────
+
+export interface Document {
+  document_id: string
+  employee_id: string
+  document_type: string | null
+  file_path: string | null
+  file_name: string | null
+  uploaded_at: string | null
+}
+
+export const DOCUMENT_TYPES = [
+  'Passport',
+  'Right to Work',
+  'DBS Certificate',
+  'GPhC Registration',
+  'Professional Indemnity',
+  'Training Certificate',
+  'Other',
+] as const
+
+export function getDocuments(employeeId?: string) {
+  const q = employeeId ? `?employee_id=${encodeURIComponent(employeeId)}` : ''
+  return apiFetch<{ documents: Document[] }>(`/api/documents${q}`)
+}
+
+export function getDocumentDownloadUrl(documentId: string) {
+  return apiFetch<{ url: string }>(`/api/documents/${documentId}/download`)
+}
+
+export async function uploadDocumentApi(
+  employeeId: string,
+  file: File,
+  documentType: string
+): Promise<{ document: Document }> {
+  // FormData — must NOT set Content-Type
+  const form = new FormData()
+  form.append('file', file)
+  form.append('employee_id', employeeId)
+  form.append('document_type', documentType)
+
+  const token = tokenGetter ? await tokenGetter() : null
+  if (!token) {
+    throw new ApiError('Could not get an API access token.', 401, 'no_token')
+  }
+
+  let res: Response
+  try {
+    res = await fetch(`${baseUrl}/api/documents`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: form,
+    })
+  } catch {
+    throw new ApiError('Network error during upload.', 0, 'network')
+  }
+
+  if (!res.ok) {
+    let message = res.statusText
+    let code: string | undefined
+    try {
+      const body = await res.json() as { message?: string; error?: string }
+      message = body.message ?? message
+      code = body.error
+    } catch { /* ignore */ }
+    throw new ApiError(message, res.status, code)
+  }
+
+  return res.json() as Promise<{ document: Document }>
+}
+
+export function deleteDocumentApi(documentId: string) {
+  return apiFetch<{ success: boolean }>(`/api/documents/${documentId}`, {
+    method: 'DELETE',
+  })
+}
+
+// ── Archived employees (GDPR / legal retention) ────────────────
+
+export interface ArchivedEmployee {
+  archive_id: string
+  employee_id: string
+  first_name: string | null
+  last_name: string | null
+  date_of_birth: string | null
+  email: string | null
+  phone: string | null
+  address: string | null
+  emergency_contact_name: string | null
+  emergency_contact_phone: string | null
+  department_id: string | null
+  manager_id: string | null
+  job_title: string | null
+  employment_type: EmploymentType | null
+  start_date: string | null
+  end_date: string | null
+  created_at: string | null
+  user_id: string | null
+  role: Role
+  archived_at: string
+  archived_by: string | null
+  archived_by_email: string | null
+  reason: string | null
+  /** Present on list responses only. */
+  record_count?: number
+}
+
+export interface ArchivedRecord {
+  record_type: string
+  record_id: string | null
+  payload: Record<string, unknown>
+  archived_at: string
+}
+
+export function getArchivedEmployees() {
+  return apiFetch<{ archived: ArchivedEmployee[] }>('/api/employees/archived')
+}
+
+export function getArchivedEmployee(archiveId: string) {
+  return apiFetch<{ employee: ArchivedEmployee; records: ArchivedRecord[] }>(
+    `/api/employees/archived/${encodeURIComponent(archiveId)}`
+  )
+}
+
+export function getArchivedFileDownloadUrl(archiveId: string, recordId: string) {
+  return apiFetch<{ url: string; file_name: string | null }>(
+    `/api/employees/archived/${encodeURIComponent(archiveId)}/records/${encodeURIComponent(recordId)}/download`
+  )
 }

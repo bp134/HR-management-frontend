@@ -1,6 +1,36 @@
-export type Role = 'admin' | 'hr' | 'manager' | 'employee'
+export type Role = 'owner' | 'admin' | 'hr' | 'manager' | 'employee'
 export type EmploymentType = 'full-time' | 'part-time' | 'permanent' | 'locum'
 export type LeaveStatus = 'pending' | 'approved' | 'rejected'
+
+/**
+ * Suggested job titles for the employee form. `job_title` is still free text in
+ * the database, so anything outside this list can be entered via "Other".
+ */
+export const JOB_TITLE_OPTIONS = [
+  'Pharmacy Owner',
+  'Superintendent Pharmacist',
+  'Pharmacy Manager',
+  'Pharmacist',
+  'Locum Pharmacist',
+  'Pre-registration Pharmacist',
+  'Pharmacy Technician',
+  'Trainee Pharmacy Technician',
+  'Dispenser',
+  'Locum Dispenser',
+  'Medicine Counter Assistant',
+  'Senior Medicine Counter Assistant',
+  'Counter Assistant',
+  'Pharmacy Assistant',
+  'Administrator',
+] as const
+
+/** Sentinel value for the "Other" option in the job title dropdown. */
+export const OTHER_JOB_TITLE = '__other__'
+
+export function isKnownJobTitle(value: string | null | undefined): boolean {
+  if (!value) return false
+  return (JOB_TITLE_OPTIONS as readonly string[]).includes(value)
+}
 
 /** Matches PostgreSQL enum `employment_type` — see database/schema/schema.md */
 export const EMPLOYMENT_TYPE_OPTIONS: { value: EmploymentType; label: string }[] = [

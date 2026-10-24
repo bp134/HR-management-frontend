@@ -1,7 +1,17 @@
 import type { EmployeeRow, RequestContext, Role } from '../types.js'
 
+/** The owner role sits above admin and always passes admin checks. */
+export function isOwner(role: Role | null): boolean {
+  return role === 'owner'
+}
+
+/** Admin-level access: admin or owner. */
+export function isAdminRole(role: Role | null): boolean {
+  return role === 'admin' || isOwner(role)
+}
+
 export function isAdminOrHr(role: Role | null): boolean {
-  return role === 'admin' || role === 'hr'
+  return isAdminRole(role) || role === 'hr'
 }
 
 export function isManagerPlus(role: Role | null): boolean {

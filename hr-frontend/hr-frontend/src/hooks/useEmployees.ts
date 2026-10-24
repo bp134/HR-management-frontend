@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
-import { createEmployeeApi, getEmployee, getEmployees, updateEmployeeApi } from '../lib/api'
+import {
+  createEmployeeApi,
+  deleteEmployeeApi,
+  getEmployee,
+  getEmployees,
+  updateEmployeeApi,
+} from '../lib/api'
 import type { Employee } from '../types/database'
 
 export interface EmployeeWithDept extends Employee {
@@ -109,5 +115,17 @@ export async function updateEmployee(
     return { error: null }
   } catch (err) {
     return { error: err instanceof Error ? err.message : 'Update failed' }
+  }
+}
+
+export async function deleteEmployee(
+  employeeId: string,
+  reason?: string
+): Promise<{ archiveId: string | null; error: string | null }> {
+  try {
+    const { archiveId } = await deleteEmployeeApi(employeeId, reason)
+    return { archiveId, error: null }
+  } catch (err) {
+    return { archiveId: null, error: err instanceof Error ? err.message : 'Delete failed' }
   }
 }

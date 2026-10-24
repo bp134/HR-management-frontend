@@ -55,4 +55,33 @@ That means Root Directory is set to `hr-frontend/hr-api/src` (wrong) or build/st
 
 After deploy, test `https://<your-service>.onrender.com/health` → `{"status":"ok"}`.
 
+## Roles
+
+The application roles, highest first:
+
+| Role | Access |
+|------|--------|
+| `owner` | Everything an admin can do, plus owner accounts can only be managed by another owner |
+| `admin` | All employees, contracts, documents, leave, archive; can manage admins |
+| `hr` | Same day-to-day access as admin, but cannot manage admin/owner accounts |
+| `manager` | Own profile plus direct reports |
+| `employee` | Own profile, leave, contracts and documents |
+
+Run `database/migrations/005_owner_role.sql` before assigning `owner`.
+
+## Employee archive
+
+Run `database/migrations/004_employee_archive.sql` before using these endpoints.
+
+- `DELETE /api/employees/:id` — HR/admin only. Copies the employee and all
+  related records into the archive tables, then deletes the active rows.
+  Access is revoked immediately; Azure Blob files are retained. Optional body:
+  `{ "reason": "Employment ended" }`.
+- `GET /api/employees/archived` — HR/admin only. Archived employee summaries.
+- `GET /api/employees/archived/:archiveId` — HR/admin only. Full archived
+  detail plus related record payloads.
+- `GET /api/employees/archived/:archiveId/records/:recordId/download` —
+  HR/admin only. Returns a short-lived signed URL for an archived contract or
+  document file.
+
 See also `render.yaml` at the repo root.

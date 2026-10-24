@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { query } from '../db.js'
-import { canApproveLeave, leaveListFilter } from '../authorization/index.js'
+import { canApproveLeave, isAdminOrHr, leaveListFilter } from '../authorization/index.js'
 import type { AuthenticatedRequest } from '../middleware/authenticate.js'
 import { isDirectReport, loadContext } from '../services/employeeContext.js'
 import type { LeaveStatus } from '../types.js'
@@ -63,7 +63,7 @@ leaveRouter.post('/', async (req: AuthenticatedRequest, res) => {
   }
 
   const targetId = employee_id ?? ctx.employeeId
-  if (targetId !== ctx.employeeId && !(ctx.role === 'admin' || ctx.role === 'hr')) {
+  if (targetId !== ctx.employeeId && !isAdminOrHr(ctx.role)) {
     res.status(403).json({ error: 'forbidden', message: 'You can only submit leave for yourself' })
     return
   }
@@ -114,7 +114,7 @@ leaveRouter.patch('/:id/status', async (req: AuthenticatedRequest, res) => {
   const isTeam = await isDirectReport(leave.employee_id, ctx.employeeId)
   const canApprove =
     canApproveLeave(ctx, leave.employee_id) &&
-    (ctx.role === 'admin' || ctx.role === 'hr' || isTeam)
+    (isAdminOrHr(ctx.role) || isTeam)
 
   if (!canApprove) {
     res.status(403).json({ error: 'forbidden', message: 'You cannot approve this leave request' })

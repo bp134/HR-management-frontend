@@ -6,6 +6,8 @@ import { LoginPage } from './pages/Login'
 import { DashboardPage } from './pages/Dashboard'
 import { EmployeeListPage } from './pages/employees/EmployeeList'
 import { EmployeeDetailPage } from './pages/employees/EmployeeDetail'
+import { ArchivedEmployeesPage } from './pages/employees/ArchivedEmployees'
+import { ArchivedEmployeeDetailPage } from './pages/employees/ArchivedEmployeeDetail'
 import { ProfilePage } from './pages/employees/Profile'
 import { LeaveListPage } from './pages/leave/LeaveList'
 import { ContractsPage } from './pages/contracts/ContractList'
@@ -31,13 +33,25 @@ function AppRoutes() {
     page = <DocumentsPage />
   } else if (pathname === '/employees') {
     page = (
-      <ProtectedRoute requireRole={['admin', 'hr', 'manager']}>
+      <ProtectedRoute requireRole={['owner', 'admin', 'hr', 'manager']}>
         <EmployeeListPage />
+      </ProtectedRoute>
+    )
+  } else if (pathname === '/employees/archived') {
+    page = (
+      <ProtectedRoute requireRole={['owner', 'admin', 'hr']}>
+        <ArchivedEmployeesPage />
+      </ProtectedRoute>
+    )
+  } else if (/^\/employees\/archived\/[^/]+$/.test(pathname)) {
+    page = (
+      <ProtectedRoute requireRole={['owner', 'admin', 'hr']}>
+        <ArchivedEmployeeDetailPage />
       </ProtectedRoute>
     )
   } else if (/^\/employees\/[^/]+$/.test(pathname)) {
     page = (
-      <ProtectedRoute requireRole={['admin', 'hr', 'manager']}>
+      <ProtectedRoute requireRole={['owner', 'admin', 'hr', 'manager']}>
         <EmployeeDetailPage />
       </ProtectedRoute>
     )
