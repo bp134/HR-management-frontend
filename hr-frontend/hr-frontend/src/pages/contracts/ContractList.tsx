@@ -38,12 +38,12 @@ export function ContractsPage() {
       : profile.employee_id
 
     const { error: err } = await uploadContract(employeeId, file, {
-      contract_type: form.contract_type || null,
-      salary: form.salary ? parseFloat(form.salary) : null,
-      hourly_rate: form.hourly_rate ? parseFloat(form.hourly_rate) : null,
-      contracted_hours: form.contracted_hours ? parseInt(form.contracted_hours) : null,
-      start_date: form.start_date || null,
-      end_date: form.end_date || null,
+      contract_type: form.contract_type || undefined,
+      salary: form.salary || undefined,
+      hourly_rate: form.hourly_rate || undefined,
+      contracted_hours: form.contracted_hours || undefined,
+      start_date: form.start_date || undefined,
+      end_date: form.end_date || undefined,
     })
 
     setUploading(false)
@@ -56,14 +56,14 @@ export function ContractsPage() {
     }
   }
 
-  async function handleView(filePath: string) {
-    const url = await getContractUrl(filePath)
+  async function handleView(contractId: string) {
+    const url = await getContractUrl(contractId)
     if (url) window.open(url, '_blank')
   }
 
-  async function handleDelete(contractId: string, filePath: string | null) {
+  async function handleDelete(contractId: string) {
     if (!confirm('Delete this contract? This cannot be undone.')) return
-    await deleteContract(contractId, filePath)
+    await deleteContract(contractId)
     refresh()
   }
 
@@ -221,7 +221,7 @@ export function ContractsPage() {
               <div className="flex gap-2 flex-shrink-0">
                 {contract.file_path && (
                   <button
-                    onClick={() => handleView(contract.file_path!)}
+                    onClick={() => handleView(contract.contract_id)}
                     className="px-3 py-1.5 text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition-colors"
                   >
                     View PDF
@@ -229,7 +229,7 @@ export function ContractsPage() {
                 )}
                 {profile?.isHR && (
                   <button
-                    onClick={() => handleDelete(contract.contract_id, contract.file_path)}
+                    onClick={() => handleDelete(contract.contract_id)}
                     className="px-3 py-1.5 text-xs font-medium bg-red-50 text-red-700 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
                   >
                     Delete

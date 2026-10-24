@@ -32,9 +32,10 @@ api.use('/me', meRouter)
 api.use('/employees', employeesRouter)
 api.use('/leave-requests', leaveRouter)
 api.use('/dashboard', dashboardRouter)
-api.use('/contracts', authenticate, contractsRouter)
-api.use('/documents', authenticate, documentsRouter)
-api.use('/api', api)
+api.use('/contracts', contractsRouter)
+api.use('/documents', documentsRouter)
+
+app.use('/api', api)
 
 app.use((err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error(err)

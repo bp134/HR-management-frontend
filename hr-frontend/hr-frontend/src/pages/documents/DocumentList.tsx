@@ -10,7 +10,7 @@ export function DocumentsPage() {
 
   const [showForm, setShowForm] = useState(false)
   const [file, setFile] = useState<File | null>(null)
-  const [documentType, setDocumentType] = useState(DOCUMENT_TYPES[0])
+  const [documentType, setDocumentType] = useState<string>(DOCUMENT_TYPES[0])
   const [uploading, setUploading] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
 
@@ -39,14 +39,14 @@ export function DocumentsPage() {
     }
   }
 
-  async function handleView(filePath: string) {
-    const url = await getDocumentUrl(filePath)
+  async function handleView(documentId: string) {
+    const url = await getDocumentUrl(documentId)
     if (url) window.open(url, '_blank')
   }
 
-  async function handleDelete(documentId: string, filePath: string | null) {
+  async function handleDelete(documentId: string) {
     if (!confirm('Delete this document? This cannot be undone.')) return
-    await deleteDocument(documentId, filePath)
+    await deleteDocument(documentId)
     refresh()
   }
 
@@ -154,7 +154,7 @@ export function DocumentsPage() {
               <div className="flex gap-2 flex-shrink-0">
                 {doc.file_path && (
                   <button
-                    onClick={() => handleView(doc.file_path!)}
+                    onClick={() => handleView(doc.document_id)}
                     className="px-3 py-1.5 text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition-colors"
                   >
                     View PDF
@@ -162,7 +162,7 @@ export function DocumentsPage() {
                 )}
                 {profile?.isHR && (
                   <button
-                    onClick={() => handleDelete(doc.document_id, doc.file_path)}
+                    onClick={() => handleDelete(doc.document_id)}
                     className="px-3 py-1.5 text-xs font-medium bg-red-50 text-red-700 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
                   >
                     Delete
