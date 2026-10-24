@@ -75,7 +75,7 @@ function loadDatabaseConfig(): DatabaseConfig {
 }
 
 export const config = {
-  port: parseInt(process.env.PORT ?? '3001', 10),
+  port: parseInt(process.env.PORT ?? '10000', 10),
   nodeEnv: process.env.NODE_ENV ?? 'development',
   corsOrigins: optionalCsv(
     'CORS_ORIGINS',
