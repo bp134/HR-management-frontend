@@ -1,4 +1,10 @@
-import type { Employee, LeaveRequest, LeaveStatus } from '../types/database'
+import type {
+  Employee,
+  EmploymentType,
+  LeaveRequest,
+  LeaveStatus,
+  Role,
+} from '../types/database'
 
 const renderApiBaseUrl = 'https://hr-management-frontend-gz9u.onrender.com'
 const configuredBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
@@ -329,4 +335,57 @@ export function deleteDocumentApi(documentId: string) {
   return apiFetch<{ success: boolean }>(`/api/documents/${documentId}`, {
     method: 'DELETE',
   })
+}
+
+// ── Archived employees (GDPR / legal retention) ────────────────
+
+export interface ArchivedEmployee {
+  archive_id: string
+  employee_id: string
+  first_name: string | null
+  last_name: string | null
+  date_of_birth: string | null
+  email: string | null
+  phone: string | null
+  address: string | null
+  emergency_contact_name: string | null
+  emergency_contact_phone: string | null
+  department_id: string | null
+  manager_id: string | null
+  job_title: string | null
+  employment_type: EmploymentType | null
+  start_date: string | null
+  end_date: string | null
+  created_at: string | null
+  user_id: string | null
+  role: Role
+  archived_at: string
+  archived_by: string | null
+  archived_by_email: string | null
+  reason: string | null
+  /** Present on list responses only. */
+  record_count?: number
+}
+
+export interface ArchivedRecord {
+  record_type: string
+  record_id: string | null
+  payload: Record<string, unknown>
+  archived_at: string
+}
+
+export function getArchivedEmployees() {
+  return apiFetch<{ archived: ArchivedEmployee[] }>('/api/employees/archived')
+}
+
+export function getArchivedEmployee(archiveId: string) {
+  return apiFetch<{ employee: ArchivedEmployee; records: ArchivedRecord[] }>(
+    `/api/employees/archived/${encodeURIComponent(archiveId)}`
+  )
+}
+
+export function getArchivedFileDownloadUrl(archiveId: string, recordId: string) {
+  return apiFetch<{ url: string; file_name: string | null }>(
+    `/api/employees/archived/${encodeURIComponent(archiveId)}/records/${encodeURIComponent(recordId)}/download`
+  )
 }

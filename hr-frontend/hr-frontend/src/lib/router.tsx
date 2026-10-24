@@ -117,6 +117,13 @@ export function NavLink({ to, end, className, ...props }: NavLinkProps) {
   return <Link to={to} className={resolvedClassName} {...props} />
 }
 
+/** Archive id for /employees/archived/:archiveId */
+export function useArchivedArchiveId(): string | undefined {
+  const pathname = usePathname()
+  const match = pathname.match(/^\/employees\/archived\/([^/]+)$/)
+  return match?.[1] ? decodeURIComponent(match[1]) : undefined
+}
+
 export function useParams<T extends Record<string, string | undefined>>(): T {
   const pathname = usePathname()
   const employeeMatch = pathname.match(/^\/employees\/([^/]+)$/)
