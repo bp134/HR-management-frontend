@@ -8,6 +8,7 @@ import { EmployeeFormModal, type EmployeeFormMode } from './EmployeeFormModal'
 interface Props {
   currentEmployeeId: string
   isAdmin: boolean
+  isOwner: boolean
   onChanged: () => void
 }
 
@@ -24,7 +25,7 @@ function initials(employee: Employee): string {
   return ((employee.first_name?.[0] ?? '') + (employee.last_name?.[0] ?? '')).toUpperCase() || '?'
 }
 
-export function EmployeeManagementPanel({ currentEmployeeId, isAdmin, onChanged }: Props) {
+export function EmployeeManagementPanel({ currentEmployeeId, isAdmin, isOwner, onChanged }: Props) {
   const [search, setSearch] = useState('')
   const [form, setForm] = useState<FormState | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<Employee | null>(null)
@@ -135,6 +136,7 @@ export function EmployeeManagementPanel({ currentEmployeeId, isAdmin, onChanged 
                 {employees.map(employee => {
                   const isSelf = employee.employee_id === currentEmployeeId
                   const isProtectedAdmin = employee.role === 'admin' && !isAdmin
+                  const isProtectedOwner = employee.role === 'owner' && !isOwner
                   return (
                     <tr key={employee.employee_id} className="hover:bg-gray-50">
                       <td className="px-4 py-3">
@@ -160,30 +162,41 @@ export function EmployeeManagementPanel({ currentEmployeeId, isAdmin, onChanged 
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center justify-end gap-3">
-                          <button
-                            type="button"
-                            onClick={() => setForm({ mode: 'edit', employee })}
-                            className="text-xs font-medium text-indigo-600 hover:underline"
-                          >
-                            Amend
-                          </button>
-                          {isSelf ? (
-                            <span className="text-xs text-gray-400">You</span>
-                          ) : isProtectedAdmin ? (
+                          {isProtectedOwner ? (
                             <span
                               className="text-xs text-gray-400"
-                              title="Only an admin can delete an admin"
+                              title="Only an owner can amend or delete an owner account"
                             >
-                              Admin
+                              Owner
                             </span>
                           ) : (
-                            <button
-                              type="button"
-                              onClick={() => setDeleteTarget(employee)}
-                              className="text-xs font-medium text-red-600 hover:underline"
-                            >
-                              Delete
-                            </button>
+                            <>
+                              <button
+                                type="button"
+                                onClick={() => setForm({ mode: 'edit', employee })}
+                                className="text-xs font-medium text-indigo-600 hover:underline"
+                              >
+                                Amend
+                              </button>
+                              {isSelf ? (
+                                <span className="text-xs text-gray-400">You</span>
+                              ) : isProtectedAdmin ? (
+                                <span
+                                  className="text-xs text-gray-400"
+                                  title="Only an admin or owner can delete an admin"
+                                >
+                                  Admin
+                                </span>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={() => setDeleteTarget(employee)}
+                                  className="text-xs font-medium text-red-600 hover:underline"
+                                >
+                                  Delete
+                                </button>
+                              )}
+                            </>
                           )}
                         </div>
                       </td>
@@ -201,6 +214,7 @@ export function EmployeeManagementPanel({ currentEmployeeId, isAdmin, onChanged 
           mode={form.mode}
           employee={form.employee}
           isAdmin={isAdmin}
+          isOwner={isOwner}
           lockRole={form.mode === 'edit' && form.employee?.employee_id === currentEmployeeId}
           onClose={() => setForm(null)}
           onSaved={handleSaved}

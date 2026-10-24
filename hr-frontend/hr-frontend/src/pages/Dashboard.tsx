@@ -89,6 +89,7 @@ export function DashboardPage() {
         <EmployeeManagementPanel
           currentEmployeeId={profile.employee_id}
           isAdmin={profile.isAdmin}
+          isOwner={profile.isOwner}
           onChanged={() => setStatsTick(tick => tick + 1)}
         />
       )}

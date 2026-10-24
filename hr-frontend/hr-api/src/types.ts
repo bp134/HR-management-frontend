@@ -1,4 +1,4 @@
-export type Role = 'admin' | 'hr' | 'manager' | 'employee'
+export type Role = 'owner' | 'admin' | 'hr' | 'manager' | 'employee'
 export type LeaveStatus = 'pending' | 'approved' | 'rejected'
 
 export interface EmployeeRow {

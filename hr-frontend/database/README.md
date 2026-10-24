@@ -8,6 +8,7 @@ SQL migrations and a **live schema reference** exported from Azure PostgreSQL.
 |------|---------|
 | [`migrations/003_azure_entra.sql`](migrations/003_azure_entra.sql) | Post-Supabase: Entra `user_id`, disable RLS |
 | [`migrations/004_employee_archive.sql`](migrations/004_employee_archive.sql) | Archive tables for deleted employees (GDPR/legal retention) |
+| [`migrations/005_owner_role.sql`](migrations/005_owner_role.sql) | Add the `owner` (superuser) role to the `employee_role` enum |
 
 ## Schema reference (download from live DB)
 

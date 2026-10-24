@@ -55,6 +55,20 @@ That means Root Directory is set to `hr-frontend/hr-api/src` (wrong) or build/st
 
 After deploy, test `https://<your-service>.onrender.com/health` → `{"status":"ok"}`.
 
+## Roles
+
+The application roles, highest first:
+
+| Role | Access |
+|------|--------|
+| `owner` | Everything an admin can do, plus owner accounts can only be managed by another owner |
+| `admin` | All employees, contracts, documents, leave, archive; can manage admins |
+| `hr` | Same day-to-day access as admin, but cannot manage admin/owner accounts |
+| `manager` | Own profile plus direct reports |
+| `employee` | Own profile, leave, contracts and documents |
+
+Run `database/migrations/005_owner_role.sql` before assigning `owner`.
+
 ## Employee archive
 
 Run `database/migrations/004_employee_archive.sql` before using these endpoints.

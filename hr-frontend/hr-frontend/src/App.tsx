@@ -33,25 +33,25 @@ function AppRoutes() {
     page = <DocumentsPage />
   } else if (pathname === '/employees') {
     page = (
-      <ProtectedRoute requireRole={['admin', 'hr', 'manager']}>
+      <ProtectedRoute requireRole={['owner', 'admin', 'hr', 'manager']}>
         <EmployeeListPage />
       </ProtectedRoute>
     )
   } else if (pathname === '/employees/archived') {
     page = (
-      <ProtectedRoute requireRole={['admin', 'hr']}>
+      <ProtectedRoute requireRole={['owner', 'admin', 'hr']}>
         <ArchivedEmployeesPage />
       </ProtectedRoute>
     )
   } else if (/^\/employees\/archived\/[^/]+$/.test(pathname)) {
     page = (
-      <ProtectedRoute requireRole={['admin', 'hr']}>
+      <ProtectedRoute requireRole={['owner', 'admin', 'hr']}>
         <ArchivedEmployeeDetailPage />
       </ProtectedRoute>
     )
   } else if (/^\/employees\/[^/]+$/.test(pathname)) {
     page = (
-      <ProtectedRoute requireRole={['admin', 'hr', 'manager']}>
+      <ProtectedRoute requireRole={['owner', 'admin', 'hr', 'manager']}>
         <EmployeeDetailPage />
       </ProtectedRoute>
     )

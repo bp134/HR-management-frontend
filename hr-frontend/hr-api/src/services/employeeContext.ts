@@ -10,6 +10,7 @@ export interface MeResponse {
     isAdmin: boolean
     isHR: boolean
     isManager: boolean
+    isOwner: boolean
   } | null
   message?: string
 }
@@ -70,13 +71,16 @@ export async function linkAndLoadEmployee(auth: AuthUser): Promise<MeResponse> {
 
 function buildOk(employee: EmployeeRow): MeResponse {
   const role = employee.role
+  const isOwnerRole = role === 'owner'
+  const isAdminRole = role === 'admin' || isOwnerRole
   return {
     accessStatus: 'ok',
     employee,
     flags: {
-      isAdmin: role === 'admin',
-      isHR: role === 'hr' || role === 'admin',
-      isManager: role === 'manager' || role === 'hr' || role === 'admin',
+      isAdmin: isAdminRole,
+      isHR: role === 'hr' || isAdminRole,
+      isManager: role === 'manager' || role === 'hr' || isAdminRole,
+      isOwner: isOwnerRole,
     },
   }
 }

@@ -8,6 +8,7 @@ export interface Profile extends Employee {
   isAdmin: boolean
   isHR: boolean
   isManager: boolean
+  isOwner: boolean
 }
 
 interface UseProfileReturn {
@@ -59,6 +60,7 @@ export function useProfile(): UseProfileReturn {
             isAdmin: me.flags.isAdmin,
             isHR: me.flags.isHR,
             isManager: me.flags.isManager,
+            isOwner: me.flags.isOwner,
           })
         } else {
           setProfile(null)

@@ -2,6 +2,9 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { createEmployee, updateEmployee } from '../hooks/useEmployees'
 import {
   EMPLOYMENT_TYPE_OPTIONS,
+  JOB_TITLE_OPTIONS,
+  OTHER_JOB_TITLE,
+  isKnownJobTitle,
   type Employee,
   type EmploymentType,
   type Role,
@@ -29,6 +32,7 @@ const ROLE_OPTIONS: { value: Role; label: string }[] = [
   { value: 'manager', label: 'Manager' },
   { value: 'hr', label: 'HR' },
   { value: 'admin', label: 'Admin' },
+  { value: 'owner', label: 'Owner (superuser)' },
 ]
 
 function formFromEmployee(employee: Employee | null): FormState {
@@ -52,6 +56,7 @@ interface Props {
   mode: EmployeeFormMode
   employee: Employee | null
   isAdmin: boolean
+  isOwner: boolean
   lockRole?: boolean
   onClose: () => void
   onSaved: () => void
@@ -61,19 +66,25 @@ export function EmployeeFormModal({
   mode,
   employee,
   isAdmin,
+  isOwner,
   lockRole = false,
   onClose,
   onSaved,
 }: Props) {
   const [form, setForm] = useState<FormState>(() => formFromEmployee(employee))
+  const [customTitle, setCustomTitle] = useState(
+    () => !isKnownJobTitle(employee?.job_title) && Boolean(employee?.job_title)
+  )
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const adminRoleLocked = !isAdmin && form.role === 'admin'
-  const roleLocked = lockRole || adminRoleLocked
+  const ownerRoleLocked = !isOwner && form.role === 'owner'
+  const roleLocked = lockRole || adminRoleLocked || ownerRoleLocked
 
   useEffect(() => {
     setForm(formFromEmployee(employee))
+    setCustomTitle(!isKnownJobTitle(employee?.job_title) && Boolean(employee?.job_title))
     setError(null)
   }, [employee, mode])
 
@@ -219,11 +230,36 @@ export function EmployeeFormModal({
               </label>
               <label className="block">
                 <span className="mb-1 block text-xs font-medium text-gray-500">Job title</span>
-                <input
+                <select
                   className={inputClass}
-                  value={form.job_title}
-                  onChange={event => set('job_title', event.target.value)}
-                />
+                  value={customTitle ? OTHER_JOB_TITLE : form.job_title}
+                  onChange={event => {
+                    const value = event.target.value
+                    if (value === OTHER_JOB_TITLE) {
+                      if (!customTitle) {
+                        setCustomTitle(true)
+                        set('job_title', '')
+                      }
+                      return
+                    }
+                    setCustomTitle(false)
+                    set('job_title', value)
+                  }}
+                >
+                  <option value="">— Select —</option>
+                  {JOB_TITLE_OPTIONS.map(option => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                  <option value={OTHER_JOB_TITLE}>Other (type manually)</option>
+                </select>
+                {customTitle && (
+                  <input
+                    className={`${inputClass} mt-2`}
+                    placeholder="Enter job title"
+                    value={form.job_title}
+                    onChange={event => set('job_title', event.target.value)}
+                  />
+                )}
               </label>
               <label className="block">
                 <span className="mb-1 block text-xs font-medium text-gray-500">Employment type</span>
@@ -250,7 +286,10 @@ export function EmployeeFormModal({
                     <option
                       key={option.value}
                       value={option.value}
-                      disabled={option.value === 'admin' && !isAdmin}
+                      disabled={
+                        (option.value === 'admin' && !isAdmin)
+                        || (option.value === 'owner' && !isOwner)
+                      }
                     >
                       {option.label}
                     </option>
@@ -263,7 +302,12 @@ export function EmployeeFormModal({
                 )}
                 {!lockRole && adminRoleLocked && (
                   <span className="mt-1 block text-xs text-gray-400">
-                    Only an admin can change an admin's role.
+                    Only an admin or owner can change an admin's role.
+                  </span>
+                )}
+                {!lockRole && ownerRoleLocked && (
+                  <span className="mt-1 block text-xs text-gray-400">
+                    Only an owner can change an owner's role.
                   </span>
                 )}
               </label>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate, useParams } from '../../lib/router'
 import { createEmployee, useEmployee, updateEmployee } from '../../hooks/useEmployees'
 import { useProfile } from '../../hooks/useProfile'
-import { EMPLOYMENT_TYPE_OPTIONS, formatEmploymentType, type Employee, type EmploymentType } from '../../types/database'
+import { EMPLOYMENT_TYPE_OPTIONS, JOB_TITLE_OPTIONS, OTHER_JOB_TITLE, formatEmploymentType, isKnownJobTitle, type Employee, type EmploymentType } from '../../types/database'
 
 type EditableFields = Partial<
   Pick<Employee,
@@ -35,6 +35,7 @@ export function EmployeeDetailPage() {
 
   const [editing, setEditing] = useState(isCreate)
   const [form, setForm] = useState<EditableFields>(emptyForm())
+  const [customTitle, setCustomTitle] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
 
@@ -42,6 +43,7 @@ export function EmployeeDetailPage() {
     if (isCreate) {
       setEditing(true)
       setForm(emptyForm())
+      setCustomTitle(false)
       return
     }
     if (employee) {
@@ -58,6 +60,7 @@ export function EmployeeDetailPage() {
         start_date: employee.start_date ?? '',
         end_date: employee.end_date ?? '',
       })
+      setCustomTitle(!isKnownJobTitle(employee.job_title) && Boolean(employee.job_title))
     }
   }, [employee, isCreate])
 
@@ -215,7 +218,39 @@ export function EmployeeDetailPage() {
               <Input label="Last name" field="last_name" />
               <Input label="Email" field="email" type="email" />
               <Input label="Phone" field="phone" />
-              <Input label="Job title" field="job_title" />
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Job title</label>
+                <select
+                  value={customTitle ? OTHER_JOB_TITLE : (form.job_title ?? '')}
+                  onChange={e => {
+                    const value = e.target.value
+                    if (value === OTHER_JOB_TITLE) {
+                      if (!customTitle) {
+                        setCustomTitle(true)
+                        setForm(f => ({ ...f, job_title: '' }))
+                      }
+                      return
+                    }
+                    setCustomTitle(false)
+                    setForm(f => ({ ...f, job_title: value }))
+                  }}
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  <option value="">— Select —</option>
+                  {JOB_TITLE_OPTIONS.map(opt => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
+                  <option value={OTHER_JOB_TITLE}>Other (type manually)</option>
+                </select>
+                {customTitle && (
+                  <input
+                    value={form.job_title ?? ''}
+                    onChange={e => setForm(f => ({ ...f, job_title: e.target.value }))}
+                    placeholder="Enter job title"
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-2"
+                  />
+                )}
+              </div>
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Employment type</label>
                 <select

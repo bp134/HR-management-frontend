@@ -7,6 +7,8 @@ import {
   canViewEmployeeList,
   employeeListFilter,
   isAdminOrHr,
+  isAdminRole,
+  isOwner,
 } from '../authorization/index.js'
 import type { AuthenticatedRequest } from '../middleware/authenticate.js'
 import { loadContext } from '../services/employeeContext.js'
@@ -34,6 +36,10 @@ const VALID_EMPLOYMENT_TYPES = new Set([
   'full-time', 'part-time', 'permanent', 'locum',
 ])
 
+const VALID_ROLES = new Set([
+  'owner', 'admin', 'hr', 'manager', 'employee',
+])
+
 function validateEmploymentType(value: unknown): string | null | undefined {
   if (value === undefined) return undefined
   if (value === null || value === '') return null
@@ -41,6 +47,11 @@ function validateEmploymentType(value: unknown): string | null | undefined {
     return undefined
   }
   return value
+}
+
+function validateRole(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined
+  return VALID_ROLES.has(value) ? value : undefined
 }
 
 const UUID_RE =
@@ -73,9 +84,25 @@ employeesRouter.post('/', async (req: AuthenticatedRequest, res) => {
     return
   }
 
-  if (body.role === 'admin' && ctx.role !== 'admin') {
-    res.status(403).json({ error: 'forbidden', message: 'Only an admin can create an admin' })
-    return
+  let requestedRole: string | null = null
+  if (body.role !== undefined) {
+    const role = validateRole(body.role)
+    if (!role) {
+      res.status(400).json({
+        error: 'bad_request',
+        message: `role must be one of: ${[...VALID_ROLES].join(', ')}`,
+      })
+      return
+    }
+    if (role === 'owner' && !isOwner(ctx.role)) {
+      res.status(403).json({ error: 'forbidden', message: 'Only an owner can create an owner' })
+      return
+    }
+    if (role === 'admin' && !isAdminRole(ctx.role)) {
+      res.status(403).json({ error: 'forbidden', message: 'Only an admin or owner can create an admin' })
+      return
+    }
+    requestedRole = role
   }
 
   const email = typeof body.email === 'string' ? body.email.trim() : ''
@@ -86,7 +113,7 @@ employeesRouter.post('/', async (req: AuthenticatedRequest, res) => {
 
   const fields: Record<string, unknown> = { email: email.toLowerCase() }
   for (const key of HR_CREATABLE) {
-    if (key === 'email' || body[key] === undefined) continue
+    if (key === 'email' || key === 'role' || body[key] === undefined) continue
     if (key === 'employment_type') {
       const validated = validateEmploymentType(body[key])
       if (validated === undefined) {
@@ -105,6 +132,12 @@ employeesRouter.post('/', async (req: AuthenticatedRequest, res) => {
   const columns = ['employee_id', ...Object.keys(fields)]
   const values = ['gen_random_uuid()', ...Object.keys(fields).map((_, i) => `$${i + 1}`)]
   const params = Object.values(fields)
+
+  if (requestedRole) {
+    columns.push('role')
+    values.push(`$${params.length + 1}`)
+    params.push(requestedRole)
+  }
 
   const inserted = await query<EmployeeRow>(
     `INSERT INTO employees (${columns.join(', ')})
@@ -308,13 +341,25 @@ employeesRouter.patch('/:id', async (req: AuthenticatedRequest, res) => {
     return
   }
 
-  const isHrAdmin = ctx.role === 'admin' || ctx.role === 'hr'
+  const isHrAdmin = isAdminOrHr(ctx.role)
   const blockedKeys = new Set(['employee_id', 'created_at', 'user_id'])
 
   const updates: Record<string, unknown> = {}
   for (const [key, value] of Object.entries(body)) {
     if (value === undefined || blockedKeys.has(key)) continue
     if (!(isHrAdmin || SELF_EDITABLE.has(key))) continue
+    if (key === 'role') {
+      const validated = validateRole(value)
+      if (!validated) {
+        res.status(400).json({
+          error: 'bad_request',
+          message: `role must be one of: ${[...VALID_ROLES].join(', ')}`,
+        })
+        return
+      }
+      updates[key] = validated
+      continue
+    }
     if (key === 'employment_type') {
       const validated = validateEmploymentType(value)
       if (validated === undefined) {
@@ -335,12 +380,20 @@ employeesRouter.patch('/:id', async (req: AuthenticatedRequest, res) => {
     return
   }
 
-  if (ctx.role !== 'admin' && employee.role === 'admin' && 'role' in updates) {
-    res.status(403).json({ error: 'forbidden', message: "Only an admin can change an admin's role" })
+  if (employee.role === 'owner' && !isOwner(ctx.role)) {
+    res.status(403).json({ error: 'forbidden', message: 'Only an owner can amend an owner account' })
     return
   }
-  if (ctx.role !== 'admin' && updates.role === 'admin') {
-    res.status(403).json({ error: 'forbidden', message: 'Only an admin can assign the admin role' })
+  if (!isAdminRole(ctx.role) && employee.role === 'admin' && 'role' in updates) {
+    res.status(403).json({ error: 'forbidden', message: "Only an admin or owner can change an admin's role" })
+    return
+  }
+  if (!isAdminRole(ctx.role) && updates.role === 'admin') {
+    res.status(403).json({ error: 'forbidden', message: 'Only an admin or owner can assign the admin role' })
+    return
+  }
+  if (updates.role === 'owner' && !isOwner(ctx.role)) {
+    res.status(403).json({ error: 'forbidden', message: 'Only an owner can assign the owner role' })
     return
   }
   if (id === ctx.employeeId && 'role' in updates && updates.role !== employee.role) {
@@ -379,8 +432,8 @@ employeesRouter.patch('/:id', async (req: AuthenticatedRequest, res) => {
  * to archived_employees / archived_employee_records in the same transaction
  * before the active rows are deleted. Azure Blob files are deliberately kept.
  *
- * Only HR/admin can delete. HR cannot delete an admin, and the last admin
- * account cannot be deleted.
+ * Only HR/admin/owner can delete. HR cannot delete an admin, admin/HR cannot
+ * delete an owner, and the last admin or owner cannot be deleted.
  */
 employeesRouter.delete('/:id', async (req: AuthenticatedRequest, res) => {
   const id = routeParam(req.params.id)
@@ -414,15 +467,18 @@ employeesRouter.delete('/:id', async (req: AuthenticatedRequest, res) => {
       return { ok: false as const, status: 404, message: 'Employee not found' }
     }
 
-    if (employee.role === 'admin' && ctx.role !== 'admin') {
-      return { ok: false as const, status: 403, message: 'Only an admin can delete an admin' }
+    if (employee.role === 'owner' && !isOwner(ctx.role)) {
+      return { ok: false as const, status: 403, message: 'Only an owner can delete an owner account' }
     }
-    if (employee.role === 'admin') {
+    if (employee.role === 'admin' && !isAdminRole(ctx.role)) {
+      return { ok: false as const, status: 403, message: 'Only an admin or owner can delete an admin' }
+    }
+    if (employee.role === 'admin' || employee.role === 'owner') {
       const admins = await client.query<{ count: string }>(
-        "SELECT COUNT(*)::text AS count FROM employees WHERE role = 'admin'"
+        "SELECT COUNT(*)::text AS count FROM employees WHERE role IN ('admin', 'owner')"
       )
       if (parseInt(admins.rows[0]?.count ?? '0', 10) <= 1) {
-        return { ok: false as const, status: 400, message: 'Cannot delete the last admin' }
+        return { ok: false as const, status: 400, message: 'Cannot delete the last admin or owner' }
       }
     }
 

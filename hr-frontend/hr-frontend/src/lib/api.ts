@@ -99,6 +99,7 @@ export interface MeResponse {
     isAdmin: boolean
     isHR: boolean
     isManager: boolean
+    isOwner: boolean
   } | null
   message?: string
 }
