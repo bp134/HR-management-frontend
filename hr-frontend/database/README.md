@@ -7,6 +7,7 @@ SQL migrations and a **live schema reference** exported from Azure PostgreSQL.
 | File | Purpose |
 |------|---------|
 | [`migrations/003_azure_entra.sql`](migrations/003_azure_entra.sql) | Post-Supabase: Entra `user_id`, disable RLS |
+| [`migrations/004_employee_archive.sql`](migrations/004_employee_archive.sql) | Archive tables for deleted employees (GDPR/legal retention) |
 
 ## Schema reference (download from live DB)
 

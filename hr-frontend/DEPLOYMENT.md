@@ -62,6 +62,13 @@ AZURE_API_CLIENT_ID=<HR API app client id>
 CORS_ORIGINS=https://lemon-grass-046e94503.7.azurestaticapps.net
 ```
 
+## Database migrations
+
+Run `database/migrations/004_employee_archive.sql` in Azure PostgreSQL **before**
+deploying this version. The employee delete endpoint writes to
+`archived_employees` and `archived_employee_records`; without those tables the
+delete transaction rolls back and returns an error.
+
 ## Smoke checks
 
 After deploy:

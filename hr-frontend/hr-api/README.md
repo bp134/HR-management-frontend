@@ -55,4 +55,19 @@ That means Root Directory is set to `hr-frontend/hr-api/src` (wrong) or build/st
 
 After deploy, test `https://<your-service>.onrender.com/health` → `{"status":"ok"}`.
 
+## Employee archive
+
+Run `database/migrations/004_employee_archive.sql` before using these endpoints.
+
+- `DELETE /api/employees/:id` — HR/admin only. Copies the employee and all
+  related records into the archive tables, then deletes the active rows.
+  Access is revoked immediately; Azure Blob files are retained. Optional body:
+  `{ "reason": "Employment ended" }`.
+- `GET /api/employees/archived` — HR/admin only. Archived employee summaries.
+- `GET /api/employees/archived/:archiveId` — HR/admin only. Full archived
+  detail plus related record payloads.
+- `GET /api/employees/archived/:archiveId/records/:recordId/download` —
+  HR/admin only. Returns a short-lived signed URL for an archived contract or
+  document file.
+
 See also `render.yaml` at the repo root.

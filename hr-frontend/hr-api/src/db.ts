@@ -92,6 +92,53 @@ export async function query<T extends pg.QueryResultRow = pg.QueryResultRow>(
   }
 }
 
+async function runTransaction<T>(
+  fn: (client: pg.PoolClient) => Promise<T>
+): Promise<T> {
+  const activePool = await getPool()
+  const client = await activePool.connect()
+  let begun = false
+  try {
+    await client.query('BEGIN')
+    begun = true
+    const result = await fn(client)
+    await client.query('COMMIT')
+    begun = false
+    return result
+  } catch (err) {
+    if (begun) {
+      try {
+        await client.query('ROLLBACK')
+      } catch (rollbackErr) {
+        console.error('Transaction rollback failed:', rollbackErr)
+      }
+    }
+    throw err
+  } finally {
+    client.release()
+  }
+}
+
+/**
+ * Run a set of statements in a single transaction. If the Entra database
+ * token has expired, reset the pool and retry once (the callback is pure DB
+ * work, so retrying is safe).
+ */
+export async function withTransaction<T>(
+  fn: (client: pg.PoolClient) => Promise<T>
+): Promise<T> {
+  try {
+    return await runTransaction(fn)
+  } catch (err) {
+    if (config.database.auth === 'entra' && isAuthError(err)) {
+      await closePool()
+      clearPostgresTokenCache()
+      return runTransaction(fn)
+    }
+    throw err
+  }
+}
+
 export async function testDatabaseConnection(): Promise<void> {
   await query('SELECT 1')
 }

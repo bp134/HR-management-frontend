@@ -127,6 +127,13 @@ export function updateEmployeeApi(
   })
 }
 
+export function deleteEmployeeApi(employeeId: string, reason?: string) {
+  return apiFetch<{ success: boolean; archiveId: string }>(`/api/employees/${employeeId}`, {
+    method: 'DELETE',
+    body: reason?.trim() ? JSON.stringify({ reason: reason.trim() }) : undefined,
+  })
+}
+
 export function getLeaveRequests(status?: LeaveStatus) {
   const q = status ? `?status=${encodeURIComponent(status)}` : ''
   return apiFetch<{ requests: LeaveRequest[] }>(`/api/leave-requests${q}`)
