@@ -18,6 +18,10 @@ app.use(cors({
 }))
 app.use(express.json())
 
+app.get('/', (req, res) => {
+  res.status(200).json({ message: "HR API is running successfully." });
+});
+
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok' })
 })
